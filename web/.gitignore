@@ -1,0 +1,8 @@
+node_modules/
+.openai/local/
+tests/fixtures.json
+*.log
+
+preview.png
+*.tar.gz
+features-preview.png

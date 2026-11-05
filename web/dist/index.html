@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0d171a">
+  <meta name="description" content="坦克世界大战试玩场：守住基地、击碎砖墙、用炮弹拦截敌弹。支持键盘和触屏，运行与课程工程相同的 RISC-V 机器码。">
+  <title>坦克世界大战 · 试玩场</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<main class="app">
+  <header class="header">
+    <div class="brand"><div class="brand-mark" aria-hidden="true"><span></span></div><div><div class="eyebrow">ARMORED FRONT <span>/ 试玩场</span></div><h1>坦克世界大战</h1></div></div>
+    <div class="header-actions"><button id="sound" class="quiet-button" aria-pressed="false" title="开启或关闭音效">♪ <span>音效关闭</span></button><button id="help" class="quiet-button">操作说明 <span class="question">?</span></button></div>
+  </header>
+
+  <section class="layout" aria-label="坦克大战游戏">
+    <div class="game-column">
+      <div class="scoreboard" aria-live="polite" aria-atomic="true">
+        <div class="metric"><span>当前得分</span><strong id="score">000</strong></div>
+        <div class="metric"><span>剩余生命</span><strong id="lives" class="lives" aria-label="3 条生命">♥ ♥ ♥</strong></div>
+        <div class="metric"><span>剩余敌军</span><strong><i class="enemy-dot"></i><span id="enemies">2</span><small id="enemyTotal"> / 2</small></strong></div>
+        <div class="metric"><span>基地状态</span><strong id="base" class="base-good">完好</strong></div>
+      </div>
+
+      <div class="battle-settings"><div class="tempo"><label for="level">选择关卡</label><select id="level"><option value="0">01 训练 · 2 辆敌军</option><option value="1">02 进阶 · 4 辆敌军</option><option value="2">03 困难 · 6 辆敌军</option></select></div><p class="small-note" id="levelDetail">基地护墙需两次命中才破，玩家从基地左侧出生。</p><div class="tempo"><label for="bulletSpeed">子弹速度</label><select id="bulletSpeed"><option value="3">舒缓 · 每 3 拍一格</option><option value="2" selected>标准 · 每 2 拍一格</option><option value="1">快速 · 每拍一格</option></select></div><div class="tempo"><label for="speed">战斗节奏</label><select id="speed"><option value="170">慢速 · 熟悉操作</option><option value="130" selected>标准 · 推荐</option><option value="95">快速 · 挑战反应</option></select></div></div>
+      <div class="upgrade-bar" aria-label="坦克强化与道具"><div><span class="upgrade-icon" aria-hidden="true">★</span><div><strong id="upgradeName">基础坦克</strong><span id="upgradeDetail">弹药 2 发 · 伤害 1</span></div></div><div class="item-actions"><span>升级星 <b id="itemCount">0</b></span><button id="useItem" disabled>使用道具 <kbd>E</kbd></button></div></div>
+      <div class="board-shell" id="boardShell">
+        <div class="board-top"><span><i class="signal"></i><span id="levelTitle">01 · 基地防守</span></span><button id="fullscreen" class="icon-button" aria-label="全屏战场" title="全屏战场">⛶</button></div>
+        <div class="battlefield">
+          <canvas id="game" width="640" height="640" tabindex="0" role="img" aria-label="16×16 坦克战场。方向键或 WASD 移动，空格射击，P 暂停。"></canvas>
+          <div class="overlay" id="overlay">
+            <div class="overlay-card"><span id="overlayTag" class="overlay-tag">基地防守 · 训练战场</span><div class="mini-tank" aria-hidden="true"><span></span></div><h2 id="overlayTitle">守住你的基地</h2><p id="overlayCopy">击碎砖墙，消灭本关敌军。<br>对射可以抵消敌弹。</p><button id="overlayAction" class="primary-button">开始战斗 <kbd>Enter</kbd></button><div class="overlay-hint" id="overlayHint">方向键 / WASD 移动 · 空格射击</div></div>
+          </div>
+          <div class="toast" id="toast" role="status"></div>
+        </div>
+        <div class="board-bottom"><span id="battleStatus"><i class="status-dot"></i>待命</span><span id="frameNote">保护金色基地</span></div>
+      </div>
+
+      <div class="game-actions"><button id="start" class="action-button accent">开始战斗 <kbd>Enter</kbd></button><button id="pause" class="action-button" disabled>暂停 <kbd>P</kbd></button><button id="restart" class="action-button">重新开始 <kbd>R</kbd></button></div>
+
+      <div class="touch-controls" aria-label="触屏控制">
+        <div class="dpad"><button data-control="up" class="pad-up" aria-label="向上移动">↑</button><button data-control="left" class="pad-left" aria-label="向左移动">←</button><div class="pad-center" aria-hidden="true">✚</div><button data-control="right" class="pad-right" aria-label="向右移动">→</button><button data-control="down" class="pad-down" aria-label="向下移动">↓</button></div>
+        <div class="touch-hint">按住方向移动<br>按住开火连射</div><button data-control="fire" class="fire-button">开火<span>FIRE</span></button>
+      </div>
+    </div>
+
+    <aside class="sidebar">
+      <section class="briefing panel"><div class="panel-label">任务简报 <span id="statusBadge" class="badge">待命</span></div><h2>基地不能失守。</h2><p>消灭全部敌军即可获胜。你有三条生命，但基地只能承受一次命中。</p><div class="mission-progress"><span>歼敌进度</span><b id="progressLabel">0 / 2</b><div class="progress-track"><i id="progress"></i></div></div><div class="best-row"><span>本机最高得分</span><strong id="best">000</strong></div></section>
+      <section class="panel controls-panel"><div class="panel-label">操作台 <span class="keyboard-label">KEYBOARD</span></div><div class="key-grid"><kbd>W</kbd><kbd>↑</kbd><span>前进 / 转向</span><kbd>A</kbd><kbd>←</kbd><span>向左</span><kbd>S</kbd><kbd>↓</kbd><span>向下</span><kbd>D</kbd><kbd>→</kbd><span>向右</span><kbd class="space-key">SPACE</kbd><span>发射炮弹</span></div><p class="small-note">点击战场后即可操作，切换窗口会自动暂停。</p></section>
+      <section class="panel legend-panel"><div class="panel-label">战场识别</div><div class="legend"><span><i class="swatch player"></i>你的坦克</span><span><i class="swatch enemy"></i>敌方坦克</span><span><i class="swatch brick"></i>可破坏砖墙</span><span><i class="swatch steel"></i>不可破坏钢墙</span><span><i class="swatch base"></i>需要保护的基地</span><span><i class="swatch guard"></i>两次命中护墙</span><span><i class="swatch item"></i>升级星 · 拾取后 E 使用</span></div><div class="intercept-note"><span>＋</span><p>玩家炮弹可抵消敌弹。<br>主动拦截，也是一种防守。</p></div></section>
+      <div class="activity" id="activity" aria-live="polite"><span class="activity-dot"></span><span id="activityText">等待指挥官就位</span></div>
+    </aside>
+  </section>
+  <footer><span>同源试玩：运行课程工程的同一份 RISC-V 机器码</span><span>键盘 / 触屏 · 本地运行</span></footer>
+</main>
+
+<dialog id="helpDialog"><button id="closeHelp" class="dialog-close" aria-label="关闭说明">×</button><div class="eyebrow">FIELD MANUAL</div><h2>先保护基地，再清空战场。</h2><ul><li>方向键或 WASD 移动并转向，空格射击；最多同时有两枚玩家炮弹。</li><li>橙色砖墙一次命中即可打碎；金边基地护墙需要两次命中，首次变成普通砖墙；灰色钢墙不可破坏。</li><li>敌我炮弹进入同一格或迎面交叉时，双方都会消失。</li><li>训练关敌军需 1 次命中，进阶装甲坦克需 2 次，困难精英坦克需 3 次。敌军头顶格条表示剩余装甲。</li><li>击毁敌军得 100 分并掉落升级星，开过去自动拾取。若场上已有未拾取道具，后续掉落会累积到同一位置。</li><li>按 E 或点击“使用道具”激活：一级弹药容量从 2 发提升到 3 发；二级炮弹伤害从 1 提升到 2；满级后道具可恢复一条生命。背包最多存 3 枚，满血满级时保留道具。</li><li>玩家被击中会损失一条生命并重生；基地被命中会直接失败，包括误伤。</li><li>关卡越高，敌军总数越多、行动越快，地图掩体也会增加；场上最多同时有两辆敌军，击毁后会补入后续敌军；子弹速度可以单独选择。</li><li>切换关卡会重新准备战场，按开始即可出战。基地两侧的护墙可以被打碎，玩家在基地左侧出生，重生位置被敌军占据时会改到右侧。</li><li>P 暂停，R 重开。离开当前窗口时也会自动暂停。</li></ul><p class="technical-note">这个试玩界面使用指令级模拟器执行与 Logisim 工程相同的机器码，用于体验玩法。流水线时序与硬件性能仍以 Logisim 验证为准。</p><button id="helpReady" class="primary-button">明白了，返回战场</button></dialog>
+<script type="module" src="./app.js"></script>
+</body>
+</html>

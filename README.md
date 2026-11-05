@@ -4,7 +4,7 @@
 坦克移动、射击、敌军 AI、装甲、升级道具、炮弹碰撞、砖墙破坏、生命、基地和胜负判定全部由 RISC-V 汇编程序完成。
 显示组件仅将 CPU 输出的地形/精灵编号画出来，不执行游戏逻辑。
 
-贪吃蛇工程保留在相邻的 snake 文件夹。本工程独立开发，未覆盖原始 CPU 文件，也没有改动原 CPU 的指令集。
+之前的贪吃蛇工程见 [riscv-snake-logisim](https://github.com/codingsjx/riscv-snake-logisim)。本工程独立开发，未覆盖原始 CPU 文件，也没有改动原 CPU 的指令集。
 
 ![实际 Logisim 工程](build/panel.png)
 
@@ -58,7 +58,7 @@
 
 LEVEL=0/1/2 选择训练、进阶、困难，切换后按 RESTART 生效。三个关卡分别有 2/4/6 辆敌军，场上最多同时有两辆，后续敌军在行动拍补入空闲出生点；进阶增加砖墙，困难额外增加钢墙和砖墙。
 
-浏览器试玩源码位于相邻的 tank-play 文件夹；使用与本工程相同的机器码，支持键盘、触屏和关卡选择。
+浏览器试玩源码位于本仓库的 web 文件夹；使用与本工程相同的机器码，支持键盘、触屏和关卡选择。
 
 ## 装甲、升级与道具
 
@@ -144,3 +144,32 @@ Java 默认位置 D:/java，可通过 TANK_JAVA_HOME 环境变量指定其他 Ja
 工程已附带显示 JAR，正常运行不需要下载编译器。
 
 Logisim、cs3410.jar、riscv-probe.jar 沿用本机课程资料包，tank-display.jar 由本工程源码编译。
+
+
+## 队友开始修改
+
+```powershell
+git clone https://github.com/codingsjx/riscv-tank-logisim.git
+cd riscv-tank-logisim
+node web/tools/preview.mjs
+```
+
+浏览器打开终端打印的地址。直接体验也可以双击 `浏览器试玩.html`，Logisim 运行用 `启动坦克大战.cmd`。
+
+- 游戏规则、碰撞、装甲、掉落和升级：`software/tank.s`。
+- 网页界面与键盘/触屏操作：`web/dist/app.js`、`index.html`、`style.css`。
+- 网页的指令解释器：`web/dist/engine.js`；`rom.js` 由汇编导出，修改玩法时应改汇编再重新生成。
+- Logisim 显示外设与电路：`display/`、`tools/build_circuit.py`。硬件游戏逻辑仍由 CPU 执行。
+
+修改汇编后，在仓库根目录运行：
+
+```powershell
+python -m unittest discover -s tests -q
+python web/tools/export_rom.py
+node --test web/tests/engine.test.mjs
+python tools/export_browser_standalone.py
+```
+
+如需同步 Logisim 电路，按上文安装开发依赖，再运行 `python tools/build_display.py` 和 `python tools/build_circuit.py`。
+
+协作步骤见 [CONTRIBUTING.md](CONTRIBUTING.md)。

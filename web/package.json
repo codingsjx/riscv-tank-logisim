@@ -1,0 +1,7 @@
+{
+  "name": "riscv-tank-playground",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {"test": "node --test tests/engine.test.mjs", "preview": "node tools/preview.mjs"}
+}
