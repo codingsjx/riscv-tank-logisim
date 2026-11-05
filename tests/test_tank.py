@@ -1,5 +1,6 @@
 import sys
 import unittest
+import itertools
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -192,6 +193,88 @@ class TankTests(unittest.TestCase):
         self.m.mem[44]=1
         before=self.m.cycles;self.call('render');full=self.m.cycles-before
         self.assertLess(incremental,full//2)
+
+    def test_opposing_projectiles_same_destination_cancel(self):
+        for first,fd,second,sd in [(0x75,1,0x77,3),(0x69,2,0x89,0),(0x75,1,0x66,2)]:
+            self.call('game_reset')
+            self.bullet(first,fd,0,0x80);self.bullet(second,sd,1,0x90)
+            self.call('update_bullets')
+            self.assertFalse(self.active_bullets())
+            self.assertEqual((self.m.mem[4],self.m.mem[8],self.m.mem[20]),(0,3,2))
+
+    def test_head_on_crossing_cancels_instead_of_swapping(self):
+        self.bullet(0x75,1,0,0x80);self.bullet(0x76,3,2,0x90)
+        self.call('update_bullets')
+        self.assertFalse(self.active_bullets())
+
+    def test_entering_departed_cell_does_not_falsely_cancel(self):
+        self.bullet(0x75,1,0,0x80);self.bullet(0x76,2,1,0x90)
+        self.call('update_bullets')
+        self.assertEqual(self.active_bullets(),[0x80,0x90])
+        self.assertEqual((self.m.mem[0x80],self.m.mem[0x90]),(0x76,0x86))
+
+    def test_same_team_projectiles_do_not_cancel(self):
+        for owners in [(0,0),(1,2),(2,1)]:
+            self.call('game_reset')
+            self.bullet(0x75,1,owners[0],0x80);self.bullet(0x77,3,owners[1],0x90)
+            self.call('update_bullets')
+            self.assertEqual(self.active_bullets(),[0x80,0x90])
+            self.assertEqual((self.m.mem[0x80],self.m.mem[0x90]),(0x76,0x76))
+
+    def test_projectile_cancellation_is_independent_of_slot_order(self):
+        for first,second in itertools.permutations(range(0x80,0xc0,16),2):
+            self.call('game_reset')
+            self.bullet(0x75,1,0,first);self.bullet(0x76,3,1,second)
+            self.call('update_bullets')
+            self.assertFalse(self.active_bullets())
+
+    def test_all_participants_in_multi_projectile_collision_cancel(self):
+        for records in itertools.permutations([(0x75,1,0),(0x77,3,1),(0x66,2,2),(0x86,0,0)]):
+            self.call('game_reset')
+            for slot,record in zip(range(0x80,0xc0,16),records):self.bullet(*record,slot=slot)
+            self.call('update_bullets')
+            self.assertFalse(self.active_bullets())
+
+    def test_inactive_projectile_cannot_intercept(self):
+        self.bullet(0x75,1,0,0x80);self.bullet(0x77,3,1,0x90)
+        self.m.mem[0x98]=0
+        self.call('update_bullets')
+        self.assertEqual(self.active_bullets(),[0x80])
+        self.assertEqual(self.m.mem[0x80],0x76)
+
+    def test_wall_impacts_are_not_replaced_by_projectile_cancellation(self):
+        self.m.mem[0x100+4*0x76]=1
+        self.bullet(0x75,1,0,0x80);self.bullet(0x77,3,1,0x90)
+        self.call('update_bullets')
+        self.assertEqual((self.tile(0x76),self.m.mem[4]),(0,10))
+        self.call('game_reset');self.m.mem[0x100+4*0x76]=2
+        self.bullet(0x75,1,0,0x80);self.bullet(0x77,3,1,0x90)
+        self.call('update_bullets')
+        self.assertEqual((self.tile(0x76),self.m.mem[4]),(2,0))
+        self.assertFalse(self.active_bullets())
+
+    def test_interception_precedes_player_or_enemy_damage(self):
+        for actor in (64,80):
+            self.call('game_reset');self.m.mem[actor]=0x76
+            self.bullet(0x75,1,0,0x80);self.bullet(0x66,2,1,0x90)
+            self.call('update_bullets')
+            self.assertFalse(self.active_bullets())
+            self.assertEqual((self.m.mem[8],self.m.mem[20],self.m.mem[4]),(3,2,0))
+
+    def test_interception_frees_ammo_slots_and_flags_do_not_leak(self):
+        self.bullet(0x75,1,0,0x80);self.bullet(0x76,3,1,0x90)
+        self.call('update_bullets')
+        self.assertEqual(self.call('fire_actor',64),1)
+        self.assertEqual(self.call('fire_actor',80),1)
+        self.call('update_bullets')
+        self.assertEqual(len(self.active_bullets()),2)
+
+    def test_canceled_projectiles_disappear_without_render_ghosts(self):
+        self.bullet(0x75,1,0,0x80);self.bullet(0x77,3,1,0x90)
+        self.call('render')
+        self.assertEqual((self.sprite(0x75),self.sprite(0x77)),(12,13))
+        self.call('update_bullets');self.call('render')
+        self.assertEqual([self.sprite(p) for p in (0x75,0x76,0x77)],[0,0,0])
 
 
 if __name__=='__main__':unittest.main(verbosity=2)

@@ -3,7 +3,8 @@
 # 24 result (1 player lost/2 base lost/3 victory),28 base HP,32 best,
 # 36 respawn shield,40 accepted player shots,44 full-redraw flag.
 # Tanks at 0x40/0x50/0x60; bullets at 0x80..0xbf. Record: pos,dir,active,owner.
-# Previous entity cells 0xc0..0xdb; terrain 0x100..0x4ff;
+# Previous entity cells 0xc0..0xdb; next projectile positions 0xe0..0xef;
+# projectile cancellation flags 0xf0..0xff; terrain 0x100..0x4ff;
 # nibble LUT 0x500..0x6ff; stack top 0xfc0.
 # Keys 0x700, cycles 0x704, period 0x708 (0 manual), ACK 0x70c.
 # HUD 0x740..0x760 (FRAME last); packed tile framebuffer 0x800..0x87f.
@@ -372,6 +373,96 @@ clear_danger_loop:
 damage_done:
     jalr zero, 0(ra)
 
+# Predict all four endpoints before moving anything. Only player/enemy pairs
+# cancel. Mark every colliding pair before applying flags, so slot order cannot
+# decide a multi-projectile collision. Walls retain their normal precedence.
+resolve_bullet_collisions:
+    addi sp, sp, -32
+    sw ra, 28(sp)
+    sw s0, 24(sp)
+    sw s1, 20(sp)
+    sw s2, 16(sp)
+    sw s3, 12(sp)
+    addi s0, zero, 128
+    addi s1, zero, 224
+predict_bullet:
+    sw zero, 16(s1)
+    lw t0, 8(s0)
+    beq t0, zero, predict_invalid
+    lw a0, 0(s0)
+    lw a1, 4(s0)
+    jal ra, next_cell
+    addi t0, zero, -1
+    beq a0, t0, predict_store
+    slli t0, a0, 2
+    addi t0, t0, 256
+    lw t0, 0(t0)
+    beq t0, zero, predict_store
+predict_invalid:
+    addi a0, zero, -1
+predict_store:
+    sw a0, 0(s1)
+    addi s0, s0, 16
+    addi s1, s1, 4
+    addi t0, zero, 192
+    bne s0, t0, predict_bullet
+    addi s0, zero, 128
+    addi s1, zero, 224
+projectile_pair_outer:
+    lw t0, 0(s1)
+    addi t1, zero, -1
+    beq t0, t1, projectile_outer_next
+    addi s2, s0, 16
+    addi s3, s1, 4
+projectile_pair_inner:
+    lw t0, 0(s3)
+    addi t1, zero, -1
+    beq t0, t1, projectile_inner_next
+    lw t0, 12(s0)
+    lw t1, 12(s2)
+    sltu t0, zero, t0
+    sltu t1, zero, t1
+    beq t0, t1, projectile_inner_next
+    lw t0, 0(s1)
+    lw t1, 0(s3)
+    beq t0, t1, projectile_pair_hit
+    lw t2, 0(s2)
+    bne t0, t2, projectile_inner_next
+    lw t2, 0(s0)
+    bne t1, t2, projectile_inner_next
+projectile_pair_hit:
+    addi t0, zero, 1
+    sw t0, 16(s1)
+    sw t0, 16(s3)
+projectile_inner_next:
+    addi s2, s2, 16
+    addi s3, s3, 4
+    addi t0, zero, 192
+    bne s2, t0, projectile_pair_inner
+projectile_outer_next:
+    addi s0, s0, 16
+    addi s1, s1, 4
+    addi t0, zero, 176
+    bne s0, t0, projectile_pair_outer
+    addi s0, zero, 128
+    addi s1, zero, 240
+apply_projectile_cancel:
+    lw t0, 0(s1)
+    beq t0, zero, apply_cancel_next
+    sw zero, 8(s0)
+apply_cancel_next:
+    addi s0, s0, 16
+    addi s1, s1, 4
+    addi t0, zero, 192
+    bne s0, t0, apply_projectile_cancel
+    lw s3, 12(sp)
+    lw s2, 16(sp)
+    lw s1, 20(sp)
+    lw s0, 24(sp)
+    lw ra, 28(sp)
+    addi sp, sp, 32
+    jalr zero, 0(ra)
+
 update_bullets:
     addi sp, sp, -32
     sw ra, 28(sp)
@@ -379,6 +470,7 @@ update_bullets:
     sw s1, 20(sp)
     sw s2, 16(sp)
     sw s3, 12(sp)
+    jal ra, resolve_bullet_collisions
     addi s0, zero, 128
 bullet_loop:
     lw t0, 8(s0)

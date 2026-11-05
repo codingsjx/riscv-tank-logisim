@@ -68,11 +68,11 @@
 010c 40730333 sub t1, t1, t2
 0110 00533333 sltu t1, t1, t0
 0114 00031863 bne t1, zero, check_dirty
-0118 578000ef jal ra, game_tick
+0118 6a8000ef jal ra, game_tick
 011c 00100c93 addi s9, zero, 1
 0120 00100c13 addi s8, zero, 1
 0124 f20c82e3 beq s9, zero, main
-0128 628000ef jal ra, render
+0128 758000ef jal ra, render
 012c f00c0ee3 beq s8, zero, main
 0130 004da283 lw t0, 4(s11)
 0134 00502823 sw t0, 16(zero)
@@ -167,7 +167,7 @@
 0298 48702e23 sw t2, 1180(zero)
 029c 000da283 lw t0, 0(s11)
 02a0 005da623 sw t0, 12(s11)
-02a4 4ac000ef jal ra, render
+02a4 5dc000ef jal ra, render
 02a8 004da283 lw t0, 4(s11)
 02ac 00502823 sw t0, 16(zero)
 02b0 00812403 lw s0, 8(sp)
@@ -304,283 +304,359 @@
 04bc 01212823 sw s2, 16(sp)
 04c0 01312623 sw s3, 12(sp)
 04c4 08000413 addi s0, zero, 128
-04c8 00842283 lw t0, 8(s0)
-04cc 10028c63 beq t0, zero, bullet_next
-04d0 00042503 lw a0, 0(s0)
-04d4 00442583 lw a1, 4(s0)
-04d8 de9ff0ef jal ra, next_cell
-04dc fff00293 addi t0, zero, -1
-04e0 10550063 beq a0, t0, bullet_expire
-04e4 00050913 addi s2, a0, 0
-04e8 00c42483 lw s1, 12(s0)
-04ec 00291293 slli t0, s2, 2
+04c8 0e000493 addi s1, zero, 224
+04cc 0004a823 sw zero, 16(s1)
+04d0 00842283 lw t0, 8(s0)
+04d4 02028463 beq t0, zero, predict_invalid
+04d8 00042503 lw a0, 0(s0)
+04dc 00442583 lw a1, 4(s0)
+04e0 de1ff0ef jal ra, next_cell
+04e4 fff00293 addi t0, zero, -1
+04e8 00550c63 beq a0, t0, predict_store
+04ec 00251293 slli t0, a0, 2
 04f0 10028293 addi t0, t0, 256
-04f4 0002a303 lw t1, 0(t0)
-04f8 00100393 addi t2, zero, 1
-04fc 08730663 beq t1, t2, bullet_brick
-0500 00200393 addi t2, zero, 2
-0504 0c730e63 beq t1, t2, bullet_expire
-0508 00300393 addi t2, zero, 3
-050c 08730e63 beq t1, t2, bullet_base
-0510 02049463 bne s1, zero, bullet_player
-0514 05000993 addi s3, zero, 80
-0518 0089a283 lw t0, 8(s3)
-051c 00028663 beq t0, zero, bullet_enemy_next
-0520 0009a283 lw t0, 0(s3)
-0524 03228663 beq t0, s2, bullet_kill_enemy
-0528 01098993 addi s3, s3, 16
-052c 07000293 addi t0, zero, 112
-0530 fe5994e3 bne s3, t0, bullet_enemy_scan
-0534 0a40006f jal zero, bullet_advance
-0538 04802283 lw t0, 72(zero)
-053c 08028e63 beq t0, zero, bullet_advance
-0540 04002283 lw t0, 64(zero)
-0544 09229a63 bne t0, s2, bullet_advance
-0548 f09ff0ef jal ra, damage_player
-054c 0940006f jal zero, bullet_expire
-0550 0009a423 sw zero, 8(s3)
-0554 01402283 lw t0, 20(zero)
-0558 fff28293 addi t0, t0, -1
-055c 00502a23 sw t0, 20(zero)
-0560 06400513 addi a0, zero, 100
-0564 ecdff0ef jal ra, add_score
-0568 00042423 sw zero, 8(s0)
-056c 01402283 lw t0, 20(zero)
-0570 06029a63 bne t0, zero, bullet_next
-0574 00400293 addi t0, zero, 4
-0578 00502023 sw t0, 0(zero)
-057c 00300293 addi t0, zero, 3
-0580 00502c23 sw t0, 24(zero)
-0584 06c0006f jal zero, bullets_done
-0588 0002a023 sw zero, 0(t0)
-058c 00090513 addi a0, s2, 0
-0590 00000593 addi a1, zero, 0
-0594 168000ef jal ra, draw_tile
-0598 04049463 bne s1, zero, bullet_expire
-059c 00a00513 addi a0, zero, 10
-05a0 e91ff0ef jal ra, add_score
-05a4 03c0006f jal zero, bullet_expire
-05a8 00f00313 addi t1, zero, 15
-05ac 0062a023 sw t1, 0(t0)
-05b0 00090513 addi a0, s2, 0
-05b4 00f00593 addi a1, zero, 15
-05b8 144000ef jal ra, draw_tile
-05bc 00002e23 sw zero, 28(zero)
-05c0 00042423 sw zero, 8(s0)
-05c4 00300293 addi t0, zero, 3
-05c8 00502023 sw t0, 0(zero)
-05cc 00200293 addi t0, zero, 2
-05d0 00502c23 sw t0, 24(zero)
-05d4 01c0006f jal zero, bullets_done
-05d8 01242023 sw s2, 0(s0)
-05dc 0080006f jal zero, bullet_next
-05e0 00042423 sw zero, 8(s0)
-05e4 01040413 addi s0, s0, 16
-05e8 0c000293 addi t0, zero, 192
-05ec ec541ee3 bne s0, t0, bullet_loop
-05f0 00c12983 lw s3, 12(sp)
-05f4 01012903 lw s2, 16(sp)
-05f8 01412483 lw s1, 20(sp)
-05fc 01812403 lw s0, 24(sp)
-0600 01c12083 lw ra, 28(sp)
-0604 02010113 addi sp, sp, 32
-0608 00008067 jalr zero, 0(ra)
-060c ff010113 addi sp, sp, -16
-0610 00112623 sw ra, 12(sp)
-0614 00812423 sw s0, 8(sp)
-0618 00050413 addi s0, a0, 0
-061c 00042283 lw t0, 0(s0)
-0620 04002303 lw t1, 64(zero)
-0624 00f2f393 andi t2, t0, 15
-0628 00f37e13 andi t3, t1, 15
-062c 01c38e63 beq t2, t3, chase_vertical
-0630 01c3beb3 sltu t4, t2, t3
-0634 000e8663 beq t4, zero, chase_left
-0638 00100593 addi a1, zero, 1
-063c 0200006f jal zero, enemy_move
-0640 00300593 addi a1, zero, 3
-0644 0180006f jal zero, enemy_move
-0648 0062beb3 sltu t4, t0, t1
-064c 000e8663 beq t4, zero, chase_up
-0650 00200593 addi a1, zero, 2
-0654 0080006f jal zero, enemy_move
-0658 00000593 addi a1, zero, 0
-065c 00040513 addi a0, s0, 0
-0660 cbdff0ef jal ra, move_actor
-0664 00051a63 bne a0, zero, enemy_shoot
-0668 00442283 lw t0, 4(s0)
-066c 00128293 addi t0, t0, 1
-0670 0032f293 andi t0, t0, 3
-0674 00542223 sw t0, 4(s0)
-0678 00040513 addi a0, s0, 0
-067c d25ff0ef jal ra, fire_actor
-0680 00812403 lw s0, 8(sp)
-0684 00c12083 lw ra, 12(sp)
-0688 01010113 addi sp, sp, 16
-068c 00008067 jalr zero, 0(ra)
-0690 ff010113 addi sp, sp, -16
-0694 00112623 sw ra, 12(sp)
-0698 00c02283 lw t0, 12(zero)
-069c 00128293 addi t0, t0, 1
-06a0 00502623 sw t0, 12(zero)
-06a4 02402283 lw t0, 36(zero)
-06a8 00028663 beq t0, zero, tick_bullets
-06ac fff28293 addi t0, t0, -1
-06b0 02502223 sw t0, 36(zero)
-06b4 df9ff0ef jal ra, update_bullets
-06b8 00002283 lw t0, 0(zero)
-06bc 00100313 addi t1, zero, 1
-06c0 02629863 bne t0, t1, tick_done
-06c4 00c02283 lw t0, 12(zero)
-06c8 0032f293 andi t0, t0, 3
-06cc 02029263 bne t0, zero, tick_done
-06d0 05802283 lw t0, 88(zero)
-06d4 00028663 beq t0, zero, tick_enemy_two
-06d8 05000513 addi a0, zero, 80
-06dc f31ff0ef jal ra, enemy_ai
-06e0 06802283 lw t0, 104(zero)
-06e4 00028663 beq t0, zero, tick_done
-06e8 06000513 addi a0, zero, 96
-06ec f21ff0ef jal ra, enemy_ai
-06f0 00c12083 lw ra, 12(sp)
-06f4 01010113 addi sp, sp, 16
-06f8 00008067 jalr zero, 0(ra)
-06fc 00757293 andi t0, a0, 7
-0700 00429293 slli t0, t0, 4
-0704 00b28333 add t1, t0, a1
-0708 00231313 slli t1, t1, 2
-070c 50030313 addi t1, t1, 1280
-0710 00032303 lw t1, 0(t1)
-0714 00f28293 addi t0, t0, 15
-0718 00229293 slli t0, t0, 2
-071c 50028293 addi t0, t0, 1280
-0720 0002a383 lw t2, 0(t0)
-0724 fff3c393 xori t2, t2, -1
-0728 00355293 srli t0, a0, 3
-072c 00229293 slli t0, t0, 2
-0730 40000e13 addi t3, zero, 1024
-0734 001e1e13 slli t3, t3, 1
-0738 01c282b3 add t0, t0, t3
-073c 0002ae03 lw t3, 0(t0)
-0740 007e7e33 and t3, t3, t2
-0744 006e6e33 or t3, t3, t1
-0748 01c2a023 sw t3, 0(t0)
-074c 00008067 jalr zero, 0(ra)
-0750 ff010113 addi sp, sp, -16
-0754 00112623 sw ra, 12(sp)
-0758 00812423 sw s0, 8(sp)
-075c 00912223 sw s1, 4(sp)
-0760 01212023 sw s2, 0(sp)
-0764 02c02283 lw t0, 44(zero)
-0768 04028a63 beq t0, zero, restore_entities
-076c 02002623 sw zero, 44(zero)
-0770 10000413 addi s0, zero, 256
-0774 40000493 addi s1, zero, 1024
-0778 00149493 slli s1, s1, 1
-077c 02000913 addi s2, zero, 32
-0780 01c40293 addi t0, s0, 28
-0784 00800313 addi t1, zero, 8
-0788 00000393 addi t2, zero, 0
-078c 00439393 slli t2, t2, 4
-0790 0002ae03 lw t3, 0(t0)
-0794 01c3e3b3 or t2, t2, t3
-0798 ffc28293 addi t0, t0, -4
-079c fff30313 addi t1, t1, -1
-07a0 fe0316e3 bne t1, zero, render_pack
-07a4 0074a023 sw t2, 0(s1)
-07a8 02040413 addi s0, s0, 32
-07ac 00448493 addi s1, s1, 4
-07b0 fff90913 addi s2, s2, -1
-07b4 fc0916e3 bne s2, zero, render_group
-07b8 0340006f jal zero, render_entities
-07bc 0c000413 addi s0, zero, 192
-07c0 00700493 addi s1, zero, 7
-07c4 00042503 lw a0, 0(s0)
-07c8 fff00293 addi t0, zero, -1
-07cc 00550a63 beq a0, t0, restore_next
-07d0 00251293 slli t0, a0, 2
-07d4 10028293 addi t0, t0, 256
-07d8 0002a583 lw a1, 0(t0)
-07dc f21ff0ef jal ra, draw_tile
-07e0 00440413 addi s0, s0, 4
-07e4 fff48493 addi s1, s1, -1
-07e8 fc049ee3 bne s1, zero, restore_cell
-07ec 08000413 addi s0, zero, 128
-07f0 00842283 lw t0, 8(s0)
-07f4 00028e63 beq t0, zero, render_bullet_next
-07f8 00042503 lw a0, 0(s0)
-07fc 00c00593 addi a1, zero, 12
-0800 00c42283 lw t0, 12(s0)
-0804 00028463 beq t0, zero, render_bullet_draw
-0808 00d00593 addi a1, zero, 13
-080c ef1ff0ef jal ra, draw_tile
-0810 01040413 addi s0, s0, 16
-0814 0c000293 addi t0, zero, 192
-0818 fc541ce3 bne s0, t0, render_bullets
-081c 04000413 addi s0, zero, 64
-0820 00842283 lw t0, 8(s0)
-0824 02028263 beq t0, zero, render_tank_next
-0828 00042503 lw a0, 0(s0)
-082c 00442583 lw a1, 4(s0)
-0830 04000293 addi t0, zero, 64
-0834 00540663 beq s0, t0, render_player
-0838 00858593 addi a1, a1, 8
-083c 0080006f jal zero, render_tank_draw
-0840 00458593 addi a1, a1, 4
-0844 eb9ff0ef jal ra, draw_tile
-0848 01040413 addi s0, s0, 16
-084c 07000293 addi t0, zero, 112
-0850 fc5418e3 bne s0, t0, render_tanks
-0854 00802283 lw t0, 8(zero)
-0858 00029863 bne t0, zero, render_hud
-085c 04002503 lw a0, 64(zero)
-0860 00e00593 addi a1, zero, 14
-0864 e99ff0ef jal ra, draw_tile
-0868 08000293 addi t0, zero, 128
-086c 0c000313 addi t1, zero, 192
-0870 00400393 addi t2, zero, 4
-0874 fff00e13 addi t3, zero, -1
-0878 0082ae83 lw t4, 8(t0)
-087c 000e8463 beq t4, zero, cache_bullet_store
-0880 0002ae03 lw t3, 0(t0)
-0884 01c32023 sw t3, 0(t1)
-0888 01028293 addi t0, t0, 16
-088c 00430313 addi t1, t1, 4
-0890 fff38393 addi t2, t2, -1
-0894 fe0390e3 bne t2, zero, cache_bullets
-0898 04000293 addi t0, zero, 64
-089c 00300393 addi t2, zero, 3
-08a0 fff00e13 addi t3, zero, -1
-08a4 0082ae83 lw t4, 8(t0)
-08a8 000e8463 beq t4, zero, cache_tank_store
-08ac 0002ae03 lw t3, 0(t0)
-08b0 01c32023 sw t3, 0(t1)
-08b4 01028293 addi t0, t0, 16
-08b8 00430313 addi t1, t1, 4
-08bc fff38393 addi t2, t2, -1
-08c0 fe0390e3 bne t2, zero, cache_tanks
-08c4 00002283 lw t0, 0(zero)
-08c8 045da023 sw t0, 64(s11)
-08cc 00402283 lw t0, 4(zero)
-08d0 045da223 sw t0, 68(s11)
-08d4 00802283 lw t0, 8(zero)
-08d8 045da423 sw t0, 72(s11)
-08dc 01402283 lw t0, 20(zero)
-08e0 045da623 sw t0, 76(s11)
-08e4 01802283 lw t0, 24(zero)
-08e8 045da823 sw t0, 80(s11)
-08ec 01c02283 lw t0, 28(zero)
-08f0 045daa23 sw t0, 84(s11)
-08f4 00c02283 lw t0, 12(zero)
-08f8 045dac23 sw t0, 88(s11)
-08fc 02002283 lw t0, 32(zero)
-0900 045dae23 sw t0, 92(s11)
-0904 060da283 lw t0, 96(s11)
-0908 00128293 addi t0, t0, 1
-090c 065da023 sw t0, 96(s11)
-0910 00012903 lw s2, 0(sp)
-0914 00412483 lw s1, 4(sp)
-0918 00812403 lw s0, 8(sp)
-091c 00c12083 lw ra, 12(sp)
-0920 01010113 addi sp, sp, 16
-0924 00008067 jalr zero, 0(ra)
+04f4 0002a283 lw t0, 0(t0)
+04f8 00028463 beq t0, zero, predict_store
+04fc fff00513 addi a0, zero, -1
+0500 00a4a023 sw a0, 0(s1)
+0504 01040413 addi s0, s0, 16
+0508 00448493 addi s1, s1, 4
+050c 0c000293 addi t0, zero, 192
+0510 fa541ee3 bne s0, t0, predict_bullet
+0514 08000413 addi s0, zero, 128
+0518 0e000493 addi s1, zero, 224
+051c 0004a283 lw t0, 0(s1)
+0520 fff00313 addi t1, zero, -1
+0524 06628263 beq t0, t1, projectile_outer_next
+0528 01040913 addi s2, s0, 16
+052c 00448993 addi s3, s1, 4
+0530 0009a283 lw t0, 0(s3)
+0534 fff00313 addi t1, zero, -1
+0538 04628063 beq t0, t1, projectile_inner_next
+053c 00c42283 lw t0, 12(s0)
+0540 00c92303 lw t1, 12(s2)
+0544 005032b3 sltu t0, zero, t0
+0548 00603333 sltu t1, zero, t1
+054c 02628663 beq t0, t1, projectile_inner_next
+0550 0004a283 lw t0, 0(s1)
+0554 0009a303 lw t1, 0(s3)
+0558 00628a63 beq t0, t1, projectile_pair_hit
+055c 00092383 lw t2, 0(s2)
+0560 00729c63 bne t0, t2, projectile_inner_next
+0564 00042383 lw t2, 0(s0)
+0568 00731863 bne t1, t2, projectile_inner_next
+056c 00100293 addi t0, zero, 1
+0570 0054a823 sw t0, 16(s1)
+0574 0059a823 sw t0, 16(s3)
+0578 01090913 addi s2, s2, 16
+057c 00498993 addi s3, s3, 4
+0580 0c000293 addi t0, zero, 192
+0584 fa5916e3 bne s2, t0, projectile_pair_inner
+0588 01040413 addi s0, s0, 16
+058c 00448493 addi s1, s1, 4
+0590 0b000293 addi t0, zero, 176
+0594 f85414e3 bne s0, t0, projectile_pair_outer
+0598 08000413 addi s0, zero, 128
+059c 0f000493 addi s1, zero, 240
+05a0 0004a283 lw t0, 0(s1)
+05a4 00028463 beq t0, zero, apply_cancel_next
+05a8 00042423 sw zero, 8(s0)
+05ac 01040413 addi s0, s0, 16
+05b0 00448493 addi s1, s1, 4
+05b4 0c000293 addi t0, zero, 192
+05b8 fe5414e3 bne s0, t0, apply_projectile_cancel
+05bc 00c12983 lw s3, 12(sp)
+05c0 01012903 lw s2, 16(sp)
+05c4 01412483 lw s1, 20(sp)
+05c8 01812403 lw s0, 24(sp)
+05cc 01c12083 lw ra, 28(sp)
+05d0 02010113 addi sp, sp, 32
+05d4 00008067 jalr zero, 0(ra)
+05d8 fe010113 addi sp, sp, -32
+05dc 00112e23 sw ra, 28(sp)
+05e0 00812c23 sw s0, 24(sp)
+05e4 00912a23 sw s1, 20(sp)
+05e8 01212823 sw s2, 16(sp)
+05ec 01312623 sw s3, 12(sp)
+05f0 ebdff0ef jal ra, resolve_bullet_collisions
+05f4 08000413 addi s0, zero, 128
+05f8 00842283 lw t0, 8(s0)
+05fc 10028c63 beq t0, zero, bullet_next
+0600 00042503 lw a0, 0(s0)
+0604 00442583 lw a1, 4(s0)
+0608 cb9ff0ef jal ra, next_cell
+060c fff00293 addi t0, zero, -1
+0610 10550063 beq a0, t0, bullet_expire
+0614 00050913 addi s2, a0, 0
+0618 00c42483 lw s1, 12(s0)
+061c 00291293 slli t0, s2, 2
+0620 10028293 addi t0, t0, 256
+0624 0002a303 lw t1, 0(t0)
+0628 00100393 addi t2, zero, 1
+062c 08730663 beq t1, t2, bullet_brick
+0630 00200393 addi t2, zero, 2
+0634 0c730e63 beq t1, t2, bullet_expire
+0638 00300393 addi t2, zero, 3
+063c 08730e63 beq t1, t2, bullet_base
+0640 02049463 bne s1, zero, bullet_player
+0644 05000993 addi s3, zero, 80
+0648 0089a283 lw t0, 8(s3)
+064c 00028663 beq t0, zero, bullet_enemy_next
+0650 0009a283 lw t0, 0(s3)
+0654 03228663 beq t0, s2, bullet_kill_enemy
+0658 01098993 addi s3, s3, 16
+065c 07000293 addi t0, zero, 112
+0660 fe5994e3 bne s3, t0, bullet_enemy_scan
+0664 0a40006f jal zero, bullet_advance
+0668 04802283 lw t0, 72(zero)
+066c 08028e63 beq t0, zero, bullet_advance
+0670 04002283 lw t0, 64(zero)
+0674 09229a63 bne t0, s2, bullet_advance
+0678 dd9ff0ef jal ra, damage_player
+067c 0940006f jal zero, bullet_expire
+0680 0009a423 sw zero, 8(s3)
+0684 01402283 lw t0, 20(zero)
+0688 fff28293 addi t0, t0, -1
+068c 00502a23 sw t0, 20(zero)
+0690 06400513 addi a0, zero, 100
+0694 d9dff0ef jal ra, add_score
+0698 00042423 sw zero, 8(s0)
+069c 01402283 lw t0, 20(zero)
+06a0 06029a63 bne t0, zero, bullet_next
+06a4 00400293 addi t0, zero, 4
+06a8 00502023 sw t0, 0(zero)
+06ac 00300293 addi t0, zero, 3
+06b0 00502c23 sw t0, 24(zero)
+06b4 06c0006f jal zero, bullets_done
+06b8 0002a023 sw zero, 0(t0)
+06bc 00090513 addi a0, s2, 0
+06c0 00000593 addi a1, zero, 0
+06c4 168000ef jal ra, draw_tile
+06c8 04049463 bne s1, zero, bullet_expire
+06cc 00a00513 addi a0, zero, 10
+06d0 d61ff0ef jal ra, add_score
+06d4 03c0006f jal zero, bullet_expire
+06d8 00f00313 addi t1, zero, 15
+06dc 0062a023 sw t1, 0(t0)
+06e0 00090513 addi a0, s2, 0
+06e4 00f00593 addi a1, zero, 15
+06e8 144000ef jal ra, draw_tile
+06ec 00002e23 sw zero, 28(zero)
+06f0 00042423 sw zero, 8(s0)
+06f4 00300293 addi t0, zero, 3
+06f8 00502023 sw t0, 0(zero)
+06fc 00200293 addi t0, zero, 2
+0700 00502c23 sw t0, 24(zero)
+0704 01c0006f jal zero, bullets_done
+0708 01242023 sw s2, 0(s0)
+070c 0080006f jal zero, bullet_next
+0710 00042423 sw zero, 8(s0)
+0714 01040413 addi s0, s0, 16
+0718 0c000293 addi t0, zero, 192
+071c ec541ee3 bne s0, t0, bullet_loop
+0720 00c12983 lw s3, 12(sp)
+0724 01012903 lw s2, 16(sp)
+0728 01412483 lw s1, 20(sp)
+072c 01812403 lw s0, 24(sp)
+0730 01c12083 lw ra, 28(sp)
+0734 02010113 addi sp, sp, 32
+0738 00008067 jalr zero, 0(ra)
+073c ff010113 addi sp, sp, -16
+0740 00112623 sw ra, 12(sp)
+0744 00812423 sw s0, 8(sp)
+0748 00050413 addi s0, a0, 0
+074c 00042283 lw t0, 0(s0)
+0750 04002303 lw t1, 64(zero)
+0754 00f2f393 andi t2, t0, 15
+0758 00f37e13 andi t3, t1, 15
+075c 01c38e63 beq t2, t3, chase_vertical
+0760 01c3beb3 sltu t4, t2, t3
+0764 000e8663 beq t4, zero, chase_left
+0768 00100593 addi a1, zero, 1
+076c 0200006f jal zero, enemy_move
+0770 00300593 addi a1, zero, 3
+0774 0180006f jal zero, enemy_move
+0778 0062beb3 sltu t4, t0, t1
+077c 000e8663 beq t4, zero, chase_up
+0780 00200593 addi a1, zero, 2
+0784 0080006f jal zero, enemy_move
+0788 00000593 addi a1, zero, 0
+078c 00040513 addi a0, s0, 0
+0790 b8dff0ef jal ra, move_actor
+0794 00051a63 bne a0, zero, enemy_shoot
+0798 00442283 lw t0, 4(s0)
+079c 00128293 addi t0, t0, 1
+07a0 0032f293 andi t0, t0, 3
+07a4 00542223 sw t0, 4(s0)
+07a8 00040513 addi a0, s0, 0
+07ac bf5ff0ef jal ra, fire_actor
+07b0 00812403 lw s0, 8(sp)
+07b4 00c12083 lw ra, 12(sp)
+07b8 01010113 addi sp, sp, 16
+07bc 00008067 jalr zero, 0(ra)
+07c0 ff010113 addi sp, sp, -16
+07c4 00112623 sw ra, 12(sp)
+07c8 00c02283 lw t0, 12(zero)
+07cc 00128293 addi t0, t0, 1
+07d0 00502623 sw t0, 12(zero)
+07d4 02402283 lw t0, 36(zero)
+07d8 00028663 beq t0, zero, tick_bullets
+07dc fff28293 addi t0, t0, -1
+07e0 02502223 sw t0, 36(zero)
+07e4 df5ff0ef jal ra, update_bullets
+07e8 00002283 lw t0, 0(zero)
+07ec 00100313 addi t1, zero, 1
+07f0 02629863 bne t0, t1, tick_done
+07f4 00c02283 lw t0, 12(zero)
+07f8 0032f293 andi t0, t0, 3
+07fc 02029263 bne t0, zero, tick_done
+0800 05802283 lw t0, 88(zero)
+0804 00028663 beq t0, zero, tick_enemy_two
+0808 05000513 addi a0, zero, 80
+080c f31ff0ef jal ra, enemy_ai
+0810 06802283 lw t0, 104(zero)
+0814 00028663 beq t0, zero, tick_done
+0818 06000513 addi a0, zero, 96
+081c f21ff0ef jal ra, enemy_ai
+0820 00c12083 lw ra, 12(sp)
+0824 01010113 addi sp, sp, 16
+0828 00008067 jalr zero, 0(ra)
+082c 00757293 andi t0, a0, 7
+0830 00429293 slli t0, t0, 4
+0834 00b28333 add t1, t0, a1
+0838 00231313 slli t1, t1, 2
+083c 50030313 addi t1, t1, 1280
+0840 00032303 lw t1, 0(t1)
+0844 00f28293 addi t0, t0, 15
+0848 00229293 slli t0, t0, 2
+084c 50028293 addi t0, t0, 1280
+0850 0002a383 lw t2, 0(t0)
+0854 fff3c393 xori t2, t2, -1
+0858 00355293 srli t0, a0, 3
+085c 00229293 slli t0, t0, 2
+0860 40000e13 addi t3, zero, 1024
+0864 001e1e13 slli t3, t3, 1
+0868 01c282b3 add t0, t0, t3
+086c 0002ae03 lw t3, 0(t0)
+0870 007e7e33 and t3, t3, t2
+0874 006e6e33 or t3, t3, t1
+0878 01c2a023 sw t3, 0(t0)
+087c 00008067 jalr zero, 0(ra)
+0880 ff010113 addi sp, sp, -16
+0884 00112623 sw ra, 12(sp)
+0888 00812423 sw s0, 8(sp)
+088c 00912223 sw s1, 4(sp)
+0890 01212023 sw s2, 0(sp)
+0894 02c02283 lw t0, 44(zero)
+0898 04028a63 beq t0, zero, restore_entities
+089c 02002623 sw zero, 44(zero)
+08a0 10000413 addi s0, zero, 256
+08a4 40000493 addi s1, zero, 1024
+08a8 00149493 slli s1, s1, 1
+08ac 02000913 addi s2, zero, 32
+08b0 01c40293 addi t0, s0, 28
+08b4 00800313 addi t1, zero, 8
+08b8 00000393 addi t2, zero, 0
+08bc 00439393 slli t2, t2, 4
+08c0 0002ae03 lw t3, 0(t0)
+08c4 01c3e3b3 or t2, t2, t3
+08c8 ffc28293 addi t0, t0, -4
+08cc fff30313 addi t1, t1, -1
+08d0 fe0316e3 bne t1, zero, render_pack
+08d4 0074a023 sw t2, 0(s1)
+08d8 02040413 addi s0, s0, 32
+08dc 00448493 addi s1, s1, 4
+08e0 fff90913 addi s2, s2, -1
+08e4 fc0916e3 bne s2, zero, render_group
+08e8 0340006f jal zero, render_entities
+08ec 0c000413 addi s0, zero, 192
+08f0 00700493 addi s1, zero, 7
+08f4 00042503 lw a0, 0(s0)
+08f8 fff00293 addi t0, zero, -1
+08fc 00550a63 beq a0, t0, restore_next
+0900 00251293 slli t0, a0, 2
+0904 10028293 addi t0, t0, 256
+0908 0002a583 lw a1, 0(t0)
+090c f21ff0ef jal ra, draw_tile
+0910 00440413 addi s0, s0, 4
+0914 fff48493 addi s1, s1, -1
+0918 fc049ee3 bne s1, zero, restore_cell
+091c 08000413 addi s0, zero, 128
+0920 00842283 lw t0, 8(s0)
+0924 00028e63 beq t0, zero, render_bullet_next
+0928 00042503 lw a0, 0(s0)
+092c 00c00593 addi a1, zero, 12
+0930 00c42283 lw t0, 12(s0)
+0934 00028463 beq t0, zero, render_bullet_draw
+0938 00d00593 addi a1, zero, 13
+093c ef1ff0ef jal ra, draw_tile
+0940 01040413 addi s0, s0, 16
+0944 0c000293 addi t0, zero, 192
+0948 fc541ce3 bne s0, t0, render_bullets
+094c 04000413 addi s0, zero, 64
+0950 00842283 lw t0, 8(s0)
+0954 02028263 beq t0, zero, render_tank_next
+0958 00042503 lw a0, 0(s0)
+095c 00442583 lw a1, 4(s0)
+0960 04000293 addi t0, zero, 64
+0964 00540663 beq s0, t0, render_player
+0968 00858593 addi a1, a1, 8
+096c 0080006f jal zero, render_tank_draw
+0970 00458593 addi a1, a1, 4
+0974 eb9ff0ef jal ra, draw_tile
+0978 01040413 addi s0, s0, 16
+097c 07000293 addi t0, zero, 112
+0980 fc5418e3 bne s0, t0, render_tanks
+0984 00802283 lw t0, 8(zero)
+0988 00029863 bne t0, zero, render_hud
+098c 04002503 lw a0, 64(zero)
+0990 00e00593 addi a1, zero, 14
+0994 e99ff0ef jal ra, draw_tile
+0998 08000293 addi t0, zero, 128
+099c 0c000313 addi t1, zero, 192
+09a0 00400393 addi t2, zero, 4
+09a4 fff00e13 addi t3, zero, -1
+09a8 0082ae83 lw t4, 8(t0)
+09ac 000e8463 beq t4, zero, cache_bullet_store
+09b0 0002ae03 lw t3, 0(t0)
+09b4 01c32023 sw t3, 0(t1)
+09b8 01028293 addi t0, t0, 16
+09bc 00430313 addi t1, t1, 4
+09c0 fff38393 addi t2, t2, -1
+09c4 fe0390e3 bne t2, zero, cache_bullets
+09c8 04000293 addi t0, zero, 64
+09cc 00300393 addi t2, zero, 3
+09d0 fff00e13 addi t3, zero, -1
+09d4 0082ae83 lw t4, 8(t0)
+09d8 000e8463 beq t4, zero, cache_tank_store
+09dc 0002ae03 lw t3, 0(t0)
+09e0 01c32023 sw t3, 0(t1)
+09e4 01028293 addi t0, t0, 16
+09e8 00430313 addi t1, t1, 4
+09ec fff38393 addi t2, t2, -1
+09f0 fe0390e3 bne t2, zero, cache_tanks
+09f4 00002283 lw t0, 0(zero)
+09f8 045da023 sw t0, 64(s11)
+09fc 00402283 lw t0, 4(zero)
+0a00 045da223 sw t0, 68(s11)
+0a04 00802283 lw t0, 8(zero)
+0a08 045da423 sw t0, 72(s11)
+0a0c 01402283 lw t0, 20(zero)
+0a10 045da623 sw t0, 76(s11)
+0a14 01802283 lw t0, 24(zero)
+0a18 045da823 sw t0, 80(s11)
+0a1c 01c02283 lw t0, 28(zero)
+0a20 045daa23 sw t0, 84(s11)
+0a24 00c02283 lw t0, 12(zero)
+0a28 045dac23 sw t0, 88(s11)
+0a2c 02002283 lw t0, 32(zero)
+0a30 045dae23 sw t0, 92(s11)
+0a34 060da283 lw t0, 96(s11)
+0a38 00128293 addi t0, t0, 1
+0a3c 065da023 sw t0, 96(s11)
+0a40 00012903 lw s2, 0(sp)
+0a44 00412483 lw s1, 4(sp)
+0a48 00812403 lw s0, 8(sp)
+0a4c 00c12083 lw ra, 12(sp)
+0a50 01010113 addi sp, sp, 16
+0a54 00008067 jalr zero, 0(ra)

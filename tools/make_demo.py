@@ -2,6 +2,7 @@
 import json
 from java_bridge import start,finish,ROOT
 from native_runtime import NativeTank,render_native_board
+from campaign import run_campaign
 
 
 def demonstrate(J):
@@ -37,35 +38,12 @@ def demonstrate(J):
         if action.startswith('击毁第一辆'):image.save(ROOT/'build/tank-demo-poster.png')
         print('DEMO',index,action,stats,flush=True)
 
-    capture('初始战场',2200)
-    game.click('START');capture('START：开始战斗',1300)
-    game.click('FIRE','STEP');capture('FIRE：发射第一枚炮弹',1000)
-    for tick in range(2,24):
-        game.click(*(('FIRE','STEP') if tick in (5,14,18) else ('STEP',)))
-        if tick==4:
-            assert game.get('SCORE')==10
-            capture('炮弹击碎砖墙，+10 分',1800)
-        elif tick==12:
-            assert game.get('SCORE')==110 and game.get('ALIVE')==1
-            capture('击毁第一辆敌军，+100 分',2000)
-            game.click('PAUSE');capture('PAUSE：暂停战斗',1500)
-            old=game.get('FRAME');game.cycles(200);assert game.get('FRAME')==old
-            game.click('PAUSE');capture('恢复战斗',1000)
-        elif tick==13:
-            assert game.get('LIVES')==2
-            capture('被敌弹击中，损失一条生命',1900)
-        elif tick==23:
-            assert game.get('STATUS')==4 and game.get('ALIVE')==0
-            capture('消灭全部敌军，获胜',3000)
-        else:capture('发射炮弹' if tick in (5,14,18) else '炮弹推进，敌军移动',450)
-    game.click('RESTART');capture('RESTART：保留最高分',1700)
-    assert game.get('BEST')==210 and game.get('LIVES')==3
-    game.click('START');game.click('DOWN');capture('向基地转向，移动被阻挡',1300)
-    game.click('FIRE','STEP')
-    assert game.get('STATUS')==3 and game.get('CAUSE')==2 and game.get('BASEHP')==0
-    capture('误伤基地也会失败',2400)
-    game.click('RESTART');capture('重新开始，基地和砖墙恢复',1700)
+    run_campaign(game,capture)
     frames[0].save(ROOT/'build/tank-demo.gif',save_all=True,append_images=frames[1:],duration=durations,loop=0,disposal=2,optimize=True)
+    actions={'两弹接近同一格','同格相撞，双方炮弹消失','迎面交叉前','交叉抵消，不会穿过彼此'}
+    focus=[frames[i] for i,row in enumerate(record) if row['action'] in actions]
+    assert len(focus)==4
+    focus[0].save(ROOT/'build/projectile-cancel-demo.gif',save_all=True,append_images=focus[1:],duration=[1800,2300,1800,2300],loop=0,disposal=2,optimize=True)
     (ROOT/'build/demo-record.json').write_text(json.dumps(record,ensure_ascii=False,indent=2),encoding='utf-8')
     game.render(ROOT/'build/panel.png')
     print('Native campaign demo complete:',len(frames),'frames,',sum(durations),'ms',flush=True)
