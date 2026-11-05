@@ -38,13 +38,75 @@ class TankTests(unittest.TestCase):
         self.assertEqual(self.tile(0x97),1)
         self.assertEqual(self.tile(0x63),2)
 
+    def test_base_guard_walls_and_forward_exit(self):
+        for p in [0xd6,0xd8,0xe6,0xe8]: self.assertEqual(self.tile(p),1)
+        self.assertEqual(self.tile(0xf7),2)
+        self.assertEqual(self.tile(0xd7),0)
+        self.assertEqual(self.call('move_actor',64,1),0)
+        self.assertEqual(self.call('move_actor',64,0),1)
+        self.bullet(0xd5,1,1,0xa0)
+        self.call('update_bullets')
+        self.assertEqual(self.tile(0xd6),0)
+        self.assertEqual(self.m.mem[28],1)
+        self.assertEqual(self.m.mem[4],0)
+
+    def test_level_sampled_on_restart_and_clamped(self):
+        for level,total in [(0,2),(1,4),(2,6),(3,6)]:
+            self.m.mem[0x710]=level
+            self.poll(64)
+            self.assertEqual(self.m.mem[48],min(level,2))
+            self.assertEqual((self.m.mem[20],self.m.mem[52],self.m.mem[56]),(total,total,total-2))
+            self.assertEqual(self.tile(0x82),int(level>0))
+            self.assertEqual(self.tile(0x75),2 if level>1 else 0)
+        self.m.mem[0x710]=0
+        self.poll(16|256)
+        self.assertEqual(self.m.mem[48],2)
+
+    def test_ai_cadence_per_level(self):
+        for level,period in [(0,4),(1,3),(2,2)]:
+            self.m.mem[0x710]=level;self.poll(64);self.poll(16)
+            for _ in range(period-1): self.poll(256)
+            self.assertEqual(self.m.mem[80],0x37)
+            self.poll(256)
+            self.assertEqual(self.m.mem[80],0x47)
+
+    def test_reserve_spawn_waits_for_free_cell(self):
+        self.m.mem[0x710]=2;self.poll(64)
+        self.m.mem[88]=0;self.m.mem[64]=0x37
+        self.call('spawn_reserve',80,0x37)
+        self.assertEqual((self.m.mem[88],self.m.mem[56]),(0,4))
+        self.m.mem[64]=0x27;self.m.mem[96]=0x37
+        self.call('spawn_reserve',80,0x37)
+        self.assertEqual(self.m.mem[88],0)
+        self.m.mem[96]=0x3c
+        self.call('spawn_reserve',80,0x37)
+        self.assertEqual((self.m.mem[80],self.m.mem[84],self.m.mem[88],self.m.mem[92]),(0x37,2,1,1))
+        self.assertEqual(self.m.mem[56],3)
+        self.assertEqual(self.m.mem[20],6)
+
+    def test_waves_must_all_be_destroyed_before_victory(self):
+        for level,total in [(1,4),(2,6)]:
+            self.m.mem[0x710]=level;self.poll(64);self.poll(16)
+            for killed in range(total):
+                slot=80 if self.m.mem[88] else 96
+                self.m.mem[slot]=0x47
+                self.bullet(0x57,0)
+                self.call('update_bullets')
+                self.assertEqual(self.m.mem[20],total-killed-1)
+                self.assertEqual(self.m.mem[4],100*(killed+1))
+                if killed+1<total:
+                    self.assertEqual(self.m.mem[0],1)
+                    self.call('spawn_reserve',slot,0x37 if slot==80 else 0x3c)
+                else: self.assertEqual(self.m.mem[0],4)
+
     def test_world_border(self):
         for p in range(256):
             if p//16 in (0,15) or p%16 in (0,15):self.assertEqual(self.tile(p),2)
 
     def test_turn_and_move(self):
+        self.assertEqual(self.call('move_actor',64,0),1)
         self.assertEqual(self.call('move_actor',64,1),1)
-        self.assertEqual((self.m.mem[64],self.m.mem[68]),(0xd8,1))
+        self.assertEqual((self.m.mem[64],self.m.mem[68]),(0xc8,1))
 
     def test_blocked_turn_by_brick_steel_and_base(self):
         for pos,direction,target in [(0xa7,0,0x97),(0x73,0,0x63),(0xd7,2,0xe7)]:

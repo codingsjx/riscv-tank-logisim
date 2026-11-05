@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0d171a">
+  <meta name="description" content="坦克世界大战试玩场：守住基地、击碎砖墙、用炮弹拦截敌弹。支持键盘和触屏，运行与课程工程相同的 RISC-V 机器码。">
+  <title>坦克世界大战 · 试玩场</title>
+  <style>@charset "UTF-8";
+:root{color-scheme:dark;--bg:#0c171b;--panel:#142126;--line:#2a393e;--muted:#8e9e9f;--text:#e6eee8;--green:#b1e2b4;--gold:#e5c184;--red:#e9917a;font-family:Inter,"Segoe UI","Microsoft YaHei",sans-serif;font-synthesis:none}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 22% -10%,#23413c55,transparent 48%),var(--bg);color:var(--text);min-height:100vh}button,select{font:inherit}button{cursor:pointer;color:inherit}button:disabled{cursor:default;opacity:.38}button:focus-visible,select:focus-visible{outline:2px solid var(--green);outline-offset:4px}button{transition:background .15s,transform .12s,border-color .15s}button:active:not(:disabled){transform:translateY(1px)}.app{width:min(1120px,calc(100% - 48px));margin:auto;padding:28px 0 18px}.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:25px}.brand{display:flex;align-items:center;gap:16px}.eyebrow{font-size:10px;letter-spacing:2px;font-weight:650;color:var(--green);line-height:1.8}.eyebrow span{letter-spacing:1px;color:var(--muted)}h1{font-size:29px;letter-spacing:1px;margin:3px 0 0;line-height:1.2;font-weight:750}.brand-mark{width:43px;height:43px;border:1px solid #517563;border-radius:12px;background:#1c342c;position:relative;box-shadow:inset 0 0 20px #81bd8320}.brand-mark:before,.brand-mark:after{content:"";position:absolute;top:13px;width:6px;height:20px;background:#90bb8a;border-radius:2px}.brand-mark:before{left:10px}.brand-mark:after{right:10px}.brand-mark span{position:absolute;left:17px;top:14px;width:9px;height:15px;background:#c5e7b4;border-radius:3px}.brand-mark span:before{content:"";position:absolute;left:3px;top:-9px;width:3px;height:13px;background:#d7ecc3}.header-actions{display:flex;gap:10px}.quiet-button{background:transparent;border:1px solid var(--line);border-radius:8px;padding:9px 12px;color:#b5c2bf;font-size:12px}.quiet-button:hover{background:#ffffff08;border-color:#566962}.question{display:inline-grid;place-items:center;width:15px;height:15px;font-size:10px;border:1px solid #61726d;border-radius:50%;margin-left:3px}.layout{display:grid;grid-template-columns:minmax(0,1fr) 278px;gap:24px;align-items:start}.game-column{min-width:0}.scoreboard{display:grid;grid-template-columns:repeat(4,1fr);padding:16px 4px 18px}.metric{padding-left:19px;border-right:1px solid var(--line)}.metric:first-child{padding-left:4px}.metric:last-child{border:0}.metric>span{display:block;color:var(--muted);font-size:11px;letter-spacing:.6px;margin-bottom:8px}.metric strong{display:block;font-size:25px;font-weight:650;font-variant-numeric:tabular-nums;line-height:1.2;white-space:nowrap}.metric strong small{font-size:14px;font-weight:400;color:#768989}.metric .lives{color:var(--gold);font-size:23px;letter-spacing:2px}.heart-empty{color:#3b4546}.enemy-dot{display:inline-block;width:8px;height:8px;background:var(--red);margin:0 10px 4px 0;box-shadow:0 0 9px #ea8b7922}.metric .base-good{font-size:20px;color:var(--green);padding-top:3px}.metric .base-lost{font-size:20px;color:var(--red);padding-top:3px}.board-shell{border:1px solid #3b4d49;border-radius:14px;padding:0 12px;background:linear-gradient(145deg,#20302c,#142226);box-shadow:0 16px 50px #0004}.board-top,.board-bottom{height:35px;display:flex;align-items:center;justify-content:space-between;font-size:10px;color:#9eafaa;letter-spacing:.5px}.board-top>span{display:flex;align-items:center;gap:8px}.signal{width:5px;height:5px;background:var(--green);border-radius:50%;box-shadow:0 0 9px #b1e2b460}.icon-button{border:0;background:transparent;font-size:21px;color:#98aaa4;width:28px;height:28px;line-height:1}.icon-button:hover{color:var(--text)}.battlefield{position:relative;overflow:hidden;border-radius:5px;border:1px solid #3d4d49;background:#17282a}canvas{display:block;width:100%;height:auto;aspect-ratio:1;outline:none;touch-action:none}canvas:focus-visible{box-shadow:inset 0 0 0 2px var(--green)}.status-dot{display:inline-block;background:#90a29b;width:5px;height:5px;border-radius:50%;margin-right:7px}.board-bottom span:first-child{color:#b7c9bf}.overlay{position:absolute;inset:0;display:grid;place-items:center;background:#0a161ab8;backdrop-filter:blur(2px);padding:18px}.overlay[hidden]{display:none}.overlay-card{text-align:center;max-width:355px;width:100%;padding:26px 24px;background:linear-gradient(145deg,#223530ee,#152529f2);border:1px solid #6e9b7855;border-radius:15px;box-shadow:0 24px 50px #0005}.overlay-tag{font-size:10px;letter-spacing:2px;color:#a9c0ae}.overlay h2{font-size:27px;margin:16px 0 12px;font-weight:650;letter-spacing:1px}.overlay p{color:#b1c2ba;font-size:13px;line-height:1.9;margin:0 0 23px}.overlay-hint{font-size:10px;color:#8fa49b;margin-top:14px}.primary-button{border:1px solid #c3edb4;background:var(--green);color:#163426;border-radius:8px;min-height:43px;padding:12px 22px;font-size:13px;font-weight:700;box-shadow:0 4px 18px #88c39512}.primary-button:hover{background:#c4ecc3}.primary-button kbd{background:#3f633129;border:1px solid #487d422c;color:#315735;margin-left:24px}.mini-tank{position:relative;width:46px;height:44px;margin:19px auto 4px}.mini-tank:before,.mini-tank:after{content:"";position:absolute;top:10px;width:9px;height:32px;background:repeating-linear-gradient(#5f7a64 0 4px,#364e3c 4px 7px);border-radius:2px}.mini-tank:before{left:5px}.mini-tank:after{right:5px}.mini-tank span{position:absolute;left:16px;top:13px;width:15px;height:23px;border-radius:4px;background:#aed6a0;box-shadow:inset 0 -5px #668b60}.mini-tank span:before{content:"";position:absolute;width:5px;height:22px;left:5px;top:-13px;background:#d8e9b8;border-radius:1px}.game-actions{display:flex;gap:9px;margin-top:13px}.action-button{display:flex;align-items:center;justify-content:center;gap:12px;flex:1;background:#152429;border:1px solid #30443f;border-radius:8px;font-size:12px;padding:11px 8px;min-height:41px;color:#bdcdc3}.action-button:hover:not(:disabled){background:#20362f;border-color:#627e6b}.action-button.accent{background:#263e2d;border-color:#597b58;color:#d0e5c0}kbd{font-family:ui-monospace,"Cascadia Code",monospace;font-size:10px;color:#a2b1a8;background:#23322f;border:1px solid #42554a;border-bottom-width:2px;min-width:22px;padding:3px 5px;border-radius:4px;line-height:1.2}.game-actions kbd{font-size:9px;opacity:.7}.sidebar{display:flex;flex-direction:column;gap:16px;padding-top:15px}.panel{background:linear-gradient(135deg,#18282b,#132024);border:1px solid #2c3b3d;border-radius:12px;padding:19px}.panel-label{display:flex;align-items:center;justify-content:space-between;color:#b4c1ba;font-size:10px;letter-spacing:1px}.badge{display:inline-block;padding:3px 7px;border:1px solid #536555;color:var(--green);background:#283b2c;border-radius:4px;font-size:9px;letter-spacing:0}.badge.lost{color:var(--red);border-color:#6c4a45;background:#402b28}.briefing h2{font-size:21px;line-height:1.5;margin:18px 0 9px;font-weight:600;letter-spacing:.3px}.briefing p{font-size:12px;line-height:1.9;color:#94a69f;margin:0}.mission-progress{display:grid;grid-template-columns:1fr auto;gap:9px;margin-top:24px;font-size:10px;color:#91a59a}.mission-progress b{font-family:ui-monospace,monospace;font-weight:400;color:#c9d9cc}.progress-track{grid-column:1/-1;height:4px;background:#2b3937;border-radius:3px;overflow:hidden}.progress-track i{display:block;width:0;height:100%;background:var(--green);transition:width .3s}.best-row{display:flex;align-items:center;justify-content:space-between;margin-top:20px;padding-top:14px;border-top:1px solid #2c3b38;color:#8da094;font-size:10px}.best-row strong{font-family:ui-monospace,monospace;font-size:17px;color:#d6ddc0;font-weight:500}.keyboard-label{color:#617e72;font-family:ui-monospace,monospace;font-size:8px;letter-spacing:1px}.key-grid{display:grid;grid-template-columns:28px 28px 1fr;align-items:center;gap:8px 7px;margin-top:19px}.key-grid kbd{font-size:11px;text-align:center;padding:5px 3px}.key-grid>span{font-size:11px;color:#9fb0a6;padding-left:9px}.key-grid .space-key{grid-column:1/3;font-size:10px;padding:6px 3px}.tempo{margin-top:21px;padding-top:16px;border-top:1px solid #2b3a37}.tempo label{display:block;color:#a6b9aa;font-size:10px;margin-bottom:9px}.tempo select{width:100%;color:#c0d2c4;background:#0e1c1f;border:1px solid #354c42;border-radius:6px;padding:9px 10px;font-size:11px;outline-offset:3px}.small-note{font-size:10px;color:#698176;line-height:1.8;margin:12px 0 0}.legend{display:grid;gap:12px;margin-top:18px}.legend>span{font-size:11px;color:#98aca0;display:flex;align-items:center;gap:10px}.swatch{display:inline-block;width:11px;height:11px;border-radius:2px;border:1px solid #fff2}.swatch.player{background:#94c68c}.swatch.enemy{background:#c97160}.swatch.brick{background:repeating-linear-gradient(#a86f45 0 4px,#6d4b35 4px 5px)}.swatch.steel{background:#647773;box-shadow:inset 0 0 0 2px #a1b3a050}.swatch.base{background:#d6b970}.intercept-note{display:flex;align-items:center;gap:12px;margin-top:21px;padding-top:15px;border-top:1px solid #2b3a37}.intercept-note>span{font-size:26px;color:#8fac8d;font-weight:200}.intercept-note p{font-size:10px;line-height:1.8;color:#829a89;margin:0}.activity{display:flex;gap:8px;align-items:center;font-size:10px;color:#82968c;padding:0 5px;min-height:20px}.activity-dot{width:4px;height:4px;border-radius:50%;background:#76927b;flex-shrink:0}footer{display:flex;justify-content:space-between;gap:15px;border-top:1px solid #263438;margin-top:26px;padding-top:16px;color:#526d64;font-size:10px;line-height:1.7}.toast{position:absolute;left:50%;top:20px;transform:translateX(-50%);padding:8px 15px;background:#213e35e8;border:1px solid #6c9a79aa;border-radius:6px;color:#dbefdb;font-size:12px;white-space:nowrap;opacity:0;transition:opacity .18s;pointer-events:none}.toast.visible{opacity:1}.touch-controls{display:none}.board-shell:fullscreen{display:flex;flex-direction:column;align-items:center;justify-content:center;background:#0b171b;border-radius:0;padding:10px}.board-shell:fullscreen .battlefield{height:min(calc(100vh - 90px),calc(100vw - 35px));aspect-ratio:1}.board-shell:fullscreen .board-top,.board-shell:fullscreen .board-bottom{width:min(calc(100vh - 90px),calc(100vw - 35px))}dialog{color:var(--text);background:#17292b;border:1px solid #49674f;border-radius:15px;padding:30px;width:min(540px,calc(100vw - 32px));box-shadow:0 40px 100px #0009}dialog::backdrop{background:#081217d9;backdrop-filter:blur(4px)}dialog h2{font-size:23px;margin:11px 0 20px}dialog ul{margin:0 0 22px;padding-left:19px;font-size:13px;line-height:1.9;color:#b9cbbd}dialog li{margin:7px 0}.dialog-close{position:absolute;right:14px;top:10px;font-size:25px;color:#89a18d;background:transparent;border:0}.technical-note{font-size:11px;line-height:1.8;color:#829d8b;border-top:1px solid #34493d;padding-top:17px;margin:0 0 21px}dialog .primary-button{width:100%}
+@media(min-width:1000px) and (max-height:900px){.app{width:min(1070px,calc(100% - 40px));padding-top:20px}.header{margin-bottom:15px}.layout{grid-template-columns:minmax(0,1fr) 260px;gap:20px}.game-column{max-width:calc(100vh - 205px);justify-self:center;width:100%}.scoreboard{padding-top:10px;padding-bottom:14px}.sidebar{padding-top:9px;gap:12px}.panel{padding:16px}.legend-panel{padding-bottom:15px}.legend{gap:9px}.briefing h2{margin-top:12px}.mission-progress{margin-top:17px}.best-row{margin-top:13px}.key-grid{gap:6px 7px;margin-top:14px}footer{margin-top:18px}}
+@media(max-width:900px){.app{width:calc(100% - 30px);max-width:680px;padding-top:18px}.header{margin-bottom:15px}.brand{gap:10px}.brand-mark{width:37px;height:39px}.brand-mark:before{left:7px}.brand-mark:after{right:7px}.brand-mark span{left:14px}.eyebrow{font-size:8px;letter-spacing:1.5px}h1{font-size:24px}.quiet-button{padding:7px 9px;font-size:11px}.header-actions{gap:7px}.header-actions #sound span{display:none}.layout{grid-template-columns:1fr;gap:18px}.sidebar{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0}.controls-panel{display:none}.legend-panel{padding:16px}.briefing{padding:16px}.legend{grid-template-columns:1fr 1fr;gap:10px;font-size:10px}.legend>span{font-size:10px;gap:7px}.activity{grid-column:1/-1}.touch-controls{display:flex;align-items:center;justify-content:space-between;margin:15px 10px 0}.dpad{display:grid;grid-template-columns:40px 40px 40px;grid-template-rows:32px 32px 32px;gap:3px}.dpad button{font-size:23px;line-height:1;color:#bdd2bd;background:#20372f;border:1px solid #42634b;border-radius:7px;touch-action:none;user-select:none}.dpad button.held,.fire-button.held{background:#567c49;color:white}.pad-up{grid-column:2}.pad-left{grid-column:1;grid-row:2}.pad-right{grid-column:3;grid-row:2}.pad-down{grid-column:2;grid-row:3}.pad-center{grid-column:2;grid-row:2;display:grid;place-items:center;color:#526b5a;font-size:17px}.fire-button{width:80px;height:80px;border-radius:50%;color:#f3d5af;border:1px solid #a17b4f;background:radial-gradient(circle at 30% 20%,#735235,#432f23);font-size:17px;box-shadow:0 5px 0 #2a211b;touch-action:none;user-select:none}.fire-button span{display:block;font-family:ui-monospace,monospace;font-size:9px;letter-spacing:1.5px;color:#bca17f;margin-top:4px}.touch-hint{color:#6c8677;font-size:10px;line-height:1.8;text-align:center}.scoreboard{padding-top:6px}.metric{padding-left:12px}.metric strong{font-size:23px}.metric .lives{font-size:20px;letter-spacing:0}.metric .base-good,.metric .base-lost{font-size:18px}.overlay-card{max-width:330px;padding:21px}.overlay h2{font-size:24px}footer{font-size:9px;margin-top:18px}.panel-label{font-size:9px}.best-row{font-size:9px}.intercept-note{margin-top:15px;padding-top:12px}.intercept-note p{font-size:9px}}
+@media(max-width:500px){.app{width:calc(100% - 22px);padding-top:13px}.header{gap:10px}.brand-mark{display:none}h1{font-size:23px}.quiet-button{font-size:10px;padding:6px 7px}.scoreboard{padding-bottom:13px}.metric{padding-left:10px}.metric>span{font-size:9px;margin-bottom:7px}.metric strong{font-size:21px}.metric strong small{font-size:11px}.metric .lives{font-size:17px}.metric .base-good,.metric .base-lost{font-size:16px}.enemy-dot{width:6px;height:6px;margin-right:6px}.board-shell{padding:0 8px;border-radius:10px}.board-top,.board-bottom{height:29px;font-size:9px}.overlay-card{max-width:280px;padding:18px 16px}.overlay h2{font-size:22px;margin-top:11px}.overlay p{font-size:11px;margin-bottom:17px}.mini-tank{margin-top:15px}.overlay-hint{font-size:9px}.game-actions{gap:6px;margin-top:10px}.action-button{font-size:11px;gap:7px;padding:9px 4px}.game-actions kbd{font-size:8px;padding:2px 4px;min-width:16px}.sidebar{grid-template-columns:1fr}.legend-panel{display:none}.briefing h2{font-size:18px;margin-top:10px}.briefing p{font-size:11px}.mission-progress{margin-top:14px}.activity{display:none}footer{flex-direction:column;gap:2px;margin-top:14px}.toast{font-size:10px;top:10px}.header-actions #sound{padding:6px 9px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.battle-settings{display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;margin:0 3px 15px}.battle-settings .tempo{margin:0;padding:0;border:0}.battle-settings .tempo:last-child{grid-column:2;grid-row:1}.battle-settings .small-note{grid-row:2;grid-column:1/-1;margin:0;color:#8fa697}.battle-settings .tempo label{margin-bottom:6px}.battle-settings .tempo select{font-size:12px;padding:9px 7px}
+@media(max-width:500px){.battle-settings{gap:7px 9px;margin-bottom:11px}.battle-settings .tempo select{font-size:11px}.battle-settings .small-note{font-size:9px}.battle-settings .tempo label{font-size:9px}}
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="header">
+    <div class="brand"><div class="brand-mark" aria-hidden="true"><span></span></div><div><div class="eyebrow">ARMORED FRONT <span>/ 试玩场</span></div><h1>坦克世界大战</h1></div></div>
+    <div class="header-actions"><button id="sound" class="quiet-button" aria-pressed="false" title="开启或关闭音效">♪ <span>音效关闭</span></button><button id="help" class="quiet-button">操作说明 <span class="question">?</span></button></div>
+  </header>
+
+  <section class="layout" aria-label="坦克大战游戏">
+    <div class="game-column">
+      <div class="scoreboard" aria-live="polite" aria-atomic="true">
+        <div class="metric"><span>当前得分</span><strong id="score">000</strong></div>
+        <div class="metric"><span>剩余生命</span><strong id="lives" class="lives" aria-label="3 条生命">♥ ♥ ♥</strong></div>
+        <div class="metric"><span>剩余敌军</span><strong><i class="enemy-dot"></i><span id="enemies">2</span><small id="enemyTotal"> / 2</small></strong></div>
+        <div class="metric"><span>基地状态</span><strong id="base" class="base-good">完好</strong></div>
+      </div>
+
+      <div class="battle-settings"><div class="tempo"><label for="level">选择关卡</label><select id="level"><option value="0">01 训练 · 2 辆敌军</option><option value="1">02 进阶 · 4 辆敌军</option><option value="2">03 困难 · 6 辆敌军</option></select></div><p class="small-note" id="levelDetail">基地两侧有砖墙保护，正上方留有出入口。</p><div class="tempo"><label for="speed">战斗节奏</label><select id="speed"><option value="170">慢速 · 熟悉操作</option><option value="130" selected>标准 · 推荐</option><option value="95">快速 · 挑战反应</option></select></div></div>
+      <div class="board-shell" id="boardShell">
+        <div class="board-top"><span><i class="signal"></i><span id="levelTitle">01 · 基地防守</span></span><button id="fullscreen" class="icon-button" aria-label="全屏战场" title="全屏战场">⛶</button></div>
+        <div class="battlefield">
+          <canvas id="game" width="640" height="640" tabindex="0" role="img" aria-label="16×16 坦克战场。方向键或 WASD 移动，空格射击，P 暂停。"></canvas>
+          <div class="overlay" id="overlay">
+            <div class="overlay-card"><span id="overlayTag" class="overlay-tag">基地防守 · 训练战场</span><div class="mini-tank" aria-hidden="true"><span></span></div><h2 id="overlayTitle">守住你的基地</h2><p id="overlayCopy">击碎砖墙，消灭两辆敌军。<br>对射可以抵消敌弹。</p><button id="overlayAction" class="primary-button">开始战斗 <kbd>Enter</kbd></button><div class="overlay-hint" id="overlayHint">方向键 / WASD 移动 · 空格射击</div></div>
+          </div>
+          <div class="toast" id="toast" role="status"></div>
+        </div>
+        <div class="board-bottom"><span id="battleStatus"><i class="status-dot"></i>待命</span><span id="frameNote">保护金色基地</span></div>
+      </div>
+
+      <div class="game-actions"><button id="start" class="action-button accent">开始战斗 <kbd>Enter</kbd></button><button id="pause" class="action-button" disabled>暂停 <kbd>P</kbd></button><button id="restart" class="action-button">重新开始 <kbd>R</kbd></button></div>
+
+      <div class="touch-controls" aria-label="触屏控制">
+        <div class="dpad"><button data-control="up" class="pad-up" aria-label="向上移动">↑</button><button data-control="left" class="pad-left" aria-label="向左移动">←</button><div class="pad-center" aria-hidden="true">✚</div><button data-control="right" class="pad-right" aria-label="向右移动">→</button><button data-control="down" class="pad-down" aria-label="向下移动">↓</button></div>
+        <div class="touch-hint">按住方向移动<br>按住开火连射</div><button data-control="fire" class="fire-button">开火<span>FIRE</span></button>
+      </div>
+    </div>
+
+    <aside class="sidebar">
+      <section class="briefing panel"><div class="panel-label">任务简报 <span id="statusBadge" class="badge">待命</span></div><h2>基地不能失守。</h2><p>消灭全部敌军即可获胜。你有三条生命，但基地只能承受一次命中。</p><div class="mission-progress"><span>歼敌进度</span><b id="progressLabel">0 / 2</b><div class="progress-track"><i id="progress"></i></div></div><div class="best-row"><span>本机最高得分</span><strong id="best">000</strong></div></section>
+      <section class="panel controls-panel"><div class="panel-label">操作台 <span class="keyboard-label">KEYBOARD</span></div><div class="key-grid"><kbd>W</kbd><kbd>↑</kbd><span>前进 / 转向</span><kbd>A</kbd><kbd>←</kbd><span>向左</span><kbd>S</kbd><kbd>↓</kbd><span>向下</span><kbd>D</kbd><kbd>→</kbd><span>向右</span><kbd class="space-key">SPACE</kbd><span>发射炮弹</span></div><p class="small-note">点击战场后即可操作，切换窗口会自动暂停。</p></section>
+      <section class="panel legend-panel"><div class="panel-label">战场识别</div><div class="legend"><span><i class="swatch player"></i>你的坦克</span><span><i class="swatch enemy"></i>敌方坦克</span><span><i class="swatch brick"></i>可破坏砖墙</span><span><i class="swatch steel"></i>不可破坏钢墙</span><span><i class="swatch base"></i>需要保护的基地</span></div><div class="intercept-note"><span>＋</span><p>玩家炮弹可抵消敌弹。<br>主动拦截，也是一种防守。</p></div></section>
+      <div class="activity" id="activity" aria-live="polite"><span class="activity-dot"></span><span id="activityText">等待指挥官就位</span></div>
+    </aside>
+  </section>
+  <footer><span>同源试玩：运行课程工程的同一份 RISC-V 机器码</span><span>键盘 / 触屏 · 本地运行</span></footer>
+</main>
+
+<dialog id="helpDialog"><button id="closeHelp" class="dialog-close" aria-label="关闭说明">×</button><div class="eyebrow">FIELD MANUAL</div><h2>先保护基地，再清空战场。</h2><ul><li>方向键或 WASD 移动并转向，空格射击；最多同时有两枚玩家炮弹。</li><li>橙色砖墙可以打碎，灰色钢墙会挡住炮弹。</li><li>敌我炮弹进入同一格或迎面交叉时，双方都会消失。</li><li>消灭一辆敌军得 100 分，打碎一块砖墙得 10 分。</li><li>玩家被击中会损失一条生命并重生；基地被命中会直接失败，包括误伤。</li><li>关卡越高，敌军总数越多、行动越快，地图掩体也会增加；场上最多同时有两辆敌军，击毁后会补入后续敌军。</li><li>切换关卡会重新准备战场，按开始即可出战。基地两侧的护墙可以被打碎，正上方留有出入口。</li><li>P 暂停，R 重开。离开当前窗口时也会自动暂停。</li></ul><p class="technical-note">这个试玩界面使用指令级模拟器执行与 Logisim 工程相同的机器码，用于体验玩法。流水线时序与硬件性能仍以 Logisim 验证为准。</p><button id="helpReady" class="primary-button">明白了，返回战场</button></dialog>
+<script>
+// Generated from tank/software/tank.s; run python tools/export_rom.py.
+const ROM = [1056964883,2167059,1879051667,33562659,1342177939,1052179,8392339,16778003,915,7512099,29590451,4358803,4294116115,4261615843,5119507,4294872723,4228816611,301990127,896259,28157475,67990163,235050083,17658515,165475,8835,235044963,34435731,167011,8835,1049363,207785571,2097939,207782499,8835,1049363,4200767203,3219,3091,1929875,33722979,2978451,33722979,5075603,33722979,9269907,33719907,3147155,25165935,1427,16777327,1050003,8388719,2098579,67110163,725614831,1051795,135099027,165987,67110163,843055343,11332787,269316755,33722467,9282179,33718883,5088003,16786307,1081279283,5452595,202851,1996488943,1051795,1051667,4060906211,84934895,4027322083,5087875,5253155,4045402223,41943279,4037013615,1049235,5251107,1051667,4255117423,2097811,5251107,1051667,4238340207,4278255891,1123875,8463395,33563651,659,67109651,172067,4358803,4267875555,41951267,3146387,5252131,17670787,3338899,3146515,6460515,2097811,38807587,1217299,39857187,2294547,39856675,6302243,1049235,5254691,38807075,72360995,72363043,105915427,72363555,2097811,105915939,72362531,105914915,67117603,67118627,225444499,72359971,57672339,72362019,62915219,105914403,134218387,201327379,173091,16941715,4267875555,268436115,1342178067,172067,4358803,4267875555,659,16778003,2098067,2268691,269356563,8265763,1014898723,6462995,269356563,8265763,41823779,1213075,4234321635,678438435,678438947,678439459,711992355,711992867,711993379,1013982243,1013982755,1047537699,1047538211,1049491,893387411,914359059,7512099,4358803,4267875555,1081092131,1081092643,1114645027,1114645539,1148202019,1181753379,1215310883,1248862243,50340483,33721443,812655651,812656675,846210083,846211107,1049363,40009827,611330083,644883491,946873379,980428835,2098067,745548323,779101219,3146643,1215311395,893571,6137379,1715470575,5087875,5253155,8463363,12656771,16843027,32871,16085651,4543251,33914979,1049491,41255523,2098067,41256547,33721443,4294247699,32871,33752675,4278519059,32871,15729555,7507555,1377555,32871,15729555,7538275,17106195,32871,4293920019,32871,4278255891,1123875,8463395,9511459,328723,11805219,271619,4171231471,4293919379,72680547,328851,2429587,268599955,172675,33725027,67109523,117441299,8555107,8561539,231011,172931,9669731,16941715,4267873507,9707555,1049875,8388719,1299,4269187,8463363,12656771,16843027,32871,134218387,787,915,12922371,201330579,8564355,952931,12758659,30317155,1278867,12583023,201827,164627,16941715,4260536035,67307107,919139,67342947,12583023,2338451,34507875,336515,5447715,4530819,5448227,1049235,5448739,29566499,923747,41951875,1213075,38806563,1049875,32871,1299,32871,4203139,10650291,5251619,33563395,5452723,230499,38805539,32871,37757571,67279459,8397443,4294083219,5252131,167523,225444499,72359971,67117603,6292115,38806051,25165935,67118115,3146387,5251107,1049235,5254179,134218387,201327379,173091,16941715,4267875555,32871,4261478675,1125923,8465443,9513507,18950179,19998243,134218771,234882195,305187,8659587,33719395,271619,4466051,3726635247,4293919379,5573731,2429587,268599955,172675,164963,4293920019,10788899,17040403,4490387,201327251,4199816931,134218771,234882195,303747,4293919507,107119203,17041683,4491667,631427,4293919507,73564259,12853891,13181699,5255859,6304563,40011363,303747,631555,6457955,598915,7511139,271235,7542883,1049235,5548067,5875747,17369363,4819347,201327251,4200142563,17040403,4490387,184550035,4166259939,134218771,251659411,303747,164963,271395,17040403,4490387,201327251,4266923235,12659075,16853251,21046403,25240579,29433987,33620243,32871,4261478675,1125923,8465443,9513507,18950179,19998243,3957321967,134218771,8659587,268602467,271619,4466051,3416256751,4293919379,274006115,330003,12854403,2691731,268599955,172803,1049491,141756003,2098067,208866915,3146643,141758051,33854563,83888531,9020035,165475,631427,52594275,17402259,117441171,4267283683,171966575,75506307,134385251,67117699,153262691,3718246639,155189359,631843,20980355,4294083219,5253667,104858899,3655332079,271395,20980355,100833891,4194963,5251107,3146387,5254179,113246319,172067,591123,1427,520093935,67408995,10487059,3592417519,62914671,15729427,6463523,591123,15730067,482345199,11811,271395,3146387,5251107,2097811,5254179,29360239,19144739,8388719,271395,17040403,201327251,3964935907,12659075,16853251,21046403,25240579,29433987,33620243,32871,4278255891,1123875,8463395,328723,270979,67117827,15922067,15957523,29593187,29605555,951907,1050003,33554543,3147155,25165935,6471347,951907,2098579,8388719,1427,263443,3101683951,334435,4465283,1213075,3338899,5513763,263443,3210735855,8463363,12656771,16843027,32871,58729091,67274851,8725251,67310691,67117827,78839907,83886995,100666899,7668835,83889683,9315075,198243,926467,45285475,11870243,2097939,6627875,1049363,6628387,4294083219,38808611,32871,4278255891,1123875,12591747,1213075,5252643,37757571,165475,4294083219,38806051,3655332079,8835,1049363,107122787,62923395,1213075,38809123,50340611,4195219,1080263475,6468403,67309667,33566243,83887379,57673107,4104122607,100664595,62915987,4091539695,92283523,165475,83887379,3936350447,109060739,165475,100664595,3919573231,12656771,16843027,32871,7697043,4362899,11698995,2298643,1342374675,205571,15893139,2265747,1342341779,172931,4294165395,3494547,2265747,1073745427,1973779,29524659,175619,8289843,7237171,29532195,32871,4278255891,1123875,8463395,9511459,18948131,46146179,67275363,33564195,268436499,1073742995,1348755,33556755,29622931,8389395,915,4428691,175619,29615027,4290937491,4294116115,4261615331,7643171,33817619,4490387,4294510867,4228454115,54526063,201327635,7341203,271619,4293919379,5573219,2429587,268599955,173443,4062179567,4457491,4294214803,4228161251,134218771,8659587,167523,271619,12584339,12853891,164963,13632915,4011847919,17040403,201327251,4233370851,67109907,8659587,33718883,271619,4466051,67109523,5506659,8750483,8388719,4556179,3953127663,17040403,117441171,4233369827,8397443,170083,67118339,14681491,3919573231,134218387,201327379,4195219,4293922323,8564355,951395,175619,29564963,16941715,4391699,4294149011,4261646563,67109523,3146643,4293922323,8564355,951395,175619,29564963,16941715,4391699,4294149011,4261646563,8835,73244707,4203139,73245219,8397443,73245731,20980355,73246243,25174659,73246755,29368963,73247267,12591747,73247779,33563267,73248291,101556867,1213075,106799139,76035,4269187,8463363,12656771,16843027,32871];
+const SYMBOLS = {"start":0,"lut_column":28,"lut_code":36,"main":72,"check_pause":104,"controls":132,"control_up":192,"control_right":200,"control_down":208,"control_move":212,"control_fire":224,"check_time":244,"tick_now":280,"check_dirty":292,"publish":296,"restart":316,"begin_game":324,"pause_game":340,"game_reset":356,"reset_state":380,"reset_level_valid":424,"reset_bullets":532,"clear_terrain":552,"border_loop":576,"brick_loop":668,"map_complete":772,"next_cell":816,"next_up":856,"next_right":868,"next_down":884,"next_invalid":900,"move_actor":908,"check_actor_overlap":976,"overlap_next":996,"move_blocked":1016,"move_return":1020,"fire_actor":1040,"fire_scan":1060,"fire_empty":1084,"fire_scan_next":1092,"player_fire_limit":1116,"fire_accept":1124,"fire_success":1168,"fire_rejected":1176,"add_score":1184,"score_done":1212,"damage_player":1216,"player_dead":1264,"clear_danger":1284,"clear_danger_loop":1292,"damage_done":1304,"resolve_bullet_collisions":1308,"predict_bullet":1340,"predict_invalid":1388,"predict_store":1392,"projectile_pair_outer":1420,"projectile_pair_inner":1440,"projectile_pair_hit":1500,"projectile_inner_next":1512,"projectile_outer_next":1528,"apply_projectile_cancel":1552,"apply_cancel_next":1564,"update_bullets":1608,"bullet_loop":1640,"bullet_enemy_scan":1720,"bullet_enemy_next":1736,"bullet_player":1752,"bullet_kill_enemy":1776,"bullet_brick":1832,"bullet_base":1864,"bullet_advance":1912,"bullet_expire":1920,"bullet_next":1924,"bullets_done":1936,"enemy_ai":1964,"chase_left":2016,"chase_vertical":2024,"chase_up":2040,"enemy_move":2044,"enemy_shoot":2072,"spawn_reserve":2096,"spawn_check_other":2136,"spawn_activate":2152,"spawn_done":2180,"game_tick":2184,"tick_bullets":2220,"tick_enemy_two":2312,"tick_done":2328,"draw_tile":2340,"render":2424,"render_group":2472,"render_pack":2484,"restore_entities":2532,"restore_cell":2540,"restore_next":2568,"render_entities":2580,"render_bullets":2584,"render_bullet_draw":2612,"render_bullet_next":2616,"render_tanks":2632,"render_player":2664,"render_tank_draw":2668,"render_tank_next":2672,"render_hud":2704,"cache_bullets":2716,"cache_bullet_store":2732,"cache_tanks":2760,"cache_tank_store":2776};
+
+const sign = (value, bits) => (value << (32 - bits)) >> (32 - bits);
+
+/** Functional RV32 interpreter. All game behavior is executed from the course ROM. */
+class TankMachine {
+  constructor() {
+    this.registers = new Uint32Array(32);
+    this.memory = new Uint32Array(1024);
+    this.pc = 0;
+    this.cycles = 0;
+    this.frames = 0;
+    this.display = new Uint32Array(32);
+    this.hud = new Uint32Array(9);
+    this.runUntilMain();
+  }
+
+  load(address) {
+    address >>>= 0;
+    if ((address & 3) || address >= 4096) throw new Error(`Invalid memory read: ${address}`);
+    if (address === 0x704) return this.cycles >>> 0;
+    if (address === 0x708) return 0; // Frontend supplies the same STEP input at wall-clock intervals.
+    return this.memory[address >>> 2];
+  }
+
+  store(address, value) {
+    address >>>= 0; value >>>= 0;
+    if ((address & 3) || address >= 4096) throw new Error(`Invalid memory write: ${address}`);
+    this.memory[address >>> 2] = value;
+    if (address === 0x70c) this.memory[0x700 >>> 2] &= ~value;
+    if (address === 0x760) {
+      this.display.set(this.memory.subarray(0x800 >>> 2, 0x880 >>> 2));
+      this.hud.set(this.memory.subarray(0x740 >>> 2, 0x764 >>> 2));
+      this.frames = value;
+    }
+  }
+
+  step() {
+    if ((this.pc & 3) || (this.pc >>> 2) >= ROM.length) throw new Error(`PC outside ROM: ${this.pc}`);
+    const w = ROM[this.pc >>> 2] >>> 0;
+    const opcode = w & 127, rd = (w >>> 7) & 31, f3 = (w >>> 12) & 7;
+    const rs1 = (w >>> 15) & 31, rs2 = (w >>> 20) & 31, f7 = w >>> 25;
+    const x = this.registers[rs1], y = this.registers[rs2];
+    let next = this.pc + 4, value;
+    const n = sign(w >>> 20, 12);
+    if (opcode === 0x33) {
+      if (f3 === 0) value = f7 === 32 ? x - y : x + y;
+      else if (f3 === 7) value = x & y;
+      else if (f3 === 6) value = x | y;
+      else if (f3 === 2) value = +( (x | 0) < (y | 0) );
+      else if (f3 === 3) value = +(x < y);
+      else throw new Error(`Unsupported R instruction ${w.toString(16)}`);
+    } else if (opcode === 0x13) {
+      if (f3 === 0) value = x + n;
+      else if (f3 === 7) value = x & n;
+      else if (f3 === 6) value = x | n;
+      else if (f3 === 4) value = x ^ n;
+      else if (f3 === 2) value = +((x | 0) < n);
+      else if (f3 === 3) value = +(x < (n >>> 0));
+      else if (f3 === 1) value = x << rs2;
+      else if (f3 === 5) value = f7 === 32 ? (x | 0) >> rs2 : x >>> rs2;
+      else throw new Error(`Unsupported immediate instruction ${w.toString(16)}`);
+    } else if (opcode === 3 && f3 === 2) value = this.load((x + n) >>> 0);
+    else if (opcode === 0x23 && f3 === 2) {
+      const offset = sign(((w >>> 25) << 5) | ((w >>> 7) & 31), 12);
+      this.store((x + offset) >>> 0, y);
+    } else if (opcode === 0x63 && (f3 === 0 || f3 === 1)) {
+      const offset = sign(((w >>> 31) << 12) | (((w >>> 7) & 1) << 11) | (((w >>> 25) & 63) << 5) | (((w >>> 8) & 15) << 1), 13);
+      if ((x === y) === (f3 === 0)) next = this.pc + offset;
+    } else if (opcode === 0x6f) {
+      const offset = sign(((w >>> 31) << 20) | (((w >>> 12) & 255) << 12) | (((w >>> 20) & 1) << 11) | (((w >>> 21) & 1023) << 1), 21);
+      value = this.pc + 4; next = this.pc + offset;
+    } else if (opcode === 0x67 && f3 === 0) {
+      value = this.pc + 4; next = (x + n) & 0xfffffffe;
+    } else throw new Error(`Unsupported instruction ${w.toString(16)}`);
+    if (value !== undefined && rd) this.registers[rd] = value >>> 0;
+    this.registers[0] = 0;
+    this.pc = next >>> 0;
+    this.cycles++;
+  }
+
+  runUntilMain(forceIteration = false) {
+    let steps = 0;
+    if (forceIteration) { this.step(); steps++; }
+    while (this.pc !== SYMBOLS.main) {
+      this.step();
+      if (++steps > 200000) throw new Error('CPU execution timeout');
+    }
+    return steps;
+  }
+
+  setLevel(level) { this.memory[0x710 >>> 2] = Math.max(0, Math.min(2, Number(level) | 0)); }
+
+  dispatch(events) {
+    this.memory[0x700 >>> 2] |= events & 511;
+    this.runUntilMain(true);
+    return this.state();
+  }
+
+  tiles() {
+    return Array.from({ length: 256 }, (_, i) => (this.display[i >>> 3] >>> ((i & 7) * 4)) & 15);
+  }
+
+  state() {
+    const names = ['status','score','lives','enemies','cause','base','tick','best','frame'];
+    return {...Object.fromEntries(names.map((name, i) => [name, this.hud[i]])), level:this.memory[12], total:this.memory[13], reserves:this.memory[14]};
+  }
+}
+
+const $ = id => document.getElementById(id);
+const canvas=$('game'), ctx=canvas.getContext('2d');
+const game=new TankMachine();
+const keyBits={KeyW:1,ArrowUp:1,KeyD:2,ArrowRight:2,KeyS:4,ArrowDown:4,KeyA:8,ArrowLeft:8,Space:128};
+const controlBits={up:1,right:2,down:4,left:8,fire:128};
+const held=new Map();
+const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let pending=0,order=0,moveAt=0,fireAt=0,tickAt=0,lastTime=performance.now();
+let previous=game.state(),lastTiles=game.tiles(),lastActors=actors();
+let particles=[],rings=[],muzzleUntil=0,toastUntil=0,soundOn=false,audio=null,best=0;
+try { best=Number(localStorage.getItem('riscv-tank-best')||0)||0; } catch {}
+
+function setText(id,value){const el=$(id);if(el.textContent!==String(value))el.textContent=String(value);}
+function actors(){return [64,80,96].map(p=>({pos:game.memory[p>>>2],active:game.memory[(p+8)>>>2]}));}
+function focusGame(){canvas.focus({preventScroll:true});}
+function clearInput(){held.clear();pending=0;document.querySelectorAll('[data-control]').forEach(b=>b.classList.remove('held'));}
+function note(text){setText('activityText',text);}
+function toast(text){setText('toast',text);$('toast').classList.add('visible');toastUntil=performance.now()+1500;note(text);}
+function beep(frequency=220,duration=.07,type='square'){
+  if(!soundOn)return;
+  try {
+    audio ||= new (window.AudioContext||window.webkitAudioContext)();audio.resume();
+    const o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.setValueAtTime(frequency,audio.currentTime);
+    o.frequency.exponentialRampToValueAtTime(Math.max(30,frequency*.45),audio.currentTime+duration);
+    g.gain.setValueAtTime(.035,audio.currentTime);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+duration);
+    o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+duration);
+  } catch {}
+}
+function burst(pos,color,count=10){
+  if(reducedMotion)return;
+  const x=(pos%16)*40+20,y=(pos>>>4)*40+20;
+  for(let i=0;i<count;i++){const angle=Math.random()*Math.PI*2,speed=35+Math.random()*90;particles.push({x,y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:.3+Math.random()*.22,max:.52,color});}
+  rings.push({x,y,life:.25,color});
+}
+
+function execute(bits){
+  try {
+    const before=previous,oldShots=game.memory[10],oldActors=lastActors;
+    game.dispatch(bits);const now=game.state(),tiles=game.tiles();
+    if(bits&64){particles=[];rings=[];note('新的战斗已准备就绪');}
+    if(now.tick!==before.tick){
+      let intercepted=false;
+      for(let i=0;i<4;i++)if(game.memory[(0xf0>>>2)+i]&&game.memory[(0x80+i*16+12)>>>2]!==0){burst(game.memory[(0xe0>>>2)+i],'#99e3b5',9);intercepted=true;}
+      if(intercepted){toast('拦截成功 · 敌弹被抵消');beep(610,.06,'triangle');}
+    }
+    if(game.memory[10]>oldShots){muzzleUntil=performance.now()+75;beep(170,.055);}
+    const newActors=actors();
+    if(!(bits&64)&&now.enemies<before.enemies){for(let i=1;i<3;i++)if(oldActors[i].active&&!newActors[i].active)burst(oldActors[i].pos,'#edb06d',24);toast('击毁敌军 +100');beep(85,.22,'sawtooth');}
+    else if(now.score>before.score){for(let p=0;p<256;p++)if(lastTiles[p]===1&&tiles[p]===0)burst(p,'#bd895a',8);toast('击碎砖墙 +10');beep(95,.09,'triangle');}
+    if(now.lives<before.lives){burst(oldActors[0].pos,'#dd9878',20);toast(now.lives?'受到攻击 · 已返回出生点':'生命耗尽');beep(65,.25,'sawtooth');}
+    if(now.status===4&&before.status!==4){note('任务完成！全部敌军已消灭');beep(650,.2,'triangle');clearInput();}
+    if(now.status===3&&before.status!==3){note(now.cause===2?'基地被毁 · 留意炮口，避免误伤':'本次战斗结束');beep(60,.3,'sawtooth');clearInput();}
+    previous=now;lastTiles=tiles;lastActors=newActors;
+    if(now.best>best){best=now.best;try{localStorage.setItem('riscv-tank-best',String(best));}catch{}}
+    updateUI();
+  } catch(error){
+    clearInput();note('运行出现异常，请刷新后重试。');console.error(error);
+    $('overlay').hidden=false;setText('overlayTitle','运行暂停');setText('overlayCopy','请刷新页面后重新进入战场。');
+  }
+}
+
+function updateUI(){
+  const s=previous;
+  setText('score',String(s.score).padStart(3,'0'));setText('enemies',s.enemies);setText('best',String(Math.max(best,s.best)).padStart(3,'0'));
+  const lifeMarkup=Array.from({length:3},(_,i)=>i<s.lives?'♥':'<span class="heart-empty">♥</span>').join(' ');
+  if($('lives').innerHTML!==lifeMarkup)$('lives').innerHTML=lifeMarkup;
+  $('lives').setAttribute('aria-label',`${s.lives} 条生命`);
+  setText('base',s.base?'完好':'失守');$('base').className=s.base?'base-good':'base-lost';
+  const total=s.total||2,levelNames=['训练','进阶','困难'];
+  setText('enemyTotal',` / ${total}`);
+  setText('progressLabel',`${total-s.enemies} / ${total}`);$('progress').style.width=`${(total-s.enemies)*100/total}%`;
+  setText('levelTitle',`0${s.level+1} · ${levelNames[s.level]}防守`);
+  setText('levelDetail',s.level===0?'基地两侧有砖墙保护，正上方留有出入口。':`${total} 辆敌军分批进攻 · 敌军每 ${4-s.level} 拍行动。新增${s.level===2?'砖墙和钢墙':'砖墙'}掩体，注意调整射线。`);
+  const status=['待命','交战中','已暂停','失守','任务完成'][s.status]||'待命';
+  setText('statusBadge',status);$('statusBadge').classList.toggle('lost',s.status===3);
+  $('battleStatus').innerHTML=`<i class="status-dot"></i>${status}`;
+  setText('frameNote',s.status===1?'主动拦截，也是一种防守':'保护金色基地');
+  $('start').disabled=s.status===1;
+  $('start').innerHTML=s.status===1?'战斗中':s.status===2?'继续战斗 <kbd>Enter</kbd>':s.status>=3?'再次出击 <kbd>Enter</kbd>':'开始战斗 <kbd>Enter</kbd>';
+  $('pause').disabled=s.status!==1&&s.status!==2;
+  $('pause').innerHTML=s.status===2?'继续 <kbd>P</kbd>':'暂停 <kbd>P</kbd>';
+  $('overlay').hidden=s.status===1;
+  const content=s.status===0?[`基地防守 · ${levelNames[s.level]}战场`,'守住你的基地',`击碎砖墙，消灭 ${total} 辆敌军。<br>${s.level?'后续敌军会持续补入。':'对射可以抵消敌弹。'}`,'开始战斗']:
+    s.status===2?['战斗已暂停','稍作休整','战场已经暂停。<br>准备好后，继续保护基地。','继续战斗']:
+    s.status===4?['任务完成','战场已经清空',`最终得分 <strong>${s.score}</strong> · 剩余生命 ${s.lives}<br>你的基地成功守住了。`,'再来一局']:
+    ['任务结束',s.cause===2?'基地失守':'生命耗尽',s.cause===2?'基地被命中，本次战斗结束。<br>留意炮口方向，避免误伤。':`最终得分 <strong>${s.score}</strong><br>调整路线，再次出击。`,'重新出击'];
+  if(s.status!==1){setText('overlayTag',content[0]);setText('overlayTitle',content[1]);$('overlayCopy').innerHTML=content[2];$('overlayAction').innerHTML=content[3]+' <kbd>Enter</kbd>';}
+  const p=game.memory[64>>>2];canvas.setAttribute('aria-label',`坦克战场。${status}。玩家位置 ${p&15},${p>>>4}，生命 ${s.lives}，敌军 ${s.enemies}。方向键或 WASD 移动，空格射击。`);
+  canvas.dataset.status=String(s.status);
+}
+
+function startOrResume(){
+  clearInput();
+  if(previous.status>=3)execute(64);
+  if(previous.status===0)execute(16);else if(previous.status===2)execute(32);
+  tickAt=performance.now()+Number($('speed').value);moveAt=0;fireAt=0;note('战斗开始 · 保护基地');focusGame();
+}
+function pause(){if(previous.status===1||previous.status===2){clearInput();execute(32);tickAt=performance.now()+Number($('speed').value);focusGame();}}
+function restart(){clearInput();execute(64);tickAt=performance.now()+Number($('speed').value);focusGame();}
+$('start').addEventListener('click',startOrResume);$('overlayAction').addEventListener('click',startOrResume);
+$('pause').addEventListener('click',pause);$('restart').addEventListener('click',restart);
+$('level').addEventListener('change',()=>{game.setLevel($('level').value);restart();toast('关卡已切换 · 点击开始战斗');});
+$('speed').addEventListener('change',()=>{tickAt=performance.now()+Number($('speed').value);note('战斗节奏已调整');});
+$('sound').addEventListener('click',()=>{soundOn=!soundOn;$('sound').setAttribute('aria-pressed',String(soundOn));$('sound').querySelector('span').textContent=soundOn?'音效开启':'音效关闭';if(soundOn)beep(440,.08,'triangle');focusGame();});
+$('fullscreen').addEventListener('click',async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await $('boardShell').requestFullscreen();}catch{}focusGame();});
+function openHelp(){if(previous.status===1)pause();clearInput();$('helpDialog').showModal();}
+function closeHelp(){$('helpDialog').close();focusGame();}
+$('help').addEventListener('click',openHelp);$('closeHelp').addEventListener('click',closeHelp);$('helpReady').addEventListener('click',closeHelp);
+canvas.addEventListener('pointerdown',focusGame);
+
+function pressSource(source,bit,now){
+  held.set(source,{bit,order:++order});pending|=bit;
+  if(bit===128)fireAt=now+190;else moveAt=now+125;
+}
+window.addEventListener('keydown',event=>{
+  if($('helpDialog').open)return;
+  if(event.target.closest('input,select,textarea'))return;
+  if(event.code==='Enter'&&event.target.tagName!=='BUTTON'){event.preventDefault();if(!event.repeat)startOrResume();return;}
+  if(event.code==='KeyP'){event.preventDefault();if(!event.repeat)pause();return;}
+  if(event.code==='KeyR'){event.preventDefault();if(!event.repeat)restart();return;}
+  const bit=keyBits[event.code];if(!bit)return;
+  if(event.code==='Space'&&event.target.tagName==='BUTTON')return;
+  event.preventDefault();if(event.repeat||previous.status!==1)return;
+  pressSource(event.code,bit,performance.now());
+});
+window.addEventListener('keyup',event=>held.delete(event.code));
+document.querySelectorAll('[data-control]').forEach(button=>{
+  const bit=controlBits[button.dataset.control];
+  button.addEventListener('pointerdown',event=>{
+    event.preventDefault();if(previous.status!==1)return;
+    button.setPointerCapture(event.pointerId);button.classList.add('held');pressSource(`touch-${event.pointerId}`,bit,performance.now());
+  });
+  const release=event=>{held.delete(`touch-${event.pointerId}`);button.classList.remove('held');};
+  button.addEventListener('pointerup',release);button.addEventListener('pointercancel',release);button.addEventListener('lostpointercapture',release);
+  button.addEventListener('contextmenu',event=>event.preventDefault());
+});
+function autoPause(){clearInput();if(previous.status===1){execute(32);note('离开窗口，已自动暂停');}}
+window.addEventListener('blur',autoPause);document.addEventListener('visibilitychange',()=>{if(document.hidden)autoPause();});
+
+function rounded(x,y,w,h,r,color){ctx.fillStyle=color;ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fill();}
+function drawTank(x,y,direction,enemy,time,shield){
+  ctx.save();ctx.translate(x+20,y+20);ctx.rotate(direction*Math.PI/2);ctx.translate(-20,-20);
+  ctx.shadowColor='#0006';ctx.shadowBlur=4;ctx.shadowOffsetY=2;
+  rounded(5,6,9,29,3,enemy?'#4e3731':'#32483c');rounded(26,6,9,29,3,enemy?'#4e3731':'#32483c');
+  ctx.shadowBlur=0;ctx.shadowOffsetY=0;
+  for(let a=9;a<34;a+=5){rounded(6,a,7,1,0,enemy?'#876b5e':'#728271');rounded(27,a,7,1,0,enemy?'#876b5e':'#728271');}
+  rounded(13,8,14,25,3,enemy?'#b46755':'#8aa477');
+  rounded(15,10,10,19,2,enemy?'#cb7d65':'#b2c594');
+  rounded(15,14,10,12,3,enemy?'#d98e73':'#c0d3a0');
+  rounded(18,0,5,20,1,enemy?'#ecae8b':'#d9e3b8');
+  ctx.fillStyle=enemy?'#8a4e43':'#697d58';ctx.fillRect(17,28,7,2);
+  if(!enemy&&time<muzzleUntil){ctx.fillStyle='#fff3bc';ctx.beginPath();ctx.moveTo(20,-8);ctx.lineTo(23,-2);ctx.lineTo(28,-5);ctx.lineTo(24,2);ctx.lineTo(16,2);ctx.lineTo(13,-4);ctx.lineTo(18,-2);ctx.closePath();ctx.fill();}
+  ctx.restore();
+  if(shield){ctx.save();ctx.strokeStyle='#c9e4b699';ctx.lineWidth=1.5;ctx.setLineDash([4,4]);ctx.beginPath();ctx.arc(x+20,y+20,18,0,Math.PI*2);ctx.stroke();ctx.restore();}
+}
+
+function drawTile(p,tile,time){
+  const x=(p&15)*40,y=(p>>>4)*40;
+  ctx.fillStyle=((p+(p>>>4))&1)?'#20332f':'#213530';ctx.fillRect(x,y,40,40);
+  ctx.strokeStyle='#34473a55';ctx.lineWidth=.7;ctx.strokeRect(x+.5,y+.5,39,39);
+  const noise=((p*73+19)%17);if(noise<4){ctx.fillStyle='#77856916';ctx.fillRect(x+noise*6+4,y+noise*5+9,2,2);}
+  if(tile===2){
+    rounded(x+1,y+1,38,38,2,'#4a5b56');rounded(x+3,y+3,34,34,1,'#65736a');
+    ctx.strokeStyle='#9caa8e';ctx.lineWidth=1;ctx.strokeRect(x+5,y+5,29,29);
+    ctx.fillStyle='#b5bda3';ctx.fillRect(x+6,y+6,2,2);ctx.fillRect(x+31,y+31,2,2);
+    ctx.fillStyle='#384941';ctx.fillRect(x+5,y+34,30,2);
+  }else if(tile===1){
+    ctx.fillStyle='#674b35';ctx.fillRect(x+1,y+1,38,38);
+    for(let row=0;row<3;row++){const yy=y+2+row*12;ctx.fillStyle=row&1?'#a7774d':'#b48455';ctx.fillRect(x+2,yy,36,10);ctx.fillStyle='#594330';ctx.fillRect(x+(row===1?10:22),yy,2,10);ctx.fillStyle='#d4a36b55';ctx.fillRect(x+2,yy,36,1);}
+  }else if(tile===3){
+    ctx.fillStyle='#796335';ctx.fillRect(x+6,y+14,28,22);ctx.fillStyle='#d4b56a';ctx.fillRect(x+7,y+13,26,20);
+    ctx.fillRect(x+6,y+5,7,12);ctx.fillRect(x+17,y+5,6,12);ctx.fillRect(x+28,y+5,7,12);ctx.fillStyle='#594d2c';ctx.fillRect(x+17,y+23,7,13);ctx.fillStyle='#e5d99c';ctx.fillRect(x+9,y+17,21,2);
+  }else if(tile>=4&&tile<=11)drawTank(x,y,(tile-4)&3,tile>=8,time,tile<8&&game.memory[36>>>2]>0);
+  else if(tile===12||tile===13){
+    let direction=0;for(let a=0x80;a<0xc0;a+=16)if(game.memory[(a+8)>>>2]&&game.memory[a>>>2]===p){direction=game.memory[(a+4)>>>2];break;}
+    ctx.save();ctx.translate(x+20,y+20);ctx.rotate(direction*Math.PI/2);ctx.shadowColor=tile===12?'#f2dda1':'#ed9979';ctx.shadowBlur=8;rounded(-2,-5,4,9,2,tile===12?'#fff1b0':'#efa17d');ctx.restore();
+  }else if(tile===14||tile===15){
+    ctx.fillStyle='#625144';ctx.fillRect(x+8,y+14,24,18);ctx.strokeStyle='#e2a46b';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(x+9,y+9);ctx.lineTo(x+30,y+31);ctx.moveTo(x+30,y+9);ctx.lineTo(x+9,y+31);ctx.stroke();
+  }
+}
+
+function resize(){const ratio=Math.min(window.devicePixelRatio||1,2);canvas.width=640*ratio;canvas.height=640*ratio;ctx.setTransform(ratio,0,0,ratio,0,0);}
+window.addEventListener('resize',resize);resize();
+function draw(time,dt){
+  const tiles=game.tiles();for(let p=0;p<256;p++)drawTile(p,tiles[p],time);
+  particles=particles.filter(p=>p.life>0);
+  for(const p of particles){p.life-=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=80*dt;ctx.globalAlpha=Math.max(0,p.life/p.max);ctx.fillStyle=p.color;ctx.fillRect(p.x-2,p.y-2,3,3);}
+  ctx.globalAlpha=1;rings=rings.filter(r=>r.life>0);
+  for(const r of rings){r.life-=dt;ctx.globalAlpha=Math.max(0,r.life/.25);ctx.strokeStyle=r.color;ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(r.x,r.y,3+(1-r.life/.25)*17,0,Math.PI*2);ctx.stroke();}
+  ctx.globalAlpha=1;
+  if(time>toastUntil)$('toast').classList.remove('visible');
+}
+function frame(time){
+  const dt=Math.min((time-lastTime)/1000,.05);lastTime=time;
+  if(previous.status===1){
+    let bits=pending;pending=0;
+    const direction=[...held.values()].filter(h=>h.bit!==128).sort((a,b)=>b.order-a.order)[0];
+    if(direction&&time>=moveAt){bits|=direction.bit;moveAt=time+125;}
+    if([...held.values()].some(h=>h.bit===128)&&time>=fireAt){bits|=128;fireAt=time+190;}
+    if(time>=tickAt){bits|=256;tickAt=time+Number($('speed').value);}
+    if(bits)execute(bits);
+  }else pending=0;
+  draw(time,dt);requestAnimationFrame(frame);
+}
+updateUI();requestAnimationFrame(frame);
+</script>
+</body>
+</html>

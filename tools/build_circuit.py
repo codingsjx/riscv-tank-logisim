@@ -70,8 +70,8 @@ def generate(J):
     for w in list(core.findall('wire')):
         if {w.get('from'),w.get('to')}=={'(1720,930)','(1850,930)'}:core.remove(w)
     tunnel(core,(1720,930,32),'Tank.RamData');tunnel(core,(1850,930,32),'Tank.ReadData')
-    key=(2800,100,9);period=(2800,160,32)
-    for end,name in [(key,'KEYS'),(period,'PERIOD')]:
+    key=(2800,100,9);period=(2800,160,32);level=(2800,220,2)
+    for end,name in [(key,'KEYS'),(period,'PERIOD'),(level,'LEVEL')]:
         comp(core,'Pin',*end[:2],width=end[2],output='false',tristate='false',facing='east',label=name)
         tunnel(core,end,'Tank.'+name)
     compare(core,7000,100,32,'MEM.AluResult',0x70c,'Tank.AckAddress')
@@ -89,6 +89,8 @@ def generate(J):
         const(core,ff[0],1);tunnel(core,ff[1],f'Pending.{i}');tunnel(core,ff[3],f'Reset.{i}');const(core,ff[4],0);tunnel(core,ff[5],f'Raw.{i}')
     e=comp(core,'Bit Extender',2920,100,in_width=9,out_width=32,type='zero')
     tunnel(core,e[0],'Tank.Keys32');tunnel(core,e[1],'Tank.Pending')
+    e=comp(core,'Bit Extender',2920,220,in_width=2,out_width=32,type='zero')
+    tunnel(core,e[0],'Tank.Level32');tunnel(core,e[1],'Tank.LEVEL')
     e=comp(core,'Register',3100,180,width=32,trigger='rising',Select='low')
     tunnel(core,e[0],'Tank.Cycles');tunnel(core,e[1],'Tank.NextCycles');tunnel(core,e[2],'CLK');tunnel(core,e[3],'Tank.Reset');const(core,e[4],1)
     e=comp(core,'Adder',3040,280,width=32)
@@ -97,7 +99,7 @@ def generate(J):
     fields=[(0x800+4*i,f'FB{i:02d}') for i in range(32)]
     hud=['STATUS','SCORE','LIVES','ALIVE','CAUSE','BASEHP','TICK','BEST','FRAME']
     fields += [(0x740+4*i,name) for i,name in enumerate(hud)]
-    reads=[(0x700,'Tank.Keys32'),(0x704,'Tank.Cycles'),(0x708,'Tank.PERIOD')]
+    reads=[(0x700,'Tank.Keys32'),(0x704,'Tank.Cycles'),(0x708,'Tank.PERIOD'),(0x710,'Tank.Level32')]
     outputs=[]
     for i,(addr,name) in enumerate(fields):
         x,y=3100+(i//12)*700,440+(i%12)*150
@@ -134,7 +136,7 @@ def generate(J):
         size=10 if output else 8
         E.SubElement(appearance,'circ-port',pin=f'{pin[0]},{pin[1]}',x=str(x-size//2),y=str(y-size//2),width=str(size),height=str(size))
         E.SubElement(appearance,'text',x=str(x-8 if output else x+8),y=str(y-5),**{'font-size':'9','text-anchor':'end' if output else 'start'}).text=name
-    port(key,60,150,'KEYS');port(period,60,230,'PERIOD');port((50,50,1),60,430,'RESET')
+    port(key,60,150,'KEYS');port(period,60,230,'PERIOD');port(level,60,310,'LEVEL');port((50,50,1),60,430,'RESET')
     positions={}
     for i,(name,pin) in enumerate(outputs):
         y=100+i*10 if i<32 else 430+(i-32)*10
@@ -155,10 +157,11 @@ def generate(J):
     tunnel(main,e[0],'Keys')
     for i,end in enumerate(e[1:]):comp(main,'Tunnel',end[0],end[1],width=1,label=f'K{i}',facing='east',labelfont='SansSerif plain 8')
     tunnel(main,(300,400,9),'Keys')
-    for y,width,label,signal in [(740,1,'MANUAL 0/1','Manual'),(800,2,'SPEED 0/1/2/3','Speed')]:
+    for y,width,label,signal in [(740,1,'MANUAL 0/1','Manual'),(800,2,'SPEED 0/1/2/3','Speed'),(860,2,'LEVEL 0/1/2 (RESTART)','Level')]:
         e=comp(main,'Pin',200,y,width=width,output='false',tristate='false',facing='east',label=label)
         wire(main,e[0],(260,y));tunnel(main,(260,y,width),signal)
-    e=comp(main,'Multiplexer',250,900,width=32,select=2,enable='false',selloc='tr',facing='east')
+    tunnel(main,(300,560,2),'Level')
+    e=comp(main,'Multiplexer',250,960,width=32,select=2,enable='false',selloc='tr',facing='east')
     for pin,value in zip(e[:4],[8192,4096,2048,1024]):const(main,pin,value)
     tunnel(main,e[4],'Speed');tunnel(main,e[5],'AutoPeriod')
     e=comp(main,'Multiplexer',250,480,width=32,select=1,enable='false',selloc='tr',facing='east')
@@ -170,6 +173,7 @@ def generate(J):
     wire(main,positions['FRAME'],(800,760));comp(main,'Probe',800,760,facing='west',radix='10unsigned',label='FRAME',labelloc='north')
     text(main,1000,850,'开启仿真时钟，然后按 START。MANUAL=1 可用 STEP 推进战斗。',12)
     text(main,1000,880,'手动模式下 FIRE 发射后，按 STEP 推进炮弹与敌方逻辑。',12)
+    text(main,1000,940,'LEVEL 0/1/2：训练 2 辆 / 进阶 4 辆 / 困难 6 辆，切换后按 RESTART。',12)
     text(main,1000,910,'每消灭一辆敌军 +100；玩家打掉一块砖墙 +10。',12)
     E.indent(project,space='  ')
     (ROOT/'tank.circ').write_bytes(E.tostring(project,encoding='UTF-8',xml_declaration=True))

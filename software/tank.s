@@ -2,11 +2,12 @@
 # State: 0 status,4 score,8 lives,12 tick,16 last cycle,20 enemies alive,
 # 24 result (1 player lost/2 base lost/3 victory),28 base HP,32 best,
 # 36 respawn shield,40 accepted player shots,44 full-redraw flag.
+# 48 level (0..2),52 total enemies,56 reserve enemies,60 AI elapsed ticks.
 # Tanks at 0x40/0x50/0x60; bullets at 0x80..0xbf. Record: pos,dir,active,owner.
 # Previous entity cells 0xc0..0xdb; next projectile positions 0xe0..0xef;
 # projectile cancellation flags 0xf0..0xff; terrain 0x100..0x4ff;
 # nibble LUT 0x500..0x6ff; stack top 0xfc0.
-# Keys 0x700, cycles 0x704, period 0x708 (0 manual), ACK 0x70c.
+# Keys 0x700, cycles 0x704, period 0x708 (0 manual), ACK 0x70c, requested level 0x710.
 # HUD 0x740..0x760 (FRAME last); packed tile framebuffer 0x800..0x87f.
 # Direction 0 up/1 right/2 down/3 left. Tank owner 0 player/1,2 enemy.
 # s9/s10 are the main-loop dirty flag/events; s11 is MMIO base.
@@ -126,7 +127,7 @@ game_reset:
     sw s0, 8(sp)
     lw s0, 32(zero)
     addi t0, zero, 0
-    addi t1, zero, 48
+    addi t1, zero, 64
 reset_state:
     sw zero, 0(t0)
     addi t0, t0, 4
@@ -134,8 +135,18 @@ reset_state:
     sw s0, 32(zero)
     addi t0, zero, 3
     sw t0, 8(zero)
+    lw t0, 16(s11)
+    andi t0, t0, 3
+    addi t1, zero, 3
+    bne t0, t1, reset_level_valid
     addi t0, zero, 2
-    sw t0, 20(zero)
+reset_level_valid:
+    sw t0, 48(zero)
+    slli t1, t0, 1
+    sw t1, 56(zero)
+    addi t1, t1, 2
+    sw t1, 52(zero)
+    sw t1, 20(zero)
     addi t0, zero, 1
     sw t0, 28(zero)
     sw t0, 44(zero)
@@ -204,6 +215,30 @@ brick_loop:
     sw t2, 1044(zero)
     sw t2, 1060(zero)
     sw t2, 1064(zero)
+    # Base fortification: four destructible side guards and steel behind.
+    # Keep (7,13) clear as the player's spawn and forward exit.
+    sw t2, 1112(zero)
+    sw t2, 1120(zero)
+    sw t2, 1176(zero)
+    sw t2, 1184(zero)
+    lw t0, 48(zero)
+    beq t0, zero, map_complete
+    # Advanced: staggered brick cover across the central flanks.
+    sw t2, 776(zero)
+    sw t2, 784(zero)
+    sw t2, 808(zero)
+    sw t2, 816(zero)
+    addi t1, zero, 1
+    beq t0, t1, map_complete
+    # Hard: more firing lanes and steel cover, never on spawn cells.
+    sw t2, 592(zero)
+    sw t2, 616(zero)
+    sw t2, 904(zero)
+    sw t2, 944(zero)
+    addi t2, zero, 2
+    sw t2, 724(zero)
+    sw t2, 744(zero)
+map_complete:
     addi t2, zero, 3
     sw t2, 1180(zero)
     lw t0, 0(s11)
@@ -606,6 +641,35 @@ enemy_shoot:
     addi sp, sp, 16
     jalr zero, 0(ra)
 
+# Reuse the two enemy slots for reserve waves. Defer if a spawn is occupied.
+# a0=enemy record, a1=spawn; no calls, no saved-register side effects.
+spawn_reserve:
+    lw t0, 56(zero)
+    beq t0, zero, spawn_done
+    lw t1, 8(a0)
+    bne t1, zero, spawn_done
+    lw t1, 64(zero)
+    beq t1, a1, spawn_done
+    addi t2, zero, 80
+    addi t3, zero, 96
+    beq a0, t2, spawn_check_other
+    addi t3, zero, 80
+spawn_check_other:
+    lw t1, 8(t3)
+    beq t1, zero, spawn_activate
+    lw t1, 0(t3)
+    beq t1, a1, spawn_done
+spawn_activate:
+    sw a1, 0(a0)
+    addi t1, zero, 2
+    sw t1, 4(a0)
+    addi t1, zero, 1
+    sw t1, 8(a0)
+    addi t0, t0, -1
+    sw t0, 56(zero)
+spawn_done:
+    jalr zero, 0(ra)
+
 game_tick:
     addi sp, sp, -16
     sw ra, 12(sp)
@@ -621,9 +685,21 @@ tick_bullets:
     lw t0, 0(zero)
     addi t1, zero, 1
     bne t0, t1, tick_done
-    lw t0, 12(zero)
-    andi t0, t0, 3
-    bne t0, zero, tick_done
+    lw t0, 60(zero)
+    addi t0, t0, 1
+    sw t0, 60(zero)
+    lw t1, 48(zero)
+    addi t2, zero, 4
+    sub t1, t2, t1
+    sltu t1, t0, t1
+    bne t1, zero, tick_done
+    sw zero, 60(zero)
+    addi a0, zero, 80
+    addi a1, zero, 55
+    jal ra, spawn_reserve
+    addi a0, zero, 96
+    addi a1, zero, 60
+    jal ra, spawn_reserve
     lw t0, 88(zero)
     beq t0, zero, tick_enemy_two
     addi a0, zero, 80
