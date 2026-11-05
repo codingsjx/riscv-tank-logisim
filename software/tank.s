@@ -3,11 +3,13 @@
 # 24 result (1 player lost/2 base lost/3 victory),28 base HP,32 best,
 # 36 respawn shield,40 accepted player shots,44 full-redraw flag.
 # 48 level (0..2),52 total enemies,56 reserve enemies,60 AI elapsed ticks.
+# Extra RAM s7=0x900: upgrade, pickup position (-1 none), inventory,
+# enemy HP1/HP2, kills, item uses, bullet elapsed ticks (stacked loot count, then two enemy detour directions).
 # Tanks at 0x40/0x50/0x60; bullets at 0x80..0xbf. Record: pos,dir,active,owner.
 # Previous entity cells 0xc0..0xdb; next projectile positions 0xe0..0xef;
 # projectile cancellation flags 0xf0..0xff; terrain 0x100..0x4ff;
 # nibble LUT 0x500..0x6ff; stack top 0xfc0.
-# Keys 0x700, cycles 0x704, period 0x708 (0 manual), ACK 0x70c, requested level 0x710.
+# Keys 0x700, cycles 0x704, period 0x708 (0 manual), ACK 0x70c, requested level 0x710; bullet period 0x714 (0=2,1..3).
 # HUD 0x740..0x760 (FRAME last); packed tile framebuffer 0x800..0x87f.
 # Direction 0 up/1 right/2 down/3 left. Tank owner 0 player/1,2 enemy.
 # s9/s10 are the main-loop dirty flag/events; s11 is MMIO base.
@@ -17,6 +19,8 @@ start:
     addi sp, zero, 1008
     slli sp, sp, 2
     addi s11, zero, 1792
+    addi s7, zero, 1152
+    slli s7, s7, 1
     sw zero, 32(zero)
     addi t0, zero, 1280
     addi t3, zero, 1
@@ -80,6 +84,13 @@ control_move:
     jal ra, move_actor
     addi s9, zero, 1
 control_fire:
+    jal ra, collect_upgrade
+    or s9, s9, a0
+    andi t0, s10, 512
+    beq t0, zero, check_fire
+    jal ra, use_upgrade
+    or s9, s9, a0
+check_fire:
     andi t0, s10, 128
     beq t0, zero, check_time
     addi a0, zero, 64
@@ -133,6 +144,14 @@ reset_state:
     addi t0, t0, 4
     bne t0, t1, reset_state
     sw s0, 32(zero)
+    addi t0, s7, 0
+    addi t1, s7, 44
+reset_extra:
+    sw zero, 0(t0)
+    addi t0, t0, 4
+    bne t0, t1, reset_extra
+    addi t0, zero, -1
+    sw t0, 4(s7)
     addi t0, zero, 3
     sw t0, 8(zero)
     lw t0, 16(s11)
@@ -142,6 +161,9 @@ reset_state:
     addi t0, zero, 2
 reset_level_valid:
     sw t0, 48(zero)
+    addi t1, t0, 1
+    sw t1, 12(s7)
+    sw t1, 16(s7)
     slli t1, t0, 1
     sw t1, 56(zero)
     addi t1, t1, 2
@@ -160,7 +182,7 @@ reset_level_valid:
     sw t0, 100(zero)
     sw zero, 68(zero)
     sw zero, 76(zero)
-    addi t0, zero, 215
+    addi t0, zero, 229
     sw t0, 64(zero)
     addi t0, zero, 55
     sw t0, 80(zero)
@@ -215,12 +237,14 @@ brick_loop:
     sw t2, 1044(zero)
     sw t2, 1060(zero)
     sw t2, 1064(zero)
-    # Base fortification: four destructible side guards and steel behind.
-    # Keep (7,13) clear as the player's spawn and forward exit.
+    # Two-hit fortifications use tile 14; after one hit become ordinary brick.
+    # Player starts at (5,14), beside the base. Keep its front entrance open.
+    addi t2, zero, 14
     sw t2, 1112(zero)
     sw t2, 1120(zero)
     sw t2, 1176(zero)
     sw t2, 1184(zero)
+    addi t2, zero, 1
     lw t0, 48(zero)
     beq t0, zero, map_complete
     # Advanced: staggered brick cover across the central flanks.
@@ -346,7 +370,10 @@ fire_scan_next:
     bne t2, zero, fire_rejected
     jal zero, fire_accept
 player_fire_limit:
-    slti t4, t2, 2
+    lw t4, 0(s7)
+    sltu t4, zero, t4
+    addi t4, t4, 2
+    sltu t4, t2, t4
     beq t4, zero, fire_rejected
 fire_accept:
     lw t0, 0(a0)
@@ -386,7 +413,20 @@ damage_player:
     addi t0, t0, -1
     sw t0, 8(zero)
     beq t0, zero, player_dead
-    addi t0, zero, 215
+    addi t0, zero, 229
+    addi t1, zero, 80
+    addi t2, zero, 112
+respawn_check:
+    lw t3, 8(t1)
+    beq t3, zero, respawn_next
+    lw t3, 0(t1)
+    bne t3, t0, respawn_next
+    addi t0, t0, 4
+    addi t1, zero, 80
+    jal zero, respawn_check
+respawn_next:
+    addi t1, t1, 16
+    bne t1, t2, respawn_check
     sw t0, 64(zero)
     sw zero, 68(zero)
     addi t0, zero, 6
@@ -522,6 +562,8 @@ bullet_loop:
     lw t1, 0(t0)
     addi t2, zero, 1
     beq t1, t2, bullet_brick
+    addi t2, zero, 14
+    beq t1, t2, bullet_guard
     addi t2, zero, 2
     beq t1, t2, bullet_expire
     addi t2, zero, 3
@@ -546,7 +588,32 @@ bullet_player:
     jal ra, damage_player
     jal zero, bullet_expire
 bullet_kill_enemy:
+    srli t3, s3, 2
+    add t3, t3, s7
+    lw t0, -8(t3)
+    lw t1, 0(s7)
+    slti t1, t1, 2
+    addi t2, zero, 2
+    sub t2, t2, t1
+    sub t0, t0, t2
+    slt t1, zero, t0
+    beq t1, zero, enemy_destroyed
+    sw t0, -8(t3)
+    jal zero, bullet_expire
+enemy_destroyed:
+    sw zero, -8(t3)
     sw zero, 8(s3)
+    lw t0, 20(s7)
+    addi t0, t0, 1
+    sw t0, 20(s7)
+    lw t0, 32(s7)
+    addi t0, t0, 1
+    sw t0, 32(s7)
+    lw t0, 4(s7)
+    addi t1, zero, -1
+    bne t0, t1, enemy_drop_done
+    sw s2, 4(s7)
+enemy_drop_done:
     lw t0, 20(zero)
     addi t0, t0, -1
     sw t0, 20(zero)
@@ -560,6 +627,13 @@ bullet_kill_enemy:
     addi t0, zero, 3
     sw t0, 24(zero)
     jal zero, bullets_done
+bullet_guard:
+    addi t1, zero, 1
+    sw t1, 0(t0)
+    addi a0, s2, 0
+    addi a1, zero, 1
+    jal ra, draw_tile
+    jal zero, bullet_expire
 bullet_brick:
     sw zero, 0(t0)
     addi a0, s2, 0
@@ -600,12 +674,72 @@ bullets_done:
     addi sp, sp, 32
     jalr zero, 0(ra)
 
+collect_upgrade:
+    addi a0, zero, 0
+    lw t0, 4(s7)
+    lw t1, 64(zero)
+    bne t0, t1, collect_done
+    lw t0, 8(s7)
+    slti t1, t0, 3
+    beq t1, zero, collect_done
+    addi t0, t0, 1
+    sw t0, 8(s7)
+    lw t0, 32(s7)
+    addi t0, t0, -1
+    sw t0, 32(s7)
+    bne t0, zero, collect_success
+    addi t0, zero, -1
+    sw t0, 4(s7)
+collect_success:
+    addi a0, zero, 1
+collect_done:
+    jalr zero, 0(ra)
+
+use_upgrade:
+    addi a0, zero, 0
+    lw t0, 8(s7)
+    beq t0, zero, use_done
+    lw t1, 0(s7)
+    slti t2, t1, 2
+    beq t2, zero, use_repair
+    addi t1, t1, 1
+    sw t1, 0(s7)
+    jal zero, use_consume
+use_repair:
+    lw t1, 8(zero)
+    slti t2, t1, 3
+    beq t2, zero, use_done
+    addi t1, t1, 1
+    sw t1, 8(zero)
+use_consume:
+    addi t0, t0, -1
+    sw t0, 8(s7)
+    lw t0, 24(s7)
+    addi t0, t0, 1
+    sw t0, 24(s7)
+    addi a0, zero, 1
+use_done:
+    jalr zero, 0(ra)
+
 # Simple chase AI: update once per four physics ticks, then try to fire.
 enemy_ai:
     addi sp, sp, -16
     sw ra, 12(sp)
     sw s0, 8(sp)
+    sw s1, 4(sp)
+    sw s2, 0(sp)
     addi s0, a0, 0
+    srli t0, s0, 2
+    add s1, s7, t0
+    addi s1, s1, 16
+    lw t0, 0(s1)
+    beq t0, zero, enemy_chase
+    addi s2, t0, -1
+    addi a1, s2, 0
+    jal ra, move_actor
+    beq a0, zero, enemy_detour
+    jal zero, enemy_route_clear
+enemy_chase:
     lw t0, 0(s0)
     lw t1, 64(zero)
     andi t2, t0, 15
@@ -628,14 +762,33 @@ chase_up:
 enemy_move:
     addi a0, s0, 0
     jal ra, move_actor
-    bne a0, zero, enemy_shoot
-    lw t0, 4(s0)
-    addi t0, t0, 1
-    andi t0, t0, 3
-    sw t0, 4(s0)
+    bne a0, zero, enemy_route_clear
+    lw s2, 4(s0)
+    addi t0, s2, 1
+    sw t0, 0(s1)
+enemy_detour:
+    # Shoot the blocked lane (to break bricks), then follow its edge.
+    # Retry the original direction on later actions until clear of the wall.
+    addi a0, s0, 0
+    jal ra, fire_actor
+    addi a1, s2, 1
+    andi a1, a1, 3
+    addi a0, s0, 0
+    jal ra, move_actor
+    bne a0, zero, enemy_return
+    addi a1, s2, 3
+    andi a1, a1, 3
+    addi a0, s0, 0
+    jal ra, move_actor
+    jal zero, enemy_return
+enemy_route_clear:
+    sw zero, 0(s1)
 enemy_shoot:
     addi a0, s0, 0
     jal ra, fire_actor
+enemy_return:
+    lw s2, 0(sp)
+    lw s1, 4(sp)
     lw s0, 8(sp)
     lw ra, 12(sp)
     addi sp, sp, 16
@@ -665,6 +818,12 @@ spawn_activate:
     sw t1, 4(a0)
     addi t1, zero, 1
     sw t1, 8(a0)
+    lw t1, 48(zero)
+    addi t1, t1, 1
+    srli t4, a0, 2
+    add t4, t4, s7
+    sw t1, -8(t4)
+    sw zero, 16(t4)
     addi t0, t0, -1
     sw t0, 56(zero)
 spawn_done:
@@ -681,7 +840,23 @@ game_tick:
     addi t0, t0, -1
     sw t0, 36(zero)
 tick_bullets:
+    sw zero, 240(zero)
+    sw zero, 244(zero)
+    sw zero, 248(zero)
+    sw zero, 252(zero)
+    lw t0, 28(s7)
+    addi t0, t0, 1
+    sw t0, 28(s7)
+    lw t1, 20(s11)
+    andi t1, t1, 3
+    bne t1, zero, bullet_period_valid
+    addi t1, zero, 2
+bullet_period_valid:
+    sltu t1, t0, t1
+    bne t1, zero, tick_after_bullets
+    sw zero, 28(s7)
     jal ra, update_bullets
+tick_after_bullets:
     lw t0, 0(zero)
     addi t1, zero, 1
     bne t0, t1, tick_done
@@ -820,7 +995,7 @@ render_tank_next:
     lw t0, 8(zero)
     bne t0, zero, render_hud
     lw a0, 64(zero)
-    addi a1, zero, 14
+    addi a1, zero, 15
     jal ra, draw_tile
 render_hud:
     addi t0, zero, 128
@@ -866,6 +1041,22 @@ cache_tank_store:
     sw t0, 88(s11)
     lw t0, 32(zero)
     sw t0, 92(s11)
+    lw t0, 0(s7)
+    sw t0, 100(s11)
+    lw t0, 4(s7)
+    sw t0, 104(s11)
+    lw t0, 8(s7)
+    sw t0, 108(s11)
+    lw t0, 12(s7)
+    sw t0, 112(s11)
+    lw t0, 16(s7)
+    sw t0, 116(s11)
+    lw t0, 24(s7)
+    sw t0, 120(s11)
+    lw t0, 80(zero)
+    sw t0, 124(s11)
+    lw t0, 96(zero)
+    sw t0, 128(s11)
     lw t0, 96(s11)
     addi t0, t0, 1
     sw t0, 96(s11)

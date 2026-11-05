@@ -42,7 +42,7 @@ class NativeTank:
         return [(banks[i//8]>>((i%8)*4))&15 for i in range(256)]
 
     def stats(self):
-        return {name:self.get(name) for name in ['STATUS','SCORE','LIVES','ALIVE','CAUSE','BASEHP','TICK','BEST','FRAME']}
+        return {name:self.get(name) for name in ['STATUS','SCORE','LIVES','ALIVE','CAUSE','BASEHP','TICK','BEST','FRAME','UPGRADE','PICKUP','ITEMS','ARMOR1','ARMOR2','USES','POS1','POS2']}
 
     def cycles(self,n):
         for _ in range(n*2):
@@ -76,8 +76,8 @@ class NativeTank:
 
     def render(self,path):
         J=self.J
-        image=J.JClass('java.awt.image.BufferedImage')(1460,1040,1)
-        g=image.createGraphics();g.setColor(J.JClass('java.awt.Color').WHITE);g.fillRect(0,0,1460,1040)
+        image=J.JClass('java.awt.image.BufferedImage')(1460,1180,1)
+        g=image.createGraphics();g.setColor(J.JClass('java.awt.Color').WHITE);g.fillRect(0,0,1460,1180)
         context=J.JClass('com.cburch.logisim.comp.ComponentDrawContext')(J.JClass('javax.swing.JPanel')(),self.circuit,self.state,g,g)
         self.circuit.draw(context,J.java.util.Collections.emptySet())
         J.JClass('javax.imageio.ImageIO').write(image,'png',J.java.io.File(str(path)));g.dispose()
@@ -89,5 +89,16 @@ def render_native_board(game,path,size=640):
     display=next(c for c in game.circuit.getNonWires() if str(c.getFactory().getName())=='Tank Battle Display')
     factory=display.getFactory()
     image=J.JClass('java.awt.image.BufferedImage')(size,size,1);g=image.createGraphics();g.scale(size/320.,size/320.)
-    for i,tile in enumerate(game.tiles()):factory.paintTile(g,(i%16)*20,(i//16)*20,tile)
+    tiles=game.tiles()
+    for i,tile in enumerate(tiles):factory.paintTile(g,(i%16)*20,(i//16)*20,tile)
+    pickup=game.get('PICKUP')
+    if 0<=pickup<256 and tiles[pickup]==0:
+        x,y=(pickup%16)*20,(pickup//16)*20
+        g.setColor(J.JClass('java.awt.Color')(255,222,105))
+        g.fillPolygon(J.JArray(J.JInt)([x+10,x+13,x+19,x+14,x+16,x+10,x+4,x+6,x+1,x+7]),J.JArray(J.JInt)([y+1,y+7,y+7,y+12,y+19,y+15,y+19,y+12,y+7,y+7]),10)
+    for hpname,posname in [('ARMOR1','POS1'),('ARMOR2','POS2')]:
+        hp,pos=game.get(hpname),game.get(posname)
+        if hp and 8<=tiles[pos]<=11:
+            g.setColor(J.JClass('java.awt.Color')(239,197,102))
+            for k in range(hp):g.fillRect((pos%16)*20+3+k*5,(pos//16)*20+17,4,2)
     J.JClass('javax.imageio.ImageIO').write(image,'png',J.java.io.File(str(path)));g.dispose()

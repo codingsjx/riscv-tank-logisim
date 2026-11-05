@@ -101,7 +101,7 @@ class Machine:
 
     def set_keys(self, value):
         """Model edge-latched hardware: a held button creates one event."""
-        value &= 511
+        value &= 1023
         self.mem[0x700] = self.mem.get(0x700, 0) | (value & ~self.raw_keys)
         self.raw_keys = value
 

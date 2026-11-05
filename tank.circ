@@ -769,10 +769,22 @@ This file is intended to be loaded by Logisim http://logisim.altervista.org
       <a name="label" val="K8" />
       <a name="facing" val="east" />
     </comp>
+    <comp lib="5" name="Button" loc="(110,680)">
+      <a name="facing" val="east" />
+      <a name="label" val="USE" />
+      <a name="labelloc" val="west" />
+      <a name="color" val="#74d6aa" />
+    </comp>
+    <wire from="(110,680)" to="(180,680)" />
+    <comp lib="0" name="Tunnel" loc="(180,680)">
+      <a name="width" val="1" />
+      <a name="label" val="K9" />
+      <a name="facing" val="east" />
+    </comp>
     <comp lib="0" name="Splitter" loc="(230,400)">
       <a name="facing" val="west" />
-      <a name="fanout" val="9" />
-      <a name="incoming" val="9" />
+      <a name="fanout" val="10" />
+      <a name="incoming" val="10" />
       <a name="appear" val="center" />
       <a name="bit0" val="0" />
       <a name="bit1" val="1" />
@@ -783,68 +795,75 @@ This file is intended to be loaded by Logisim http://logisim.altervista.org
       <a name="bit6" val="6" />
       <a name="bit7" val="7" />
       <a name="bit8" val="8" />
+      <a name="bit9" val="9" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(230,400)">
-      <a name="width" val="9" />
+      <a name="width" val="10" />
       <a name="label" val="Keys" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(210,360)">
+    <comp lib="0" name="Tunnel" loc="(210,350)">
       <a name="width" val="1" />
       <a name="label" val="K0" />
       <a name="facing" val="east" />
       <a name="labelfont" val="SansSerif plain 8" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(210,370)">
+    <comp lib="0" name="Tunnel" loc="(210,360)">
       <a name="width" val="1" />
       <a name="label" val="K1" />
       <a name="facing" val="east" />
       <a name="labelfont" val="SansSerif plain 8" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(210,380)">
+    <comp lib="0" name="Tunnel" loc="(210,370)">
       <a name="width" val="1" />
       <a name="label" val="K2" />
       <a name="facing" val="east" />
       <a name="labelfont" val="SansSerif plain 8" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(210,390)">
+    <comp lib="0" name="Tunnel" loc="(210,380)">
       <a name="width" val="1" />
       <a name="label" val="K3" />
       <a name="facing" val="east" />
       <a name="labelfont" val="SansSerif plain 8" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(210,400)">
+    <comp lib="0" name="Tunnel" loc="(210,390)">
       <a name="width" val="1" />
       <a name="label" val="K4" />
       <a name="facing" val="east" />
       <a name="labelfont" val="SansSerif plain 8" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(210,410)">
+    <comp lib="0" name="Tunnel" loc="(210,400)">
       <a name="width" val="1" />
       <a name="label" val="K5" />
       <a name="facing" val="east" />
       <a name="labelfont" val="SansSerif plain 8" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(210,420)">
+    <comp lib="0" name="Tunnel" loc="(210,410)">
       <a name="width" val="1" />
       <a name="label" val="K6" />
       <a name="facing" val="east" />
       <a name="labelfont" val="SansSerif plain 8" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(210,430)">
+    <comp lib="0" name="Tunnel" loc="(210,420)">
       <a name="width" val="1" />
       <a name="label" val="K7" />
       <a name="facing" val="east" />
       <a name="labelfont" val="SansSerif plain 8" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(210,440)">
+    <comp lib="0" name="Tunnel" loc="(210,430)">
       <a name="width" val="1" />
       <a name="label" val="K8" />
       <a name="facing" val="east" />
       <a name="labelfont" val="SansSerif plain 8" />
     </comp>
+    <comp lib="0" name="Tunnel" loc="(210,440)">
+      <a name="width" val="1" />
+      <a name="label" val="K9" />
+      <a name="facing" val="east" />
+      <a name="labelfont" val="SansSerif plain 8" />
+    </comp>
     <comp lib="0" name="Tunnel" loc="(300,400)">
-      <a name="width" val="9" />
+      <a name="width" val="10" />
       <a name="label" val="Keys" />
       <a name="facing" val="east" />
     </comp>
@@ -887,40 +906,58 @@ This file is intended to be loaded by Logisim http://logisim.altervista.org
       <a name="label" val="Level" />
       <a name="facing" val="east" />
     </comp>
+    <comp lib="0" name="Pin" loc="(200,920)">
+      <a name="width" val="2" />
+      <a name="output" val="false" />
+      <a name="tristate" val="false" />
+      <a name="facing" val="east" />
+      <a name="label" val="BULLET 0/2=normal,1=fast,3=slow" />
+    </comp>
+    <wire from="(200,920)" to="(260,920)" />
+    <comp lib="0" name="Tunnel" loc="(260,920)">
+      <a name="width" val="2" />
+      <a name="label" val="Bullet" />
+      <a name="facing" val="east" />
+    </comp>
     <comp lib="0" name="Tunnel" loc="(300,560)">
       <a name="width" val="2" />
       <a name="label" val="Level" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="2" name="Multiplexer" loc="(250,960)">
+    <comp lib="0" name="Tunnel" loc="(300,600)">
+      <a name="width" val="2" />
+      <a name="label" val="Bullet" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="2" name="Multiplexer" loc="(250,1020)">
       <a name="width" val="32" />
       <a name="select" val="2" />
       <a name="enable" val="false" />
       <a name="selloc" val="tr" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Constant" loc="(210,940)">
+    <comp lib="0" name="Constant" loc="(210,1000)">
       <a name="width" val="32" />
       <a name="value" val="0x2000" />
     </comp>
-    <comp lib="0" name="Constant" loc="(210,950)">
+    <comp lib="0" name="Constant" loc="(210,1010)">
       <a name="width" val="32" />
       <a name="value" val="0x1000" />
     </comp>
-    <comp lib="0" name="Constant" loc="(210,960)">
+    <comp lib="0" name="Constant" loc="(210,1020)">
       <a name="width" val="32" />
       <a name="value" val="0x800" />
     </comp>
-    <comp lib="0" name="Constant" loc="(210,970)">
+    <comp lib="0" name="Constant" loc="(210,1030)">
       <a name="width" val="32" />
       <a name="value" val="0x400" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(230,940)">
+    <comp lib="0" name="Tunnel" loc="(230,1000)">
       <a name="width" val="2" />
       <a name="label" val="Speed" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(250,960)">
+    <comp lib="0" name="Tunnel" loc="(250,1020)">
       <a name="width" val="32" />
       <a name="label" val="AutoPeriod" />
       <a name="facing" val="east" />
@@ -995,6 +1032,14 @@ This file is intended to be loaded by Logisim http://logisim.altervista.org
     <wire from="(640,730)" to="(1000,730)" />
     <wire from="(640,740)" to="(1000,740)" />
     <wire from="(640,750)" to="(1000,750)" />
+    <wire from="(640,770)" to="(1000,770)" />
+    <wire from="(640,780)" to="(1000,780)" />
+    <wire from="(640,790)" to="(1000,790)" />
+    <wire from="(640,800)" to="(1000,800)" />
+    <wire from="(640,810)" to="(1000,810)" />
+    <wire from="(640,820)" to="(1000,820)" />
+    <wire from="(640,830)" to="(1000,830)" />
+    <wire from="(640,840)" to="(1000,840)" />
     <wire from="(640,760)" to="(800,760)" />
     <comp lib="0" name="Probe" loc="(800,760)">
       <a name="facing" val="west" />
@@ -1002,23 +1047,28 @@ This file is intended to be loaded by Logisim http://logisim.altervista.org
       <a name="label" val="FRAME" />
       <a name="labelloc" val="north" />
     </comp>
-    <comp lib="6" name="Text" loc="(1000,850)">
+    <comp lib="6" name="Text" loc="(1000,970)">
       <a name="text" val="开启仿真时钟，然后按 START。MANUAL=1 可用 STEP 推进战斗。" />
       <a name="font" val="SansSerif plain 12" />
       <a name="halign" val="left" />
     </comp>
-    <comp lib="6" name="Text" loc="(1000,880)">
+    <comp lib="6" name="Text" loc="(1000,1000)">
       <a name="text" val="手动模式下 FIRE 发射后，按 STEP 推进炮弹与敌方逻辑。" />
       <a name="font" val="SansSerif plain 12" />
       <a name="halign" val="left" />
     </comp>
-    <comp lib="6" name="Text" loc="(1000,940)">
+    <comp lib="6" name="Text" loc="(1000,1060)">
       <a name="text" val="LEVEL 0/1/2：训练 2 辆 / 进阶 4 辆 / 困难 6 辆，切换后按 RESTART。" />
       <a name="font" val="SansSerif plain 12" />
       <a name="halign" val="left" />
     </comp>
-    <comp lib="6" name="Text" loc="(1000,910)">
+    <comp lib="6" name="Text" loc="(1000,1030)">
       <a name="text" val="每消灭一辆敌军 +100；玩家打掉一块砖墙 +10。" />
+      <a name="font" val="SansSerif plain 12" />
+      <a name="halign" val="left" />
+    </comp>
+    <comp lib="6" name="Text" loc="(1000,1090)">
+      <a name="text" val="星形道具：移动拾取，USE 激活。一级增加弹药，二级增强伤害；满级后修复生命。" />
       <a name="font" val="SansSerif plain 12" />
       <a name="halign" val="left" />
     </comp>
@@ -59414,6 +59464,8 @@ fffe0e13 fe0e16e3 00a00893 00000073 fff00293 00000313 01900413 00841413
 3f000113
 00211113
 70000d93
+48000b93
+001b9b93
 02002023
 50000293
 00100e13
@@ -59428,22 +59480,22 @@ fe0318e3
 004e1e13
 fffe8e93
 fc0e9ee3
-120000ef
+138000ef
 000dad03
 01ada623
 040d7293
-0e029463
+10029063
 010d7293
 00028663
 00002283
-0e028063
+0e028c63
 020d7293
 00028c63
 00002283
 00100313
-0c628e63
+0e628a63
 00200313
-0c628263
+0c628e63
 00002283
 00100313
 fa629ee3
@@ -59465,12 +59517,18 @@ fa629ee3
 0080006f
 00200593
 04000513
-2b4000ef
+2fc000ef
 00100c93
+7c8000ef
+00acecb3
+200d7293
+00028663
+7fc000ef
+00acecb3
 080d7293
 00028863
 04000513
-324000ef
+354000ef
 00acecb3
 100d7293
 02029063
@@ -59481,17 +59539,17 @@ fa629ee3
 40730333
 00533333
 00031863
-770000ef
+16d000ef
 00100c93
 00100c13
-f20c82e3
-051000ef
-f00c0ee3
+f00c86e3
+285000ef
+f00c02e3
 004da283
 00502823
-f11ff06f
+ef9ff06f
 028000ef
-f09ff06f
+ef1ff06f
 00100293
 00502023
 00100c13
@@ -59510,6 +59568,13 @@ ff010113
 00428293
 fe629ce3
 02802023
+000b8293
+02cb8313
+0002a023
+00428293
+fe629ce3
+fff00293
+005ba223
 00300293
 00502423
 010da283
@@ -59518,6 +59583,9 @@ fe629ce3
 00629463
 00200293
 02502823
+00128313
+006ba623
+006ba823
 00129313
 02602c23
 00230313
@@ -59536,7 +59604,7 @@ fe629ce3
 06502223
 04002223
 04002623
-0d700293
+0e500293
 04502023
 03700293
 04502823
@@ -59585,10 +59653,12 @@ fe629ce3
 40702a23
 42702223
 42702423
+00e00393
 44702c23
 46702023
 48702c23
 4a702023
+00100393
 03002283
 02028c63
 30702423
@@ -59608,7 +59678,7 @@ fe629ce3
 48702e23
 000da283
 005da623
-664000ef
+069000ef
 004da283
 00502823
 00812403
@@ -59686,11 +59756,14 @@ fe6294e3
 00028313
 01028293
 fdf29ee3
-04030663
+04030c63
 000e0663
-04039263
-00c0006f
-0023ae93
+04039863
+0180006f
+000bae83
+01d03eb3
+002e8e93
+01d3beb3
 020e8c63
 00052283
 00532023
@@ -59716,12 +59789,23 @@ fdf29ee3
 02502023
 00008067
 02402283
-04029a63
+08029063
 00802283
 fff28293
 00502423
-00028e63
-0d700293
+04028463
+0e500293
+05000313
+07000393
+00832e03
+000e0c63
+00032e03
+005e1863
+00428293
+05000313
+fe9ff06f
+01030313
+fe7310e3
 04502023
 04002223
 00600293
@@ -59751,7 +59835,7 @@ fe010113
 02028463
 00042503
 00442583
-de1ff0ef
+da9ff0ef
 fff00293
 00550c63
 00251293
@@ -59822,23 +59906,25 @@ fe010113
 ebdff0ef
 08000413
 00842283
-10028c63
+18028a63
 00042503
 00442583
-cb9ff0ef
+c81ff0ef
 fff00293
-10550063
+16550e63
 00050913
 00c42483
 00291293
 10028293
 0002a303
 00100393
-08730663
+10730463
+00e00393
+0e730463
 00200393
-0c730e63
+14730863
 00300393
-08730e63
+10730863
 02049463
 05000993
 0089a283
@@ -59848,40 +59934,69 @@ fff00293
 01098993
 07000293
 fe5994e3
-0a40006f
+1180006f
 04802283
-08028e63
+10028863
 04002283
-09229a63
-dd9ff0ef
-0940006f
+11229463
+da5ff0ef
+1080006f
+0029de13
+017e0e33
+ff8e2283
+000ba303
+00232313
+00200393
+406383b3
+407282b3
+00502333
+00030663
+fe5e2c23
+0d80006f
+fe0e2c23
 0009a423
+014ba283
+00128293
+005baa23
+020ba283
+00128293
+025ba023
+004ba283
+fff00313
+00629463
+012ba223
 01402283
 fff28293
 00502a23
 06400513
-d9dff0ef
+d0dff0ef
 00042423
 01402283
-06029a63
+08029663
 00400293
 00502023
 00300293
 00502c23
-06c0006f
+0840006f
+00100313
+0062a023
+00090513
+00100593
+354000ef
+05c0006f
 0002a023
 00090513
 00000593
-1f0000ef
+340000ef
 04049463
 00a00513
-d61ff0ef
+cb9ff0ef
 03c0006f
 00f00313
 0062a023
 00090513
 00f00593
-1cc000ef
+31c000ef
 00002e23
 00042423
 00300293
@@ -59894,7 +60009,7 @@ d61ff0ef
 00042423
 01040413
 0c000293
-ec541ee3
+e65410e3
 00c12983
 01012903
 01412483
@@ -59902,10 +60017,60 @@ ec541ee3
 01c12083
 02010113
 00008067
+00000513
+004ba283
+04002303
+02629a63
+008ba283
+0032a313
+02030463
+00128293
+005ba423
+020ba283
+fff28293
+025ba023
+00029663
+fff00293
+005ba223
+00100513
+00008067
+00000513
+008ba283
+04028463
+000ba303
+00232393
+00038863
+00130313
+006ba023
+0180006f
+00802303
+00332393
+02038263
+00130313
+00602423
+fff28293
+005ba423
+018ba283
+00128293
+005bac23
+00100513
+00008067
 ff010113
 00112623
 00812423
+00912223
+01212023
 00050413
+00245293
+005b84b3
+01048493
+0004a283
+00028c63
+fff28913
+00090593
+a61ff0ef
+06050063
+08c0006f
 00042283
 04002303
 00f2f393
@@ -59923,24 +60088,38 @@ ff010113
 0080006f
 00000593
 00040513
-b8dff0ef
-00051a63
-00442283
-00128293
-0032f293
-00542223
+a11ff0ef
+04051063
+00442903
+00190293
+0054a023
 00040513
-bf5ff0ef
+a7dff0ef
+00190593
+0035f593
+00040513
+9e9ff0ef
+02051263
+00390593
+0035f593
+00040513
+9d5ff0ef
+0100006f
+0004a023
+00040513
+a49ff0ef
+00012903
+00412483
 00812403
 00c12083
 01010113
 00008067
 03802283
-04028863
+06028463
 00852303
-04031463
+06031063
 04002303
-04b30063
+04b30c63
 05000393
 06000e13
 00750463
@@ -59948,12 +60127,18 @@ bf5ff0ef
 008e2303
 00030663
 000e2303
-02b30063
+02b30c63
 00b52023
 00200313
 00652223
 00100313
 00652423
+03002303
+00130313
+00255e93
+017e8eb3
+fe6eac23
+000ea823
 fff28293
 02502c23
 00008067
@@ -59966,7 +60151,21 @@ ff010113
 00028663
 fff28293
 02502223
-d9dff0ef
+0e002823
+0e002a23
+0e002c23
+0e002e23
+01cba283
+00128293
+005bae23
+014da303
+00337313
+00031463
+00200313
+0062b333
+00031663
+000bae23
+bd1ff0ef
 00002283
 00100313
 06629063
@@ -59981,18 +60180,18 @@ d9dff0ef
 02002e23
 05000513
 03700593
-f49ff0ef
+ef9ff0ef
 06000513
 03c00593
-f3dff0ef
+eedff0ef
 05802283
 00028663
 05000513
-ea9ff0ef
+df1ff0ef
 06802283
 00028663
 06000513
-e99ff0ef
+de1ff0ef
 00c12083
 01010113
 00008067
@@ -60085,7 +60284,7 @@ fc5418e3
 00802283
 00029863
 04002503
-00e00593
+00f00593
 e99ff0ef
 08000293
 0c000313
@@ -60126,6 +60325,22 @@ fe0390e3
 045dac23
 02002283
 045dae23
+000ba283
+065da223
+004ba283
+065da423
+008ba283
+065da623
+00cba283
+065da823
+010ba283
+065daa23
+018ba283
+065dac23
+05002283
+065dae23
+06002283
+085da023
 060da283
 00128293
 065da023
@@ -61294,14 +61509,14 @@ fe0390e3
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Pin" loc="(2800,100)">
-      <a name="width" val="9" />
+      <a name="width" val="10" />
       <a name="output" val="false" />
       <a name="tristate" val="false" />
       <a name="facing" val="east" />
       <a name="label" val="KEYS" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(2800,100)">
-      <a name="width" val="9" />
+      <a name="width" val="10" />
       <a name="label" val="Tank.KEYS" />
       <a name="facing" val="east" />
     </comp>
@@ -61327,6 +61542,18 @@ fe0390e3
     <comp lib="0" name="Tunnel" loc="(2800,220)">
       <a name="width" val="2" />
       <a name="label" val="Tank.LEVEL" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Pin" loc="(2800,280)">
+      <a name="width" val="2" />
+      <a name="output" val="false" />
+      <a name="tristate" val="false" />
+      <a name="facing" val="east" />
+      <a name="label" val="BULLET" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(2800,280)">
+      <a name="width" val="2" />
+      <a name="label" val="Tank.BULLET" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="3" name="Comparator" loc="(7000,100)">
@@ -61370,8 +61597,8 @@ fe0390e3
     </comp>
     <comp lib="0" name="Splitter" loc="(7000,320)">
       <a name="facing" val="east" />
-      <a name="fanout" val="9" />
-      <a name="incoming" val="9" />
+      <a name="fanout" val="10" />
+      <a name="incoming" val="10" />
       <a name="appear" val="center" />
       <a name="bit0" val="0" />
       <a name="bit1" val="1" />
@@ -61382,10 +61609,11 @@ fe0390e3
       <a name="bit6" val="6" />
       <a name="bit7" val="7" />
       <a name="bit8" val="8" />
+      <a name="bit9" val="9" />
     </comp>
     <comp lib="0" name="Splitter" loc="(7200,320)">
       <a name="facing" val="east" />
-      <a name="fanout" val="9" />
+      <a name="fanout" val="10" />
       <a name="incoming" val="32" />
       <a name="appear" val="center" />
       <a name="bit0" val="0" />
@@ -61397,7 +61625,7 @@ fe0390e3
       <a name="bit6" val="6" />
       <a name="bit7" val="7" />
       <a name="bit8" val="8" />
-      <a name="bit9" val="none" />
+      <a name="bit9" val="9" />
       <a name="bit10" val="none" />
       <a name="bit11" val="none" />
       <a name="bit12" val="none" />
@@ -61423,8 +61651,8 @@ fe0390e3
     </comp>
     <comp lib="0" name="Splitter" loc="(7400,320)">
       <a name="facing" val="west" />
-      <a name="fanout" val="9" />
-      <a name="incoming" val="9" />
+      <a name="fanout" val="10" />
+      <a name="incoming" val="10" />
       <a name="appear" val="center" />
       <a name="bit0" val="0" />
       <a name="bit1" val="1" />
@@ -61435,9 +61663,10 @@ fe0390e3
       <a name="bit6" val="6" />
       <a name="bit7" val="7" />
       <a name="bit8" val="8" />
+      <a name="bit9" val="9" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(7000,320)">
-      <a name="width" val="9" />
+      <a name="width" val="10" />
       <a name="label" val="Tank.KEYS" />
       <a name="facing" val="east" />
     </comp>
@@ -61447,21 +61676,21 @@ fe0390e3
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(7400,320)">
-      <a name="width" val="9" />
+      <a name="width" val="10" />
       <a name="label" val="Tank.Pending" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(7020,280)">
+    <comp lib="0" name="Tunnel" loc="(7020,270)">
       <a name="width" val="1" />
       <a name="label" val="Raw.0" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(7220,280)">
+    <comp lib="0" name="Tunnel" loc="(7220,270)">
       <a name="width" val="1" />
       <a name="label" val="Ack.0" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(7380,280)">
+    <comp lib="0" name="Tunnel" loc="(7380,270)">
       <a name="width" val="1" />
       <a name="label" val="Pending.0" />
       <a name="facing" val="east" />
@@ -61535,17 +61764,17 @@ fe0390e3
       <a name="label" val="Raw.0" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(7020,290)">
+    <comp lib="0" name="Tunnel" loc="(7020,280)">
       <a name="width" val="1" />
       <a name="label" val="Raw.1" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(7220,290)">
+    <comp lib="0" name="Tunnel" loc="(7220,280)">
       <a name="width" val="1" />
       <a name="label" val="Ack.1" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(7380,290)">
+    <comp lib="0" name="Tunnel" loc="(7380,280)">
       <a name="width" val="1" />
       <a name="label" val="Pending.1" />
       <a name="facing" val="east" />
@@ -61619,17 +61848,17 @@ fe0390e3
       <a name="label" val="Raw.1" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(7020,300)">
+    <comp lib="0" name="Tunnel" loc="(7020,290)">
       <a name="width" val="1" />
       <a name="label" val="Raw.2" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(7220,300)">
+    <comp lib="0" name="Tunnel" loc="(7220,290)">
       <a name="width" val="1" />
       <a name="label" val="Ack.2" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(7380,300)">
+    <comp lib="0" name="Tunnel" loc="(7380,290)">
       <a name="width" val="1" />
       <a name="label" val="Pending.2" />
       <a name="facing" val="east" />
@@ -61703,17 +61932,17 @@ fe0390e3
       <a name="label" val="Raw.2" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(7020,310)">
+    <comp lib="0" name="Tunnel" loc="(7020,300)">
       <a name="width" val="1" />
       <a name="label" val="Raw.3" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(7220,310)">
+    <comp lib="0" name="Tunnel" loc="(7220,300)">
       <a name="width" val="1" />
       <a name="label" val="Ack.3" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(7380,310)">
+    <comp lib="0" name="Tunnel" loc="(7380,300)">
       <a name="width" val="1" />
       <a name="label" val="Pending.3" />
       <a name="facing" val="east" />
@@ -61787,17 +62016,17 @@ fe0390e3
       <a name="label" val="Raw.3" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(7020,320)">
+    <comp lib="0" name="Tunnel" loc="(7020,310)">
       <a name="width" val="1" />
       <a name="label" val="Raw.4" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(7220,320)">
+    <comp lib="0" name="Tunnel" loc="(7220,310)">
       <a name="width" val="1" />
       <a name="label" val="Ack.4" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(7380,320)">
+    <comp lib="0" name="Tunnel" loc="(7380,310)">
       <a name="width" val="1" />
       <a name="label" val="Pending.4" />
       <a name="facing" val="east" />
@@ -61871,17 +62100,17 @@ fe0390e3
       <a name="label" val="Raw.4" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(7020,330)">
+    <comp lib="0" name="Tunnel" loc="(7020,320)">
       <a name="width" val="1" />
       <a name="label" val="Raw.5" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(7220,330)">
+    <comp lib="0" name="Tunnel" loc="(7220,320)">
       <a name="width" val="1" />
       <a name="label" val="Ack.5" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(7380,330)">
+    <comp lib="0" name="Tunnel" loc="(7380,320)">
       <a name="width" val="1" />
       <a name="label" val="Pending.5" />
       <a name="facing" val="east" />
@@ -61955,17 +62184,17 @@ fe0390e3
       <a name="label" val="Raw.5" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(7020,340)">
+    <comp lib="0" name="Tunnel" loc="(7020,330)">
       <a name="width" val="1" />
       <a name="label" val="Raw.6" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(7220,340)">
+    <comp lib="0" name="Tunnel" loc="(7220,330)">
       <a name="width" val="1" />
       <a name="label" val="Ack.6" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(7380,340)">
+    <comp lib="0" name="Tunnel" loc="(7380,330)">
       <a name="width" val="1" />
       <a name="label" val="Pending.6" />
       <a name="facing" val="east" />
@@ -62039,17 +62268,17 @@ fe0390e3
       <a name="label" val="Raw.6" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(7020,350)">
+    <comp lib="0" name="Tunnel" loc="(7020,340)">
       <a name="width" val="1" />
       <a name="label" val="Raw.7" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(7220,350)">
+    <comp lib="0" name="Tunnel" loc="(7220,340)">
       <a name="width" val="1" />
       <a name="label" val="Ack.7" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(7380,350)">
+    <comp lib="0" name="Tunnel" loc="(7380,340)">
       <a name="width" val="1" />
       <a name="label" val="Pending.7" />
       <a name="facing" val="east" />
@@ -62123,17 +62352,17 @@ fe0390e3
       <a name="label" val="Raw.7" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(7020,360)">
+    <comp lib="0" name="Tunnel" loc="(7020,350)">
       <a name="width" val="1" />
       <a name="label" val="Raw.8" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(7220,360)">
+    <comp lib="0" name="Tunnel" loc="(7220,350)">
       <a name="width" val="1" />
       <a name="label" val="Ack.8" />
       <a name="facing" val="east" />
     </comp>
-    <comp lib="0" name="Tunnel" loc="(7380,360)">
+    <comp lib="0" name="Tunnel" loc="(7380,350)">
       <a name="width" val="1" />
       <a name="label" val="Pending.8" />
       <a name="facing" val="east" />
@@ -62207,8 +62436,92 @@ fe0390e3
       <a name="label" val="Raw.8" />
       <a name="facing" val="east" />
     </comp>
+    <comp lib="0" name="Tunnel" loc="(7020,360)">
+      <a name="width" val="1" />
+      <a name="label" val="Raw.9" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(7220,360)">
+      <a name="width" val="1" />
+      <a name="label" val="Ack.9" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(7380,360)">
+      <a name="width" val="1" />
+      <a name="label" val="Pending.9" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="1" name="AND Gate" loc="(7100,1990)">
+      <a name="width" val="1" />
+      <a name="inputs" val="2" />
+      <a name="size" val="30" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(7100,1990)">
+      <a name="width" val="1" />
+      <a name="label" val="Clear.9" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(7070,1980)">
+      <a name="width" val="1" />
+      <a name="label" val="Ack.9" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(7070,2000)">
+      <a name="width" val="1" />
+      <a name="label" val="Tank.AckWrite" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="1" name="OR Gate" loc="(7200,2050)">
+      <a name="width" val="1" />
+      <a name="inputs" val="2" />
+      <a name="size" val="30" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(7200,2050)">
+      <a name="width" val="1" />
+      <a name="label" val="Reset.9" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(7170,2040)">
+      <a name="width" val="1" />
+      <a name="label" val="Clear.9" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(7170,2060)">
+      <a name="width" val="1" />
+      <a name="label" val="Tank.Reset" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="4" name="D Flip-Flop" loc="(7400,1990)">
+      <a name="trigger" val="rising" />
+      <a name="enable" val="false" />
+    </comp>
+    <comp lib="0" name="Constant" loc="(7340,2030)">
+      <a name="width" val="1" />
+      <a name="value" val="0x1" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(7400,1990)">
+      <a name="width" val="1" />
+      <a name="label" val="Pending.9" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(7370,2050)">
+      <a name="width" val="1" />
+      <a name="label" val="Reset.9" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Constant" loc="(7370,1970)">
+      <a name="width" val="1" />
+      <a name="value" val="0x0" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(7340,1990)">
+      <a name="width" val="1" />
+      <a name="label" val="Raw.9" />
+      <a name="facing" val="east" />
+    </comp>
     <comp lib="0" name="Bit Extender" loc="(2920,100)">
-      <a name="in_width" val="9" />
+      <a name="in_width" val="10" />
       <a name="out_width" val="32" />
       <a name="type" val="zero" />
     </comp>
@@ -62218,7 +62531,7 @@ fe0390e3
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(2880,100)">
-      <a name="width" val="9" />
+      <a name="width" val="10" />
       <a name="label" val="Tank.Pending" />
       <a name="facing" val="east" />
     </comp>
@@ -62235,6 +62548,21 @@ fe0390e3
     <comp lib="0" name="Tunnel" loc="(2880,220)">
       <a name="width" val="2" />
       <a name="label" val="Tank.LEVEL" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Bit Extender" loc="(2920,280)">
+      <a name="in_width" val="2" />
+      <a name="out_width" val="32" />
+      <a name="type" val="zero" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(2920,280)">
+      <a name="width" val="32" />
+      <a name="label" val="Tank.Bullet32" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(2880,280)">
+      <a name="width" val="2" />
+      <a name="label" val="Tank.BULLET" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="4" name="Register" loc="(3100,180)">
@@ -66848,6 +67176,902 @@ fe0390e3
       <a name="label" val="Stage.FRAME" />
       <a name="facing" val="east" />
     </comp>
+    <comp lib="3" name="Comparator" loc="(5000,1190)">
+      <a name="width" val="32" />
+      <a name="mode" val="unsigned" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(4960,1180)">
+      <a name="width" val="32" />
+      <a name="label" val="MEM.AluResult" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Constant" loc="(4960,1200)">
+      <a name="width" val="32" />
+      <a name="value" val="0x764" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5000,1190)">
+      <a name="width" val="1" />
+      <a name="label" val="Select.UPGRADE" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="1" name="AND Gate" loc="(5100,1250)">
+      <a name="width" val="1" />
+      <a name="inputs" val="2" />
+      <a name="size" val="30" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5100,1250)">
+      <a name="width" val="1" />
+      <a name="label" val="Write.UPGRADE" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5070,1240)">
+      <a name="width" val="1" />
+      <a name="label" val="Select.UPGRADE" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5070,1260)">
+      <a name="width" val="1" />
+      <a name="label" val="MemWrite" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="4" name="Register" loc="(5200,1190)">
+      <a name="width" val="32" />
+      <a name="trigger" val="rising" />
+      <a name="Select" val="low" />
+      <a name="label" val="Stage UPGRADE" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5200,1190)">
+      <a name="width" val="32" />
+      <a name="label" val="Stage.UPGRADE" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5170,1190)">
+      <a name="width" val="32" />
+      <a name="label" val="MDin" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5180,1210)">
+      <a name="width" val="1" />
+      <a name="label" val="CLK" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5190,1210)">
+      <a name="width" val="1" />
+      <a name="label" val="Tank.Reset" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5170,1200)">
+      <a name="width" val="1" />
+      <a name="label" val="Write.UPGRADE" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="4" name="Register" loc="(5440,1190)">
+      <a name="width" val="32" />
+      <a name="trigger" val="rising" />
+      <a name="Select" val="low" />
+      <a name="label" val="Display UPGRADE" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5440,1190)">
+      <a name="width" val="32" />
+      <a name="label" val="Display.UPGRADE" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5410,1190)">
+      <a name="width" val="32" />
+      <a name="label" val="Stage.UPGRADE" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5420,1210)">
+      <a name="width" val="1" />
+      <a name="label" val="CLK" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5430,1210)">
+      <a name="width" val="1" />
+      <a name="label" val="Tank.Reset" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5410,1200)">
+      <a name="width" val="1" />
+      <a name="label" val="Write.FRAME" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Pin" loc="(5560,1190)">
+      <a name="width" val="32" />
+      <a name="output" val="true" />
+      <a name="facing" val="west" />
+      <a name="label" val="UPGRADE" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5560,1190)">
+      <a name="width" val="32" />
+      <a name="label" val="Display.UPGRADE" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="3" name="Comparator" loc="(5000,1340)">
+      <a name="width" val="32" />
+      <a name="mode" val="unsigned" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(4960,1330)">
+      <a name="width" val="32" />
+      <a name="label" val="MEM.AluResult" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Constant" loc="(4960,1350)">
+      <a name="width" val="32" />
+      <a name="value" val="0x768" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5000,1340)">
+      <a name="width" val="1" />
+      <a name="label" val="Select.PICKUP" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="1" name="AND Gate" loc="(5100,1400)">
+      <a name="width" val="1" />
+      <a name="inputs" val="2" />
+      <a name="size" val="30" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5100,1400)">
+      <a name="width" val="1" />
+      <a name="label" val="Write.PICKUP" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5070,1390)">
+      <a name="width" val="1" />
+      <a name="label" val="Select.PICKUP" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5070,1410)">
+      <a name="width" val="1" />
+      <a name="label" val="MemWrite" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="4" name="Register" loc="(5200,1340)">
+      <a name="width" val="32" />
+      <a name="trigger" val="rising" />
+      <a name="Select" val="low" />
+      <a name="label" val="Stage PICKUP" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5200,1340)">
+      <a name="width" val="32" />
+      <a name="label" val="Stage.PICKUP" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5170,1340)">
+      <a name="width" val="32" />
+      <a name="label" val="MDin" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5180,1360)">
+      <a name="width" val="1" />
+      <a name="label" val="CLK" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5190,1360)">
+      <a name="width" val="1" />
+      <a name="label" val="Tank.Reset" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5170,1350)">
+      <a name="width" val="1" />
+      <a name="label" val="Write.PICKUP" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="4" name="Register" loc="(5440,1340)">
+      <a name="width" val="32" />
+      <a name="trigger" val="rising" />
+      <a name="Select" val="low" />
+      <a name="label" val="Display PICKUP" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5440,1340)">
+      <a name="width" val="32" />
+      <a name="label" val="Display.PICKUP" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5410,1340)">
+      <a name="width" val="32" />
+      <a name="label" val="Stage.PICKUP" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5420,1360)">
+      <a name="width" val="1" />
+      <a name="label" val="CLK" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5430,1360)">
+      <a name="width" val="1" />
+      <a name="label" val="Tank.Reset" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5410,1350)">
+      <a name="width" val="1" />
+      <a name="label" val="Write.FRAME" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Pin" loc="(5560,1340)">
+      <a name="width" val="32" />
+      <a name="output" val="true" />
+      <a name="facing" val="west" />
+      <a name="label" val="PICKUP" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5560,1340)">
+      <a name="width" val="32" />
+      <a name="label" val="Display.PICKUP" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="3" name="Comparator" loc="(5000,1490)">
+      <a name="width" val="32" />
+      <a name="mode" val="unsigned" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(4960,1480)">
+      <a name="width" val="32" />
+      <a name="label" val="MEM.AluResult" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Constant" loc="(4960,1500)">
+      <a name="width" val="32" />
+      <a name="value" val="0x76c" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5000,1490)">
+      <a name="width" val="1" />
+      <a name="label" val="Select.ITEMS" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="1" name="AND Gate" loc="(5100,1550)">
+      <a name="width" val="1" />
+      <a name="inputs" val="2" />
+      <a name="size" val="30" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5100,1550)">
+      <a name="width" val="1" />
+      <a name="label" val="Write.ITEMS" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5070,1540)">
+      <a name="width" val="1" />
+      <a name="label" val="Select.ITEMS" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5070,1560)">
+      <a name="width" val="1" />
+      <a name="label" val="MemWrite" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="4" name="Register" loc="(5200,1490)">
+      <a name="width" val="32" />
+      <a name="trigger" val="rising" />
+      <a name="Select" val="low" />
+      <a name="label" val="Stage ITEMS" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5200,1490)">
+      <a name="width" val="32" />
+      <a name="label" val="Stage.ITEMS" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5170,1490)">
+      <a name="width" val="32" />
+      <a name="label" val="MDin" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5180,1510)">
+      <a name="width" val="1" />
+      <a name="label" val="CLK" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5190,1510)">
+      <a name="width" val="1" />
+      <a name="label" val="Tank.Reset" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5170,1500)">
+      <a name="width" val="1" />
+      <a name="label" val="Write.ITEMS" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="4" name="Register" loc="(5440,1490)">
+      <a name="width" val="32" />
+      <a name="trigger" val="rising" />
+      <a name="Select" val="low" />
+      <a name="label" val="Display ITEMS" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5440,1490)">
+      <a name="width" val="32" />
+      <a name="label" val="Display.ITEMS" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5410,1490)">
+      <a name="width" val="32" />
+      <a name="label" val="Stage.ITEMS" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5420,1510)">
+      <a name="width" val="1" />
+      <a name="label" val="CLK" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5430,1510)">
+      <a name="width" val="1" />
+      <a name="label" val="Tank.Reset" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5410,1500)">
+      <a name="width" val="1" />
+      <a name="label" val="Write.FRAME" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Pin" loc="(5560,1490)">
+      <a name="width" val="32" />
+      <a name="output" val="true" />
+      <a name="facing" val="west" />
+      <a name="label" val="ITEMS" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5560,1490)">
+      <a name="width" val="32" />
+      <a name="label" val="Display.ITEMS" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="3" name="Comparator" loc="(5000,1640)">
+      <a name="width" val="32" />
+      <a name="mode" val="unsigned" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(4960,1630)">
+      <a name="width" val="32" />
+      <a name="label" val="MEM.AluResult" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Constant" loc="(4960,1650)">
+      <a name="width" val="32" />
+      <a name="value" val="0x770" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5000,1640)">
+      <a name="width" val="1" />
+      <a name="label" val="Select.ARMOR1" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="1" name="AND Gate" loc="(5100,1700)">
+      <a name="width" val="1" />
+      <a name="inputs" val="2" />
+      <a name="size" val="30" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5100,1700)">
+      <a name="width" val="1" />
+      <a name="label" val="Write.ARMOR1" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5070,1690)">
+      <a name="width" val="1" />
+      <a name="label" val="Select.ARMOR1" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5070,1710)">
+      <a name="width" val="1" />
+      <a name="label" val="MemWrite" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="4" name="Register" loc="(5200,1640)">
+      <a name="width" val="32" />
+      <a name="trigger" val="rising" />
+      <a name="Select" val="low" />
+      <a name="label" val="Stage ARMOR1" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5200,1640)">
+      <a name="width" val="32" />
+      <a name="label" val="Stage.ARMOR1" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5170,1640)">
+      <a name="width" val="32" />
+      <a name="label" val="MDin" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5180,1660)">
+      <a name="width" val="1" />
+      <a name="label" val="CLK" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5190,1660)">
+      <a name="width" val="1" />
+      <a name="label" val="Tank.Reset" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5170,1650)">
+      <a name="width" val="1" />
+      <a name="label" val="Write.ARMOR1" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="4" name="Register" loc="(5440,1640)">
+      <a name="width" val="32" />
+      <a name="trigger" val="rising" />
+      <a name="Select" val="low" />
+      <a name="label" val="Display ARMOR1" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5440,1640)">
+      <a name="width" val="32" />
+      <a name="label" val="Display.ARMOR1" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5410,1640)">
+      <a name="width" val="32" />
+      <a name="label" val="Stage.ARMOR1" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5420,1660)">
+      <a name="width" val="1" />
+      <a name="label" val="CLK" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5430,1660)">
+      <a name="width" val="1" />
+      <a name="label" val="Tank.Reset" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5410,1650)">
+      <a name="width" val="1" />
+      <a name="label" val="Write.FRAME" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Pin" loc="(5560,1640)">
+      <a name="width" val="32" />
+      <a name="output" val="true" />
+      <a name="facing" val="west" />
+      <a name="label" val="ARMOR1" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5560,1640)">
+      <a name="width" val="32" />
+      <a name="label" val="Display.ARMOR1" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="3" name="Comparator" loc="(5000,1790)">
+      <a name="width" val="32" />
+      <a name="mode" val="unsigned" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(4960,1780)">
+      <a name="width" val="32" />
+      <a name="label" val="MEM.AluResult" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Constant" loc="(4960,1800)">
+      <a name="width" val="32" />
+      <a name="value" val="0x774" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5000,1790)">
+      <a name="width" val="1" />
+      <a name="label" val="Select.ARMOR2" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="1" name="AND Gate" loc="(5100,1850)">
+      <a name="width" val="1" />
+      <a name="inputs" val="2" />
+      <a name="size" val="30" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5100,1850)">
+      <a name="width" val="1" />
+      <a name="label" val="Write.ARMOR2" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5070,1840)">
+      <a name="width" val="1" />
+      <a name="label" val="Select.ARMOR2" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5070,1860)">
+      <a name="width" val="1" />
+      <a name="label" val="MemWrite" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="4" name="Register" loc="(5200,1790)">
+      <a name="width" val="32" />
+      <a name="trigger" val="rising" />
+      <a name="Select" val="low" />
+      <a name="label" val="Stage ARMOR2" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5200,1790)">
+      <a name="width" val="32" />
+      <a name="label" val="Stage.ARMOR2" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5170,1790)">
+      <a name="width" val="32" />
+      <a name="label" val="MDin" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5180,1810)">
+      <a name="width" val="1" />
+      <a name="label" val="CLK" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5190,1810)">
+      <a name="width" val="1" />
+      <a name="label" val="Tank.Reset" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5170,1800)">
+      <a name="width" val="1" />
+      <a name="label" val="Write.ARMOR2" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="4" name="Register" loc="(5440,1790)">
+      <a name="width" val="32" />
+      <a name="trigger" val="rising" />
+      <a name="Select" val="low" />
+      <a name="label" val="Display ARMOR2" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5440,1790)">
+      <a name="width" val="32" />
+      <a name="label" val="Display.ARMOR2" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5410,1790)">
+      <a name="width" val="32" />
+      <a name="label" val="Stage.ARMOR2" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5420,1810)">
+      <a name="width" val="1" />
+      <a name="label" val="CLK" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5430,1810)">
+      <a name="width" val="1" />
+      <a name="label" val="Tank.Reset" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5410,1800)">
+      <a name="width" val="1" />
+      <a name="label" val="Write.FRAME" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Pin" loc="(5560,1790)">
+      <a name="width" val="32" />
+      <a name="output" val="true" />
+      <a name="facing" val="west" />
+      <a name="label" val="ARMOR2" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5560,1790)">
+      <a name="width" val="32" />
+      <a name="label" val="Display.ARMOR2" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="3" name="Comparator" loc="(5000,1940)">
+      <a name="width" val="32" />
+      <a name="mode" val="unsigned" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(4960,1930)">
+      <a name="width" val="32" />
+      <a name="label" val="MEM.AluResult" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Constant" loc="(4960,1950)">
+      <a name="width" val="32" />
+      <a name="value" val="0x778" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5000,1940)">
+      <a name="width" val="1" />
+      <a name="label" val="Select.USES" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="1" name="AND Gate" loc="(5100,2000)">
+      <a name="width" val="1" />
+      <a name="inputs" val="2" />
+      <a name="size" val="30" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5100,2000)">
+      <a name="width" val="1" />
+      <a name="label" val="Write.USES" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5070,1990)">
+      <a name="width" val="1" />
+      <a name="label" val="Select.USES" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5070,2010)">
+      <a name="width" val="1" />
+      <a name="label" val="MemWrite" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="4" name="Register" loc="(5200,1940)">
+      <a name="width" val="32" />
+      <a name="trigger" val="rising" />
+      <a name="Select" val="low" />
+      <a name="label" val="Stage USES" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5200,1940)">
+      <a name="width" val="32" />
+      <a name="label" val="Stage.USES" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5170,1940)">
+      <a name="width" val="32" />
+      <a name="label" val="MDin" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5180,1960)">
+      <a name="width" val="1" />
+      <a name="label" val="CLK" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5190,1960)">
+      <a name="width" val="1" />
+      <a name="label" val="Tank.Reset" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5170,1950)">
+      <a name="width" val="1" />
+      <a name="label" val="Write.USES" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="4" name="Register" loc="(5440,1940)">
+      <a name="width" val="32" />
+      <a name="trigger" val="rising" />
+      <a name="Select" val="low" />
+      <a name="label" val="Display USES" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5440,1940)">
+      <a name="width" val="32" />
+      <a name="label" val="Display.USES" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5410,1940)">
+      <a name="width" val="32" />
+      <a name="label" val="Stage.USES" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5420,1960)">
+      <a name="width" val="1" />
+      <a name="label" val="CLK" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5430,1960)">
+      <a name="width" val="1" />
+      <a name="label" val="Tank.Reset" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5410,1950)">
+      <a name="width" val="1" />
+      <a name="label" val="Write.FRAME" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Pin" loc="(5560,1940)">
+      <a name="width" val="32" />
+      <a name="output" val="true" />
+      <a name="facing" val="west" />
+      <a name="label" val="USES" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5560,1940)">
+      <a name="width" val="32" />
+      <a name="label" val="Display.USES" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="3" name="Comparator" loc="(5000,2090)">
+      <a name="width" val="32" />
+      <a name="mode" val="unsigned" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(4960,2080)">
+      <a name="width" val="32" />
+      <a name="label" val="MEM.AluResult" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Constant" loc="(4960,2100)">
+      <a name="width" val="32" />
+      <a name="value" val="0x77c" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5000,2090)">
+      <a name="width" val="1" />
+      <a name="label" val="Select.POS1" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="1" name="AND Gate" loc="(5100,2150)">
+      <a name="width" val="1" />
+      <a name="inputs" val="2" />
+      <a name="size" val="30" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5100,2150)">
+      <a name="width" val="1" />
+      <a name="label" val="Write.POS1" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5070,2140)">
+      <a name="width" val="1" />
+      <a name="label" val="Select.POS1" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5070,2160)">
+      <a name="width" val="1" />
+      <a name="label" val="MemWrite" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="4" name="Register" loc="(5200,2090)">
+      <a name="width" val="32" />
+      <a name="trigger" val="rising" />
+      <a name="Select" val="low" />
+      <a name="label" val="Stage POS1" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5200,2090)">
+      <a name="width" val="32" />
+      <a name="label" val="Stage.POS1" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5170,2090)">
+      <a name="width" val="32" />
+      <a name="label" val="MDin" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5180,2110)">
+      <a name="width" val="1" />
+      <a name="label" val="CLK" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5190,2110)">
+      <a name="width" val="1" />
+      <a name="label" val="Tank.Reset" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5170,2100)">
+      <a name="width" val="1" />
+      <a name="label" val="Write.POS1" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="4" name="Register" loc="(5440,2090)">
+      <a name="width" val="32" />
+      <a name="trigger" val="rising" />
+      <a name="Select" val="low" />
+      <a name="label" val="Display POS1" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5440,2090)">
+      <a name="width" val="32" />
+      <a name="label" val="Display.POS1" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5410,2090)">
+      <a name="width" val="32" />
+      <a name="label" val="Stage.POS1" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5420,2110)">
+      <a name="width" val="1" />
+      <a name="label" val="CLK" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5430,2110)">
+      <a name="width" val="1" />
+      <a name="label" val="Tank.Reset" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5410,2100)">
+      <a name="width" val="1" />
+      <a name="label" val="Write.FRAME" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Pin" loc="(5560,2090)">
+      <a name="width" val="32" />
+      <a name="output" val="true" />
+      <a name="facing" val="west" />
+      <a name="label" val="POS1" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5560,2090)">
+      <a name="width" val="32" />
+      <a name="label" val="Display.POS1" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="3" name="Comparator" loc="(5700,440)">
+      <a name="width" val="32" />
+      <a name="mode" val="unsigned" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5660,430)">
+      <a name="width" val="32" />
+      <a name="label" val="MEM.AluResult" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Constant" loc="(5660,450)">
+      <a name="width" val="32" />
+      <a name="value" val="0x780" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5700,440)">
+      <a name="width" val="1" />
+      <a name="label" val="Select.POS2" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="1" name="AND Gate" loc="(5800,500)">
+      <a name="width" val="1" />
+      <a name="inputs" val="2" />
+      <a name="size" val="30" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5800,500)">
+      <a name="width" val="1" />
+      <a name="label" val="Write.POS2" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5770,490)">
+      <a name="width" val="1" />
+      <a name="label" val="Select.POS2" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5770,510)">
+      <a name="width" val="1" />
+      <a name="label" val="MemWrite" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="4" name="Register" loc="(5900,440)">
+      <a name="width" val="32" />
+      <a name="trigger" val="rising" />
+      <a name="Select" val="low" />
+      <a name="label" val="Stage POS2" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5900,440)">
+      <a name="width" val="32" />
+      <a name="label" val="Stage.POS2" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5870,440)">
+      <a name="width" val="32" />
+      <a name="label" val="MDin" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5880,460)">
+      <a name="width" val="1" />
+      <a name="label" val="CLK" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5890,460)">
+      <a name="width" val="1" />
+      <a name="label" val="Tank.Reset" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5870,450)">
+      <a name="width" val="1" />
+      <a name="label" val="Write.POS2" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="4" name="Register" loc="(6140,440)">
+      <a name="width" val="32" />
+      <a name="trigger" val="rising" />
+      <a name="Select" val="low" />
+      <a name="label" val="Display POS2" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(6140,440)">
+      <a name="width" val="32" />
+      <a name="label" val="Display.POS2" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(6110,440)">
+      <a name="width" val="32" />
+      <a name="label" val="Stage.POS2" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(6120,460)">
+      <a name="width" val="1" />
+      <a name="label" val="CLK" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(6130,460)">
+      <a name="width" val="1" />
+      <a name="label" val="Tank.Reset" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(6110,450)">
+      <a name="width" val="1" />
+      <a name="label" val="Write.FRAME" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Pin" loc="(6260,440)">
+      <a name="width" val="32" />
+      <a name="output" val="true" />
+      <a name="facing" val="west" />
+      <a name="label" val="POS2" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(6260,440)">
+      <a name="width" val="32" />
+      <a name="label" val="Display.POS2" />
+      <a name="facing" val="east" />
+    </comp>
     <comp lib="0" name="Splitter" loc="(6800,240)">
       <a name="facing" val="east" />
       <a name="fanout" val="1" />
@@ -67189,7 +68413,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,760)">
       <a name="width" val="32" />
-      <a name="value" val="0x800" />
+      <a name="value" val="0x714" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,750)">
       <a name="width" val="1" />
@@ -67210,7 +68434,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,760)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB00" />
+      <a name="label" val="Tank.Bullet32" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,730)">
@@ -67234,7 +68458,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,860)">
       <a name="width" val="32" />
-      <a name="value" val="0x804" />
+      <a name="value" val="0x800" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,850)">
       <a name="width" val="1" />
@@ -67255,7 +68479,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,860)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB01" />
+      <a name="label" val="Stage.FB00" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,830)">
@@ -67279,7 +68503,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,960)">
       <a name="width" val="32" />
-      <a name="value" val="0x808" />
+      <a name="value" val="0x804" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,950)">
       <a name="width" val="1" />
@@ -67300,7 +68524,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,960)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB02" />
+      <a name="label" val="Stage.FB01" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,930)">
@@ -67324,7 +68548,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,1060)">
       <a name="width" val="32" />
-      <a name="value" val="0x80c" />
+      <a name="value" val="0x808" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,1050)">
       <a name="width" val="1" />
@@ -67345,7 +68569,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,1060)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB03" />
+      <a name="label" val="Stage.FB02" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,1030)">
@@ -67369,7 +68593,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,1160)">
       <a name="width" val="32" />
-      <a name="value" val="0x810" />
+      <a name="value" val="0x80c" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,1150)">
       <a name="width" val="1" />
@@ -67390,7 +68614,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,1160)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB04" />
+      <a name="label" val="Stage.FB03" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,1130)">
@@ -67414,7 +68638,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,1260)">
       <a name="width" val="32" />
-      <a name="value" val="0x814" />
+      <a name="value" val="0x810" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,1250)">
       <a name="width" val="1" />
@@ -67435,7 +68659,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,1260)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB05" />
+      <a name="label" val="Stage.FB04" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,1230)">
@@ -67459,7 +68683,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,1360)">
       <a name="width" val="32" />
-      <a name="value" val="0x818" />
+      <a name="value" val="0x814" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,1350)">
       <a name="width" val="1" />
@@ -67480,7 +68704,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,1360)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB06" />
+      <a name="label" val="Stage.FB05" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,1330)">
@@ -67504,7 +68728,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,1460)">
       <a name="width" val="32" />
-      <a name="value" val="0x81c" />
+      <a name="value" val="0x818" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,1450)">
       <a name="width" val="1" />
@@ -67525,7 +68749,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,1460)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB07" />
+      <a name="label" val="Stage.FB06" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,1430)">
@@ -67549,7 +68773,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,1560)">
       <a name="width" val="32" />
-      <a name="value" val="0x820" />
+      <a name="value" val="0x81c" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,1550)">
       <a name="width" val="1" />
@@ -67570,7 +68794,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,1560)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB08" />
+      <a name="label" val="Stage.FB07" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,1530)">
@@ -67594,7 +68818,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,1660)">
       <a name="width" val="32" />
-      <a name="value" val="0x824" />
+      <a name="value" val="0x820" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,1650)">
       <a name="width" val="1" />
@@ -67615,7 +68839,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,1660)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB09" />
+      <a name="label" val="Stage.FB08" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,1630)">
@@ -67639,7 +68863,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,1760)">
       <a name="width" val="32" />
-      <a name="value" val="0x828" />
+      <a name="value" val="0x824" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,1750)">
       <a name="width" val="1" />
@@ -67660,7 +68884,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,1760)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB10" />
+      <a name="label" val="Stage.FB09" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,1730)">
@@ -67684,7 +68908,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,1860)">
       <a name="width" val="32" />
-      <a name="value" val="0x82c" />
+      <a name="value" val="0x828" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,1850)">
       <a name="width" val="1" />
@@ -67705,7 +68929,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,1860)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB11" />
+      <a name="label" val="Stage.FB10" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,1830)">
@@ -67729,7 +68953,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,1960)">
       <a name="width" val="32" />
-      <a name="value" val="0x830" />
+      <a name="value" val="0x82c" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,1950)">
       <a name="width" val="1" />
@@ -67750,7 +68974,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,1960)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB12" />
+      <a name="label" val="Stage.FB11" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,1930)">
@@ -67774,7 +68998,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,2060)">
       <a name="width" val="32" />
-      <a name="value" val="0x834" />
+      <a name="value" val="0x830" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,2050)">
       <a name="width" val="1" />
@@ -67795,7 +69019,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,2060)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB13" />
+      <a name="label" val="Stage.FB12" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,2030)">
@@ -67819,7 +69043,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,2160)">
       <a name="width" val="32" />
-      <a name="value" val="0x838" />
+      <a name="value" val="0x834" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,2150)">
       <a name="width" val="1" />
@@ -67840,7 +69064,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,2160)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB14" />
+      <a name="label" val="Stage.FB13" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,2130)">
@@ -67864,7 +69088,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,2260)">
       <a name="width" val="32" />
-      <a name="value" val="0x83c" />
+      <a name="value" val="0x838" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,2250)">
       <a name="width" val="1" />
@@ -67885,7 +69109,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,2260)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB15" />
+      <a name="label" val="Stage.FB14" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,2230)">
@@ -67909,7 +69133,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,2360)">
       <a name="width" val="32" />
-      <a name="value" val="0x840" />
+      <a name="value" val="0x83c" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,2350)">
       <a name="width" val="1" />
@@ -67930,7 +69154,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,2360)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB16" />
+      <a name="label" val="Stage.FB15" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,2330)">
@@ -67954,7 +69178,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,2460)">
       <a name="width" val="32" />
-      <a name="value" val="0x844" />
+      <a name="value" val="0x840" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,2450)">
       <a name="width" val="1" />
@@ -67975,7 +69199,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,2460)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB17" />
+      <a name="label" val="Stage.FB16" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,2430)">
@@ -67999,7 +69223,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,2560)">
       <a name="width" val="32" />
-      <a name="value" val="0x848" />
+      <a name="value" val="0x844" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,2550)">
       <a name="width" val="1" />
@@ -68020,7 +69244,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,2560)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB18" />
+      <a name="label" val="Stage.FB17" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,2530)">
@@ -68044,7 +69268,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,2660)">
       <a name="width" val="32" />
-      <a name="value" val="0x84c" />
+      <a name="value" val="0x848" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,2650)">
       <a name="width" val="1" />
@@ -68065,7 +69289,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,2660)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB19" />
+      <a name="label" val="Stage.FB18" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,2630)">
@@ -68089,7 +69313,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,2760)">
       <a name="width" val="32" />
-      <a name="value" val="0x850" />
+      <a name="value" val="0x84c" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,2750)">
       <a name="width" val="1" />
@@ -68110,7 +69334,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,2760)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB20" />
+      <a name="label" val="Stage.FB19" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,2730)">
@@ -68134,7 +69358,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,2860)">
       <a name="width" val="32" />
-      <a name="value" val="0x854" />
+      <a name="value" val="0x850" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,2850)">
       <a name="width" val="1" />
@@ -68155,7 +69379,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,2860)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB21" />
+      <a name="label" val="Stage.FB20" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,2830)">
@@ -68179,7 +69403,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,2960)">
       <a name="width" val="32" />
-      <a name="value" val="0x858" />
+      <a name="value" val="0x854" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,2950)">
       <a name="width" val="1" />
@@ -68200,7 +69424,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,2960)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB22" />
+      <a name="label" val="Stage.FB21" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,2930)">
@@ -68224,7 +69448,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,3060)">
       <a name="width" val="32" />
-      <a name="value" val="0x85c" />
+      <a name="value" val="0x858" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,3050)">
       <a name="width" val="1" />
@@ -68245,7 +69469,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,3060)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB23" />
+      <a name="label" val="Stage.FB22" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,3030)">
@@ -68269,7 +69493,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,3160)">
       <a name="width" val="32" />
-      <a name="value" val="0x860" />
+      <a name="value" val="0x85c" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,3150)">
       <a name="width" val="1" />
@@ -68290,7 +69514,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,3160)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB24" />
+      <a name="label" val="Stage.FB23" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,3130)">
@@ -68314,7 +69538,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,3260)">
       <a name="width" val="32" />
-      <a name="value" val="0x864" />
+      <a name="value" val="0x860" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,3250)">
       <a name="width" val="1" />
@@ -68335,7 +69559,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,3260)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB25" />
+      <a name="label" val="Stage.FB24" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,3230)">
@@ -68359,7 +69583,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,3360)">
       <a name="width" val="32" />
-      <a name="value" val="0x868" />
+      <a name="value" val="0x864" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,3350)">
       <a name="width" val="1" />
@@ -68380,7 +69604,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,3360)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB26" />
+      <a name="label" val="Stage.FB25" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,3330)">
@@ -68404,7 +69628,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,3460)">
       <a name="width" val="32" />
-      <a name="value" val="0x86c" />
+      <a name="value" val="0x868" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,3450)">
       <a name="width" val="1" />
@@ -68425,7 +69649,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,3460)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB27" />
+      <a name="label" val="Stage.FB26" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,3430)">
@@ -68449,7 +69673,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,3560)">
       <a name="width" val="32" />
-      <a name="value" val="0x870" />
+      <a name="value" val="0x86c" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,3550)">
       <a name="width" val="1" />
@@ -68470,7 +69694,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,3560)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB28" />
+      <a name="label" val="Stage.FB27" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,3530)">
@@ -68494,7 +69718,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,3660)">
       <a name="width" val="32" />
-      <a name="value" val="0x874" />
+      <a name="value" val="0x870" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,3650)">
       <a name="width" val="1" />
@@ -68515,7 +69739,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,3660)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB29" />
+      <a name="label" val="Stage.FB28" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,3630)">
@@ -68539,7 +69763,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,3760)">
       <a name="width" val="32" />
-      <a name="value" val="0x878" />
+      <a name="value" val="0x874" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,3750)">
       <a name="width" val="1" />
@@ -68560,7 +69784,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,3760)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB30" />
+      <a name="label" val="Stage.FB29" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,3730)">
@@ -68584,7 +69808,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,3860)">
       <a name="width" val="32" />
-      <a name="value" val="0x87c" />
+      <a name="value" val="0x878" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,3850)">
       <a name="width" val="1" />
@@ -68605,7 +69829,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,3860)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FB31" />
+      <a name="label" val="Stage.FB30" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,3830)">
@@ -68629,7 +69853,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,3960)">
       <a name="width" val="32" />
-      <a name="value" val="0x740" />
+      <a name="value" val="0x87c" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,3950)">
       <a name="width" val="1" />
@@ -68650,7 +69874,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,3960)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.STATUS" />
+      <a name="label" val="Stage.FB31" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,3930)">
@@ -68674,7 +69898,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,4060)">
       <a name="width" val="32" />
-      <a name="value" val="0x744" />
+      <a name="value" val="0x740" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,4050)">
       <a name="width" val="1" />
@@ -68695,7 +69919,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,4060)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.SCORE" />
+      <a name="label" val="Stage.STATUS" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,4030)">
@@ -68719,7 +69943,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,4160)">
       <a name="width" val="32" />
-      <a name="value" val="0x748" />
+      <a name="value" val="0x744" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,4150)">
       <a name="width" val="1" />
@@ -68740,7 +69964,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,4160)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.LIVES" />
+      <a name="label" val="Stage.SCORE" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,4130)">
@@ -68764,7 +69988,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,4260)">
       <a name="width" val="32" />
-      <a name="value" val="0x74c" />
+      <a name="value" val="0x748" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,4250)">
       <a name="width" val="1" />
@@ -68785,7 +70009,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,4260)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.ALIVE" />
+      <a name="label" val="Stage.LIVES" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,4230)">
@@ -68809,7 +70033,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,4360)">
       <a name="width" val="32" />
-      <a name="value" val="0x750" />
+      <a name="value" val="0x74c" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,4350)">
       <a name="width" val="1" />
@@ -68830,7 +70054,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,4360)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.CAUSE" />
+      <a name="label" val="Stage.ALIVE" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,4330)">
@@ -68854,7 +70078,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,4460)">
       <a name="width" val="32" />
-      <a name="value" val="0x754" />
+      <a name="value" val="0x750" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,4450)">
       <a name="width" val="1" />
@@ -68875,7 +70099,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,4460)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.BASEHP" />
+      <a name="label" val="Stage.CAUSE" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,4430)">
@@ -68899,7 +70123,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,4560)">
       <a name="width" val="32" />
-      <a name="value" val="0x758" />
+      <a name="value" val="0x754" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,4550)">
       <a name="width" val="1" />
@@ -68920,7 +70144,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,4560)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.TICK" />
+      <a name="label" val="Stage.BASEHP" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,4530)">
@@ -68944,7 +70168,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,4660)">
       <a name="width" val="32" />
-      <a name="value" val="0x75c" />
+      <a name="value" val="0x758" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,4650)">
       <a name="width" val="1" />
@@ -68965,7 +70189,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,4660)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.BEST" />
+      <a name="label" val="Stage.TICK" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,4630)">
@@ -68989,7 +70213,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Constant" loc="(5860,4760)">
       <a name="width" val="32" />
-      <a name="value" val="0x760" />
+      <a name="value" val="0x75c" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5900,4750)">
       <a name="width" val="1" />
@@ -69010,7 +70234,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(5970,4760)">
       <a name="width" val="32" />
-      <a name="label" val="Stage.FRAME" />
+      <a name="label" val="Stage.BEST" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(5980,4730)">
@@ -69021,6 +70245,411 @@ fe0390e3
     <comp lib="0" name="Tunnel" loc="(6000,4750)">
       <a name="width" val="32" />
       <a name="label" val="ReadMux.44" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="3" name="Comparator" loc="(5900,4850)">
+      <a name="width" val="32" />
+      <a name="mode" val="unsigned" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5860,4840)">
+      <a name="width" val="32" />
+      <a name="label" val="MEM.AluResult" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Constant" loc="(5860,4860)">
+      <a name="width" val="32" />
+      <a name="value" val="0x760" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5900,4850)">
+      <a name="width" val="1" />
+      <a name="label" val="ReadSelect.45" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="2" name="Multiplexer" loc="(6000,4850)">
+      <a name="width" val="32" />
+      <a name="select" val="1" />
+      <a name="enable" val="false" />
+      <a name="selloc" val="tr" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5970,4840)">
+      <a name="width" val="32" />
+      <a name="label" val="ReadMux.44" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5970,4860)">
+      <a name="width" val="32" />
+      <a name="label" val="Stage.FRAME" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5980,4830)">
+      <a name="width" val="1" />
+      <a name="label" val="ReadSelect.45" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(6000,4850)">
+      <a name="width" val="32" />
+      <a name="label" val="ReadMux.45" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="3" name="Comparator" loc="(5900,4950)">
+      <a name="width" val="32" />
+      <a name="mode" val="unsigned" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5860,4940)">
+      <a name="width" val="32" />
+      <a name="label" val="MEM.AluResult" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Constant" loc="(5860,4960)">
+      <a name="width" val="32" />
+      <a name="value" val="0x764" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5900,4950)">
+      <a name="width" val="1" />
+      <a name="label" val="ReadSelect.46" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="2" name="Multiplexer" loc="(6000,4950)">
+      <a name="width" val="32" />
+      <a name="select" val="1" />
+      <a name="enable" val="false" />
+      <a name="selloc" val="tr" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5970,4940)">
+      <a name="width" val="32" />
+      <a name="label" val="ReadMux.45" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5970,4960)">
+      <a name="width" val="32" />
+      <a name="label" val="Stage.UPGRADE" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5980,4930)">
+      <a name="width" val="1" />
+      <a name="label" val="ReadSelect.46" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(6000,4950)">
+      <a name="width" val="32" />
+      <a name="label" val="ReadMux.46" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="3" name="Comparator" loc="(5900,5050)">
+      <a name="width" val="32" />
+      <a name="mode" val="unsigned" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5860,5040)">
+      <a name="width" val="32" />
+      <a name="label" val="MEM.AluResult" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Constant" loc="(5860,5060)">
+      <a name="width" val="32" />
+      <a name="value" val="0x768" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5900,5050)">
+      <a name="width" val="1" />
+      <a name="label" val="ReadSelect.47" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="2" name="Multiplexer" loc="(6000,5050)">
+      <a name="width" val="32" />
+      <a name="select" val="1" />
+      <a name="enable" val="false" />
+      <a name="selloc" val="tr" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5970,5040)">
+      <a name="width" val="32" />
+      <a name="label" val="ReadMux.46" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5970,5060)">
+      <a name="width" val="32" />
+      <a name="label" val="Stage.PICKUP" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5980,5030)">
+      <a name="width" val="1" />
+      <a name="label" val="ReadSelect.47" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(6000,5050)">
+      <a name="width" val="32" />
+      <a name="label" val="ReadMux.47" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="3" name="Comparator" loc="(5900,5150)">
+      <a name="width" val="32" />
+      <a name="mode" val="unsigned" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5860,5140)">
+      <a name="width" val="32" />
+      <a name="label" val="MEM.AluResult" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Constant" loc="(5860,5160)">
+      <a name="width" val="32" />
+      <a name="value" val="0x76c" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5900,5150)">
+      <a name="width" val="1" />
+      <a name="label" val="ReadSelect.48" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="2" name="Multiplexer" loc="(6000,5150)">
+      <a name="width" val="32" />
+      <a name="select" val="1" />
+      <a name="enable" val="false" />
+      <a name="selloc" val="tr" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5970,5140)">
+      <a name="width" val="32" />
+      <a name="label" val="ReadMux.47" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5970,5160)">
+      <a name="width" val="32" />
+      <a name="label" val="Stage.ITEMS" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5980,5130)">
+      <a name="width" val="1" />
+      <a name="label" val="ReadSelect.48" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(6000,5150)">
+      <a name="width" val="32" />
+      <a name="label" val="ReadMux.48" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="3" name="Comparator" loc="(5900,5250)">
+      <a name="width" val="32" />
+      <a name="mode" val="unsigned" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5860,5240)">
+      <a name="width" val="32" />
+      <a name="label" val="MEM.AluResult" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Constant" loc="(5860,5260)">
+      <a name="width" val="32" />
+      <a name="value" val="0x770" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5900,5250)">
+      <a name="width" val="1" />
+      <a name="label" val="ReadSelect.49" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="2" name="Multiplexer" loc="(6000,5250)">
+      <a name="width" val="32" />
+      <a name="select" val="1" />
+      <a name="enable" val="false" />
+      <a name="selloc" val="tr" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5970,5240)">
+      <a name="width" val="32" />
+      <a name="label" val="ReadMux.48" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5970,5260)">
+      <a name="width" val="32" />
+      <a name="label" val="Stage.ARMOR1" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5980,5230)">
+      <a name="width" val="1" />
+      <a name="label" val="ReadSelect.49" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(6000,5250)">
+      <a name="width" val="32" />
+      <a name="label" val="ReadMux.49" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="3" name="Comparator" loc="(5900,5350)">
+      <a name="width" val="32" />
+      <a name="mode" val="unsigned" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5860,5340)">
+      <a name="width" val="32" />
+      <a name="label" val="MEM.AluResult" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Constant" loc="(5860,5360)">
+      <a name="width" val="32" />
+      <a name="value" val="0x774" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5900,5350)">
+      <a name="width" val="1" />
+      <a name="label" val="ReadSelect.50" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="2" name="Multiplexer" loc="(6000,5350)">
+      <a name="width" val="32" />
+      <a name="select" val="1" />
+      <a name="enable" val="false" />
+      <a name="selloc" val="tr" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5970,5340)">
+      <a name="width" val="32" />
+      <a name="label" val="ReadMux.49" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5970,5360)">
+      <a name="width" val="32" />
+      <a name="label" val="Stage.ARMOR2" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5980,5330)">
+      <a name="width" val="1" />
+      <a name="label" val="ReadSelect.50" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(6000,5350)">
+      <a name="width" val="32" />
+      <a name="label" val="ReadMux.50" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="3" name="Comparator" loc="(5900,5450)">
+      <a name="width" val="32" />
+      <a name="mode" val="unsigned" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5860,5440)">
+      <a name="width" val="32" />
+      <a name="label" val="MEM.AluResult" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Constant" loc="(5860,5460)">
+      <a name="width" val="32" />
+      <a name="value" val="0x778" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5900,5450)">
+      <a name="width" val="1" />
+      <a name="label" val="ReadSelect.51" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="2" name="Multiplexer" loc="(6000,5450)">
+      <a name="width" val="32" />
+      <a name="select" val="1" />
+      <a name="enable" val="false" />
+      <a name="selloc" val="tr" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5970,5440)">
+      <a name="width" val="32" />
+      <a name="label" val="ReadMux.50" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5970,5460)">
+      <a name="width" val="32" />
+      <a name="label" val="Stage.USES" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5980,5430)">
+      <a name="width" val="1" />
+      <a name="label" val="ReadSelect.51" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(6000,5450)">
+      <a name="width" val="32" />
+      <a name="label" val="ReadMux.51" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="3" name="Comparator" loc="(5900,5550)">
+      <a name="width" val="32" />
+      <a name="mode" val="unsigned" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5860,5540)">
+      <a name="width" val="32" />
+      <a name="label" val="MEM.AluResult" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Constant" loc="(5860,5560)">
+      <a name="width" val="32" />
+      <a name="value" val="0x77c" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5900,5550)">
+      <a name="width" val="1" />
+      <a name="label" val="ReadSelect.52" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="2" name="Multiplexer" loc="(6000,5550)">
+      <a name="width" val="32" />
+      <a name="select" val="1" />
+      <a name="enable" val="false" />
+      <a name="selloc" val="tr" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5970,5540)">
+      <a name="width" val="32" />
+      <a name="label" val="ReadMux.51" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5970,5560)">
+      <a name="width" val="32" />
+      <a name="label" val="Stage.POS1" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5980,5530)">
+      <a name="width" val="1" />
+      <a name="label" val="ReadSelect.52" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(6000,5550)">
+      <a name="width" val="32" />
+      <a name="label" val="ReadMux.52" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="3" name="Comparator" loc="(5900,5650)">
+      <a name="width" val="32" />
+      <a name="mode" val="unsigned" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5860,5640)">
+      <a name="width" val="32" />
+      <a name="label" val="MEM.AluResult" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Constant" loc="(5860,5660)">
+      <a name="width" val="32" />
+      <a name="value" val="0x780" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5900,5650)">
+      <a name="width" val="1" />
+      <a name="label" val="ReadSelect.53" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="2" name="Multiplexer" loc="(6000,5650)">
+      <a name="width" val="32" />
+      <a name="select" val="1" />
+      <a name="enable" val="false" />
+      <a name="selloc" val="tr" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5970,5640)">
+      <a name="width" val="32" />
+      <a name="label" val="ReadMux.52" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5970,5660)">
+      <a name="width" val="32" />
+      <a name="label" val="Stage.POS2" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(5980,5630)">
+      <a name="width" val="1" />
+      <a name="label" val="ReadSelect.53" />
+      <a name="facing" val="east" />
+    </comp>
+    <comp lib="0" name="Tunnel" loc="(6000,5650)">
+      <a name="width" val="32" />
+      <a name="label" val="ReadMux.53" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="2" name="Multiplexer" loc="(6400,300)">
@@ -69037,7 +70666,7 @@ fe0390e3
     </comp>
     <comp lib="0" name="Tunnel" loc="(6370,310)">
       <a name="width" val="32" />
-      <a name="label" val="ReadMux.44" />
+      <a name="label" val="ReadMux.53" />
       <a name="facing" val="east" />
     </comp>
     <comp lib="0" name="Tunnel" loc="(6380,280)">
@@ -69051,7 +70680,7 @@ fe0390e3
       <a name="facing" val="east" />
     </comp>
     <appear>
-      <rect x="60" y="90" width="340" height="500" fill="#e8f2ee" stroke="#31574c" />
+      <rect x="60" y="90" width="340" height="530" fill="#e8f2ee" stroke="#31574c" />
       <text x="220" y="260" font-size="16" text-anchor="middle">RISC-V</text>
       <text x="220" y="285" font-size="16" text-anchor="middle">5-stage CPU</text>
       <text x="220" y="310" font-size="16" text-anchor="middle">Tank Battle</text>
@@ -69061,6 +70690,8 @@ fe0390e3
       <text x="68" y="225" font-size="9" text-anchor="start">PERIOD</text>
       <circ-port pin="2800,220" x="56" y="306" width="8" height="8" />
       <text x="68" y="305" font-size="9" text-anchor="start">LEVEL</text>
+      <circ-port pin="2800,280" x="56" y="346" width="8" height="8" />
+      <text x="68" y="345" font-size="9" text-anchor="start">BULLET</text>
       <circ-port pin="50,50" x="56" y="426" width="8" height="8" />
       <text x="68" y="425" font-size="9" text-anchor="start">RESET</text>
       <circ-port pin="3460,440" x="395" y="95" width="10" height="10" />
@@ -69145,6 +70776,22 @@ fe0390e3
       <text x="392" y="495" font-size="9" text-anchor="end">BEST</text>
       <circ-port pin="5560,1040" x="395" y="505" width="10" height="10" />
       <text x="392" y="505" font-size="9" text-anchor="end">FRAME</text>
+      <circ-port pin="5560,1190" x="395" y="515" width="10" height="10" />
+      <text x="392" y="515" font-size="9" text-anchor="end">UPGRADE</text>
+      <circ-port pin="5560,1340" x="395" y="525" width="10" height="10" />
+      <text x="392" y="525" font-size="9" text-anchor="end">PICKUP</text>
+      <circ-port pin="5560,1490" x="395" y="535" width="10" height="10" />
+      <text x="392" y="535" font-size="9" text-anchor="end">ITEMS</text>
+      <circ-port pin="5560,1640" x="395" y="545" width="10" height="10" />
+      <text x="392" y="545" font-size="9" text-anchor="end">ARMOR1</text>
+      <circ-port pin="5560,1790" x="395" y="555" width="10" height="10" />
+      <text x="392" y="555" font-size="9" text-anchor="end">ARMOR2</text>
+      <circ-port pin="5560,1940" x="395" y="565" width="10" height="10" />
+      <text x="392" y="565" font-size="9" text-anchor="end">USES</text>
+      <circ-port pin="5560,2090" x="395" y="575" width="10" height="10" />
+      <text x="392" y="575" font-size="9" text-anchor="end">POS1</text>
+      <circ-port pin="6260,440" x="395" y="585" width="10" height="10" />
+      <text x="392" y="585" font-size="9" text-anchor="end">POS2</text>
       <circ-anchor x="197" y="97" width="6" height="6" facing="east" />
     </appear>
   </circuit>

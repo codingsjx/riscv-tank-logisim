@@ -31,19 +31,20 @@ def demonstrate(J):
             draw.text((1070,y+10),str(stats[name]),font=font(37,True),fill='#f1f6fa')
         draw.text((730,575),'基地：'+('完好' if stats['BASEHP'] else '损毁'),font=font(21),fill='#eac966')
         draw.text((730,631),action,font=font(23,True),fill='#87cdf2')
-        draw.text((730,690),f"逻辑步数 {stats['TICK']}   画面 {stats['FRAME']}",font=font(17),fill='#aabccc')
+        draw.text((730,670),f"强化 {stats['UPGRADE']} 级   升级星 {stats['ITEMS']} 枚",font=font(17),fill='#eac966')
+        draw.text((730,710),f"逻辑步数 {stats['TICK']}   画面 {stats['FRAME']}",font=font(17),fill='#aabccc')
         draw.text((42,810),'游戏逻辑由实际 Logisim CPU 执行；按状态取帧，非实时录屏。',font=font(18),fill='#aabccc')
         image.save(dest/f'{index:02d}_demo.png')
         frames.append(image);durations.append(duration);record.append({'step':index,'action':action,**stats})
-        if action.startswith('击毁第一辆'):image.save(ROOT/'build/tank-demo-poster.png')
+        if action.startswith('击毁敌军'):image.save(ROOT/'build/tank-demo-poster.png')
         print('DEMO',index,action,stats,flush=True)
 
     run_campaign(game,capture)
     frames[0].save(ROOT/'build/tank-demo.gif',save_all=True,append_images=frames[1:],duration=durations,loop=0,disposal=2,optimize=True)
-    actions={'两弹接近同一格','同格相撞，双方炮弹消失','迎面交叉前','交叉抵消，不会穿过彼此'}
+    actions={'击毁敌军，掉落升级星','接触升级星，自动拾取','USE：升级弹药容量','强化坦克守住基地，任务完成'}
     focus=[frames[i] for i,row in enumerate(record) if row['action'] in actions]
     assert len(focus)==4
-    focus[0].save(ROOT/'build/projectile-cancel-demo.gif',save_all=True,append_images=focus[1:],duration=[1800,2300,1800,2300],loop=0,disposal=2,optimize=True)
+    focus[0].save(ROOT/'build/upgrade-demo.gif',save_all=True,append_images=focus[1:],duration=[1800,2300,1800,2300],loop=0,disposal=2,optimize=True)
     (ROOT/'build/demo-record.json').write_text(json.dumps(record,ensure_ascii=False,indent=2),encoding='utf-8')
     game.render(ROOT/'build/panel.png')
     print('Native campaign demo complete:',len(frames),'frames,',sum(durations),'ms',flush=True)
