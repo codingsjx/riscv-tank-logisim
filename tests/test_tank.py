@@ -70,27 +70,11 @@ class TankTests(unittest.TestCase):
             self.poll(64)
             self.assertEqual(self.m.mem[48],min(level,2))
             self.assertEqual((self.m.mem[20],self.m.mem[52],self.m.mem[56]),(total,total,total-2))
-            self.assertEqual(self.m.mem[120],int(level>0))
             self.assertEqual(self.tile(0x82),int(level>0))
             self.assertEqual(self.tile(0x75),2 if level>1 else 0)
         self.m.mem[0x710]=0
         self.poll(16|256)
         self.assertEqual(self.m.mem[48],2)
-
-    def test_advanced_levels_start_with_three_simultaneous_enemies(self):
-        self.m.mem[0x710]=1;self.poll(64)
-        self.assertEqual([self.m.mem[p+8] for p in (80,96,112)],[1,1,1])
-        self.m.mem[0x710]=0;self.poll(64)
-        self.assertEqual(self.m.mem[120],0)
-
-    def test_third_enemy_slot_has_elite_health_and_drops(self):
-        self.m.mem[0x710]=1;self.poll(64);self.poll(16)
-        self.m.mem[88]=0;self.m.mem[104]=0
-        self.m.mem[112]=0x47;self.m.mem[120]=1;self.m.mem[20]=1
-        self.assertEqual((self.m.mem[0x914],self.m.mem[0x934]),(3,3))
-        for hit in range(3):
-            self.bullet(0x57,0);self.call('update_bullets')
-        self.assertEqual((self.m.mem[120],self.m.mem[20],self.m.mem[0x904]),(0,0,0x47))
 
     def test_ai_cadence_per_level(self):
         for level,period in [(0,4),(1,3),(2,2)]:

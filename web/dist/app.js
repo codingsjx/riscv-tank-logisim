@@ -14,7 +14,7 @@ let particles=[],rings=[],muzzleUntil=0,toastUntil=0,soundOn=false,audio=null,be
 try { best=Number(localStorage.getItem('riscv-tank-best')||0)||0; } catch {}
 
 function setText(id,value){const el=$(id);if(el.textContent!==String(value))el.textContent=String(value);}
-function actors(){return [64,80,96,112].map(p=>({pos:game.memory[p>>>2],active:game.memory[(p+8)>>>2],maxHp:p===64?0:game.memory[((p===80?0x92c:p===96?0x930:0x934)>>>2)]}));}
+function actors(){return [64,80,96].map(p=>({pos:game.memory[p>>>2],active:game.memory[(p+8)>>>2],maxHp:p===64?0:game.memory[((p===80?0x92c:0x930)>>>2)]}));}
 function focusGame(){canvas.focus({preventScroll:true});}
 function clearInput(){held.clear();pendingMove=0;pendingFire=false;document.querySelectorAll('[data-control]').forEach(b=>b.classList.remove('held'));}
 function note(text){setText('activityText',text);}
@@ -50,7 +50,7 @@ function execute(bits){
     if(now.items>before.items){toast('拾取升级星 · 按 E 使用');beep(780,.13,'triangle');}
     if(now.uses>before.uses){toast(now.upgrade>before.upgrade?(now.upgrade===1?'强化成功 · 弹药容量提升至 3 发':'强化成功 · 炮弹伤害提升至 2'):'修复成功 · 恢复一条生命');beep(950,.2,'triangle');}
     const newActors=actors();
-    if(!(bits&64)&&now.enemies<before.enemies){for(let i=1;i<4;i++)if(oldActors[i].active&&!newActors[i].active)burst(oldActors[i].pos,newActors[i].maxHp===3?'#edb06d':'#a8b2a1',24);toast(newActors.slice(1).some((actor,i)=>oldActors[i+1].active&&!actor.active&&actor.maxHp===3)?'击毁精英怪 +100 · 升级星已掉落':'击毁普通小兵 +100');beep(85,.22,'sawtooth');}
+    if(!(bits&64)&&now.enemies<before.enemies){for(let i=1;i<3;i++)if(oldActors[i].active&&!newActors[i].active)burst(oldActors[i].pos,newActors[i].maxHp===3?'#edb06d':'#a8b2a1',24);toast(newActors.slice(1).some((actor,i)=>oldActors[i+1].active&&!actor.active&&actor.maxHp===3)?'击毁精英怪 +100 · 升级星已掉落':'击毁普通小兵 +100');beep(85,.22,'sawtooth');}
     else if(now.score>before.score){for(let p=0;p<256;p++)if(lastTiles[p]===1&&tiles[p]===0)burst(p,'#bd895a',8);toast('击碎砖墙 +10');beep(95,.09,'triangle');}
     if(now.lives<before.lives){burst(oldActors[0].pos,'#dd9878',20);toast(now.lives?'受到攻击 · 已返回出生点':'生命耗尽');beep(65,.25,'sawtooth');}
     if(now.status===4&&before.status!==4){note('任务完成！全部敌军已消灭');beep(650,.2,'triangle');clearInput();}
@@ -75,7 +75,7 @@ function updateUI(){
   setText('enemyTotal',` / ${total}`);
   setText('progressLabel',`${total-s.enemies} / ${total}`);$('progress').style.width=`${(total-s.enemies)*100/total}%`;
   setText('levelTitle',`0${s.level+1} · ${levelNames[s.level]}防守`);
-  setText('levelDetail',`${total} 辆敌军分批进攻，最多同时 ${s.level?'3':'2'} 辆。普通小兵 1 格生命，精英怪 3 格生命；仅精英掉落升级星。屋顶护墙需两次命中 · 每 ${4-s.level} 拍行动。`);
+  setText('levelDetail',`${total} 辆敌军分批进攻，最多同时 2 辆。普通小兵 1 格生命，精英怪 3 格生命；仅精英掉落升级星。屋顶护墙需两次命中 · 每 ${4-s.level} 拍行动。`);
   setText('upgradeName',['基础坦克','一级 · 扩容坦克','二级 · 强攻坦克'][s.upgrade]||'基础坦克');
   setText('upgradeDetail',`弹药 ${s.upgrade?3:2} 发 · 伤害 ${s.upgrade===2?2:1}${s.pickup!==0xffffffff?' · ★ 战场上有升级星':''}`);
   setText('itemCount',s.items);
@@ -203,10 +203,10 @@ function draw(time,dt){
     ctx.save();ctx.translate(x,y);ctx.shadowColor='#e9d16c';ctx.shadowBlur=9;ctx.fillStyle='#f2d67f';ctx.beginPath();
     for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,r=i%2?6:14;ctx.lineTo(Math.cos(a)*r,Math.sin(a)*r);}ctx.closePath();ctx.fill();ctx.shadowBlur=0;ctx.fillStyle='#675427';ctx.font='bold 11px sans-serif';ctx.textAlign='center';ctx.fillText('+',0,4);ctx.restore();
   }
-  for(let i=0;i<3;i++){
+  for(let i=0;i<2;i++){
     const record=80+i*16;if(!game.memory[(record+8)>>>2])continue;
-    const p=game.memory[record>>>2],x=(p&15)*40,y=(p>>>4)*40,hp=game.memory[((record===80?0x90c:record===96?0x910:0x914)>>>2)];
-    const maxHp=game.memory[((record===80?0x92c:record===96?0x930:0x934)>>>2)],color=maxHp===3?'#edce7f':'#8dcae3';
+    const p=game.memory[record>>>2],x=(p&15)*40,y=(p>>>4)*40,hp=game.memory[((record===80?0x90c:0x910)>>>2)];
+    const maxHp=game.memory[((record===80?0x92c:0x930)>>>2)],color=maxHp===3?'#edce7f':'#8dcae3';
     if(maxHp===3){ctx.strokeStyle=color;ctx.lineWidth=2;ctx.strokeRect(x+12,y+9,16,19);ctx.fillStyle=color;ctx.fillRect(x+11,y+11,3,14);ctx.fillRect(x+26,y+11,3,14);}
     for(let a=0;a<maxHp;a++){ctx.fillStyle=a<hp?color:'#3e4540';ctx.fillRect(x+5+a*10,y+35,8,3);}
   }

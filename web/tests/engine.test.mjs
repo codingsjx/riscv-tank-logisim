@@ -51,8 +51,6 @@ test('level selection resets waves, cover, and AI cadence in the course ROM', ()
     assert.equal(game.state().enemies,2+level*2);
     assert.equal(game.state().reserves,level*2);
     for(const p of [0xd6,0xd7,0xd8,0xe6,0xe8]) assert.equal(game.tiles()[p],14);
-    assert.equal(game.memory[120>>>2],Number(level>0));
-    assert.deepEqual([game.memory[88>>>2],game.memory[104>>>2],game.memory[120>>>2]],[1,1,Number(level>0)]);
     assert.equal(game.tiles()[0xf7],2);
     game.dispatch(16);
     for(let tick=1;tick<4-level;tick++) game.dispatch(256);

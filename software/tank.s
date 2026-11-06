@@ -4,8 +4,8 @@
 # 36 respawn shield,40 accepted player shots,44 full-redraw flag.
 # 48 level (0..2),52 total enemies,56 reserve enemies,60 AI elapsed ticks.
 # Extra RAM s7=0x900: upgrade, pickup position (-1 none), inventory,
-# enemy HP1/HP2/HP3, bullet state, loot state, detour directions,
-# and enemy max HP1/HP2/HP3. Kill/use counters are kept at later offsets.
+# enemy HP1/HP2, kills, item uses, bullet elapsed ticks, stacked loot count,
+# two enemy detour directions, and enemy max HP1/HP2 (normal/elite identity).
 # Tanks at 0x40/0x50/0x60; bullets at 0x80..0xbf. Record: pos,dir,active,owner.
 # Previous entity cells 0xc0..0xdb; next projectile positions 0xe0..0xef;
 # projectile cancellation flags 0xf0..0xff; terrain 0x100..0x4ff;
@@ -146,7 +146,7 @@ reset_state:
     bne t0, t1, reset_state
     sw s0, 32(zero)
     addi t0, s7, 0
-    addi t1, s7, 88
+    addi t1, s7, 52
 reset_extra:
     sw zero, 0(t0)
     addi t0, t0, 4
@@ -192,19 +192,6 @@ reset_level_valid:
     sw t0, 80(zero)
     addi t0, zero, 60
     sw t0, 96(zero)
-    # Clear the extra actor slot before optional activation on higher levels.
-    sw zero, 120(zero)
-    # Advanced and hard levels keep a third enemy on the field.
-    lw t1, 48(zero)
-    beq t1, zero, no_third_enemy
-    addi t0, zero, 75
-    sw t0, 112(zero)
-    addi t0, zero, 2
-    sw t0, 116(zero)
-    addi t0, zero, 1
-    sw t0, 120(zero)
-    sw t0, 124(zero)
-no_third_enemy:
     # First wave starts with an elite and a normal.
     addi t1, zero, 3
     sw t1, 12(s7)
@@ -212,9 +199,6 @@ no_third_enemy:
     addi t1, zero, 1
     sw t1, 16(s7)
     sw t1, 48(s7)
-    addi t1, zero, 3
-    sw t1, 20(s7)
-    sw t1, 52(s7)
     addi t0, zero, 128
     addi t1, zero, 192
 reset_bullets:
@@ -355,7 +339,7 @@ move_actor:
     lw t0, 0(t0)
     bne t0, zero, move_blocked
     addi t0, zero, 64
-    addi t1, zero, 128
+    addi t1, zero, 112
 check_actor_overlap:
     beq t0, s0, overlap_next
     lw t2, 8(t0)
@@ -447,7 +431,7 @@ damage_player:
     beq t0, zero, player_dead
     addi t0, zero, 229
     addi t1, zero, 80
-    addi t2, zero, 128
+    addi t2, zero, 112
 respawn_check:
     lw t3, 8(t1)
     beq t3, zero, respawn_next
@@ -609,7 +593,7 @@ bullet_enemy_scan:
     beq t0, s2, bullet_kill_enemy
 bullet_enemy_next:
     addi s3, s3, 16
-    addi t0, zero, 128
+    addi t0, zero, 112
     bne s3, t0, bullet_enemy_scan
     jal zero, bullet_advance
 bullet_player:
@@ -635,9 +619,9 @@ bullet_kill_enemy:
 enemy_destroyed:
     sw zero, -8(t3)
     sw zero, 8(s3)
-    lw t0, 60(s7)
+    lw t0, 20(s7)
     addi t0, t0, 1
-    sw t0, 60(s7)
+    sw t0, 20(s7)
     lw t0, 24(t3)
     addi t1, zero, 3
     bne t0, t1, enemy_drop_done
@@ -838,17 +822,15 @@ spawn_reserve:
     bne t1, zero, spawn_done
     lw t1, 64(zero)
     beq t1, a1, spawn_done
+    addi t2, zero, 80
+    addi t3, zero, 96
+    beq a0, t2, spawn_check_other
     addi t3, zero, 80
-spawn_actor_scan:
-    beq t3, a0, spawn_actor_next
+spawn_check_other:
     lw t1, 8(t3)
-    beq t1, zero, spawn_actor_next
+    beq t1, zero, spawn_activate
     lw t1, 0(t3)
     beq t1, a1, spawn_done
-spawn_actor_next:
-    addi t3, t3, 16
-    addi t1, zero, 128
-    bne t3, t1, spawn_actor_scan
 spawn_activate:
     sw a1, 0(a0)
     addi t1, zero, 2
@@ -924,9 +906,6 @@ tick_after_bullets:
     addi a0, zero, 96
     addi a1, zero, 60
     jal ra, spawn_reserve
-    addi a0, zero, 112
-    addi a1, zero, 75
-    jal ra, spawn_reserve
     lw t0, 88(zero)
     beq t0, zero, tick_enemy_two
     addi a0, zero, 80
@@ -935,10 +914,6 @@ tick_enemy_two:
     lw t0, 104(zero)
     beq t0, zero, tick_done
     addi a0, zero, 96
-    jal ra, enemy_ai
-    lw t0, 120(zero)
-    beq t0, zero, tick_done
-    addi a0, zero, 112
     jal ra, enemy_ai
 tick_done:
     lw ra, 12(sp)
@@ -1001,7 +976,7 @@ render_pack:
     jal zero, render_entities
 restore_entities:
     addi s0, zero, 192
-    addi s1, zero, 8
+    addi s1, zero, 7
 restore_cell:
     lw a0, 0(s0)
     addi t0, zero, -1
@@ -1046,7 +1021,7 @@ render_tank_draw:
     jal ra, draw_tile
 render_tank_next:
     addi s0, s0, 16
-    addi t0, zero, 128
+    addi t0, zero, 112
     bne s0, t0, render_tanks
     lw t0, 8(zero)
     bne t0, zero, render_hud
@@ -1069,7 +1044,7 @@ cache_bullet_store:
     addi t2, t2, -1
     bne t2, zero, cache_bullets
     addi t0, zero, 64
-    addi t2, zero, 4
+    addi t2, zero, 3
 cache_tanks:
     addi t3, zero, -1
     lw t4, 8(t0)
