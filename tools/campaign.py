@@ -8,7 +8,11 @@ def run_campaign(game,capture=lambda action,duration=650:None):
     assert game.get('SCORE')==10 and game.tiles()[0xc4]==0
     capture('减速炮弹击碎普通砖墙',1500)
     for name in ['UP']*6+['RIGHT']*3+['UP']*3:game.click(name)
-    game.click('FIRE');game.click('STEP');game.click('STEP')
+    game.pin('BULLET',1)
+    for _ in range(3):
+        if game.get('PICKUP')!=0xffffffff:break
+        game.click('FIRE');game.click('STEP')
+    game.pin('BULLET',2)
     assert game.get('SCORE')==110 and game.get('ALIVE')==1 and game.get('PICKUP')==0x37
     capture('击毁敌军，掉落升级星',1900)
     game.click('UP')

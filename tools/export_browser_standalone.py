@@ -5,7 +5,7 @@ ROOT=PROJECT/'web' if (PROJECT/'web/dist/index.html').exists() else PROJECT.pare
 html=(ROOT/'dist/index.html').read_text(encoding='utf-8')
 css=(ROOT/'dist/style.css').read_text(encoding='utf-8')
 parts=[]
-for name in ['rom.js','engine.js','app.js']:
+for name in ['rom.js','engine.js','input.js','app.js']:
  text=(ROOT/'dist'/name).read_text(encoding='utf-8')
  text='\n'.join(line for line in text.splitlines() if not line.startswith('import '))
  text=text.replace('export const ','const ').replace('export class ','class ')

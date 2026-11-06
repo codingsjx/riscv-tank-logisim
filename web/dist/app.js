@@ -1,21 +1,22 @@
 import { TankMachine } from './engine.js';
+import { InputGate } from './input.js';
 
 const $ = id => document.getElementById(id);
 const canvas=$('game'), ctx=canvas.getContext('2d');
 const game=new TankMachine();
 const keyBits={KeyW:1,ArrowUp:1,KeyD:2,ArrowRight:2,KeyS:4,ArrowDown:4,KeyA:8,ArrowLeft:8,Space:128};
 const controlBits={up:1,right:2,down:4,left:8,fire:128};
-const held=new Map();
+const held=new Map(),inputGate=new InputGate();
 const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-let pending=0,order=0,moveAt=0,fireAt=0,tickAt=0,lastTime=performance.now();
+let pendingMove=0,pendingFire=false,order=0,tickAt=0,lastTime=performance.now();
 let previous=game.state(),lastTiles=game.tiles(),lastActors=actors();
 let particles=[],rings=[],muzzleUntil=0,toastUntil=0,soundOn=false,audio=null,best=0;
 try { best=Number(localStorage.getItem('riscv-tank-best')||0)||0; } catch {}
 
 function setText(id,value){const el=$(id);if(el.textContent!==String(value))el.textContent=String(value);}
-function actors(){return [64,80,96].map(p=>({pos:game.memory[p>>>2],active:game.memory[(p+8)>>>2]}));}
+function actors(){return [64,80,96,112].map(p=>({pos:game.memory[p>>>2],active:game.memory[(p+8)>>>2],maxHp:p===64?0:game.memory[((p===80?0x92c:p===96?0x930:0x934)>>>2)]}));}
 function focusGame(){canvas.focus({preventScroll:true});}
-function clearInput(){held.clear();pending=0;document.querySelectorAll('[data-control]').forEach(b=>b.classList.remove('held'));}
+function clearInput(){held.clear();pendingMove=0;pendingFire=false;document.querySelectorAll('[data-control]').forEach(b=>b.classList.remove('held'));}
 function note(text){setText('activityText',text);}
 function toast(text){setText('toast',text);$('toast').classList.add('visible');toastUntil=performance.now()+1500;note(text);}
 function beep(frequency=220,duration=.07,type='square'){
@@ -49,7 +50,7 @@ function execute(bits){
     if(now.items>before.items){toast('拾取升级星 · 按 E 使用');beep(780,.13,'triangle');}
     if(now.uses>before.uses){toast(now.upgrade>before.upgrade?(now.upgrade===1?'强化成功 · 弹药容量提升至 3 发':'强化成功 · 炮弹伤害提升至 2'):'修复成功 · 恢复一条生命');beep(950,.2,'triangle');}
     const newActors=actors();
-    if(!(bits&64)&&now.enemies<before.enemies){for(let i=1;i<3;i++)if(oldActors[i].active&&!newActors[i].active)burst(oldActors[i].pos,'#edb06d',24);toast('击毁敌军 +100 · 升级星已掉落');beep(85,.22,'sawtooth');}
+    if(!(bits&64)&&now.enemies<before.enemies){for(let i=1;i<4;i++)if(oldActors[i].active&&!newActors[i].active)burst(oldActors[i].pos,newActors[i].maxHp===3?'#edb06d':'#a8b2a1',24);toast(newActors.slice(1).some((actor,i)=>oldActors[i+1].active&&!actor.active&&actor.maxHp===3)?'击毁精英怪 +100 · 升级星已掉落':'击毁普通小兵 +100');beep(85,.22,'sawtooth');}
     else if(now.score>before.score){for(let p=0;p<256;p++)if(lastTiles[p]===1&&tiles[p]===0)burst(p,'#bd895a',8);toast('击碎砖墙 +10');beep(95,.09,'triangle');}
     if(now.lives<before.lives){burst(oldActors[0].pos,'#dd9878',20);toast(now.lives?'受到攻击 · 已返回出生点':'生命耗尽');beep(65,.25,'sawtooth');}
     if(now.status===4&&before.status!==4){note('任务完成！全部敌军已消灭');beep(650,.2,'triangle');clearInput();}
@@ -74,7 +75,7 @@ function updateUI(){
   setText('enemyTotal',` / ${total}`);
   setText('progressLabel',`${total-s.enemies} / ${total}`);$('progress').style.width=`${(total-s.enemies)*100/total}%`;
   setText('levelTitle',`0${s.level+1} · ${levelNames[s.level]}防守`);
-  setText('levelDetail',s.level===0?'基地护墙需两次命中才破 · 从基地左侧出发，击毁敌军拾取升级星。':`${total} 辆${s.level===2?'精英':'装甲'}敌军分批进攻 · 装甲 ${s.level+1} 格 · 每 ${4-s.level} 拍行动。`);
+  setText('levelDetail',`${total} 辆敌军分批进攻，最多同时 ${s.level?'3':'2'} 辆。普通小兵 1 格生命，精英怪 3 格生命；仅精英掉落升级星。屋顶护墙需两次命中 · 每 ${4-s.level} 拍行动。`);
   setText('upgradeName',['基础坦克','一级 · 扩容坦克','二级 · 强攻坦克'][s.upgrade]||'基础坦克');
   setText('upgradeDetail',`弹药 ${s.upgrade?3:2} 发 · 伤害 ${s.upgrade===2?2:1}${s.pickup!==0xffffffff?' · ★ 战场上有升级星':''}`);
   setText('itemCount',s.items);
@@ -102,7 +103,7 @@ function startOrResume(){
   clearInput();
   if(previous.status>=3)execute(64);
   if(previous.status===0)execute(16);else if(previous.status===2)execute(32);
-  tickAt=performance.now()+Number($('speed').value);moveAt=0;fireAt=0;note('战斗开始 · 保护基地');focusGame();
+  inputGate.reset();tickAt=performance.now()+Number($('speed').value);note('战斗开始 · 保护基地');focusGame();
 }
 function pause(){if(previous.status===1||previous.status===2){clearInput();execute(32);tickAt=performance.now()+Number($('speed').value);focusGame();}}
 function restart(){clearInput();execute(64);tickAt=performance.now()+Number($('speed').value);focusGame();}
@@ -119,9 +120,9 @@ function closeHelp(){$('helpDialog').close();focusGame();}
 $('help').addEventListener('click',openHelp);$('closeHelp').addEventListener('click',closeHelp);$('helpReady').addEventListener('click',closeHelp);
 canvas.addEventListener('pointerdown',focusGame);
 
-function pressSource(source,bit,now){
-  held.set(source,{bit,order:++order});pending|=bit;
-  if(bit===128)fireAt=now+190;else moveAt=now+125;
+function pressSource(source,bit){
+  held.set(source,{bit,order:++order});
+  if(bit===128)pendingFire=true;else pendingMove=bit;
 }
 window.addEventListener('keydown',event=>{
   if($('helpDialog').open)return;
@@ -133,14 +134,14 @@ window.addEventListener('keydown',event=>{
   const bit=keyBits[event.code];if(!bit)return;
   if(event.code==='Space'&&event.target.tagName==='BUTTON')return;
   event.preventDefault();if(event.repeat||previous.status!==1)return;
-  pressSource(event.code,bit,performance.now());
+  pressSource(event.code,bit);
 });
 window.addEventListener('keyup',event=>held.delete(event.code));
 document.querySelectorAll('[data-control]').forEach(button=>{
   const bit=controlBits[button.dataset.control];
   button.addEventListener('pointerdown',event=>{
     event.preventDefault();if(previous.status!==1)return;
-    button.setPointerCapture(event.pointerId);button.classList.add('held');pressSource(`touch-${event.pointerId}`,bit,performance.now());
+    button.setPointerCapture(event.pointerId);button.classList.add('held');pressSource(`touch-${event.pointerId}`,bit);
   });
   const release=event=>{held.delete(`touch-${event.pointerId}`);button.classList.remove('held');};
   button.addEventListener('pointerup',release);button.addEventListener('pointercancel',release);button.addEventListener('lostpointercapture',release);
@@ -202,12 +203,12 @@ function draw(time,dt){
     ctx.save();ctx.translate(x,y);ctx.shadowColor='#e9d16c';ctx.shadowBlur=9;ctx.fillStyle='#f2d67f';ctx.beginPath();
     for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,r=i%2?6:14;ctx.lineTo(Math.cos(a)*r,Math.sin(a)*r);}ctx.closePath();ctx.fill();ctx.shadowBlur=0;ctx.fillStyle='#675427';ctx.font='bold 11px sans-serif';ctx.textAlign='center';ctx.fillText('+',0,4);ctx.restore();
   }
-  for(let i=0;i<2;i++){
+  for(let i=0;i<3;i++){
     const record=80+i*16;if(!game.memory[(record+8)>>>2])continue;
-    const p=game.memory[record>>>2],x=(p&15)*40,y=(p>>>4)*40,hp=i?s.armor2:s.armor1;
-    const color=s.level===2?'#edce7f':s.level===1?'#8dcae3':'#e89e81';
-    if(s.level){ctx.strokeStyle=color;ctx.lineWidth=2;ctx.strokeRect(x+12,y+9,16,19);ctx.fillStyle=color;ctx.fillRect(x+11,y+11,3,14);ctx.fillRect(x+26,y+11,3,14);}
-    for(let a=0;a<s.level+1;a++){ctx.fillStyle=a<hp?color:'#3e4540';ctx.fillRect(x+5+a*10,y+35,8,3);}
+    const p=game.memory[record>>>2],x=(p&15)*40,y=(p>>>4)*40,hp=game.memory[((record===80?0x90c:record===96?0x910:0x914)>>>2)];
+    const maxHp=game.memory[((record===80?0x92c:record===96?0x930:0x934)>>>2)],color=maxHp===3?'#edce7f':'#8dcae3';
+    if(maxHp===3){ctx.strokeStyle=color;ctx.lineWidth=2;ctx.strokeRect(x+12,y+9,16,19);ctx.fillStyle=color;ctx.fillRect(x+11,y+11,3,14);ctx.fillRect(x+26,y+11,3,14);}
+    for(let a=0;a<maxHp;a++){ctx.fillStyle=a<hp?color:'#3e4540';ctx.fillRect(x+5+a*10,y+35,8,3);}
   }
   if(s.upgrade&&game.memory[72>>>2]){const p=game.memory[64>>>2],x=(p&15)*40,y=(p>>>4)*40;ctx.strokeStyle='#e7dc8a';ctx.lineWidth=2;ctx.strokeRect(x+12,y+10,16,19);ctx.fillStyle='#e8dc94';for(let a=0;a<s.upgrade;a++)ctx.fillRect(x+12+a*10,y+33,7,3);}
   particles=particles.filter(p=>p.life>0);
@@ -220,13 +221,15 @@ function draw(time,dt){
 function frame(time){
   const dt=Math.min((time-lastTime)/1000,.05);lastTime=time;
   if(previous.status===1){
-    let bits=pending;pending=0;
+    let bits=0;
     const direction=[...held.values()].filter(h=>h.bit!==128).sort((a,b)=>b.order-a.order)[0];
-    if(direction&&time>=moveAt){bits|=direction.bit;moveAt=time+125;}
-    if([...held.values()].some(h=>h.bit===128)&&time>=fireAt){bits|=128;fireAt=time+190;}
+    const moveBit=direction?.bit||pendingMove;
+    if(moveBit&&inputGate.move(time)){bits|=moveBit;pendingMove=0;}
+    else if(direction)pendingMove=direction.bit;
+    if((pendingFire||[...held.values()].some(h=>h.bit===128))&&inputGate.fire(time)){bits|=128;pendingFire=false;}
     if(time>=tickAt){bits|=256;tickAt=time+Number($('speed').value);}
     if(bits)execute(bits);
-  }else pending=0;
+  }else{pendingMove=0;pendingFire=false;}
   draw(time,dt);requestAnimationFrame(frame);
 }
 updateUI();requestAnimationFrame(frame);

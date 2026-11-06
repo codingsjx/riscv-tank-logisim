@@ -37,11 +37,13 @@ class TankTests(unittest.TestCase):
         self.assertEqual((self.sprite(0xe5),self.sprite(0x37),self.sprite(0xe7)),(4,10,3))
         self.assertEqual(self.tile(0x97),1)
         self.assertEqual(self.tile(0x63),2)
+        self.assertEqual((self.m.mem[0x90c],self.m.mem[0x910],self.m.mem[0x92c],self.m.mem[0x930]),(3,1,3,1))
+        self.assertEqual(self.tile(0xd7),14)
 
     def test_base_guard_walls_and_forward_exit(self):
         for p in [0xd6,0xd8,0xe6,0xe8]: self.assertEqual(self.tile(p),14)
         self.assertEqual(self.tile(0xf7),2)
-        self.assertEqual(self.tile(0xd7),0)
+        self.assertEqual(self.tile(0xd7),14)
         self.assertEqual(self.call('move_actor',64,1),0)
         self.assertEqual(self.call('move_actor',64,0),1)
         self.bullet(0xd5,1,1,0xa0)
@@ -53,17 +55,42 @@ class TankTests(unittest.TestCase):
         self.assertEqual(self.m.mem[28],1)
         self.assertEqual(self.m.mem[4],0)
 
+    def test_base_roof_bricks_block_bullets_until_destroyed(self):
+        self.assertEqual([self.tile(p) for p in (0xd6,0xd7,0xd8)], [14,14,14])
+        self.bullet(0xc7,2,1)
+        self.call('update_bullets')
+        self.assertEqual((self.tile(0xd7),self.m.mem[28],self.m.mem[0]),(1,1,0))
+        self.bullet(0xc7,2,1)
+        self.call('update_bullets')
+        self.assertEqual((self.tile(0xd7),self.m.mem[28],self.m.mem[0]),(0,1,0))
+
     def test_level_sampled_on_restart_and_clamped(self):
         for level,total in [(0,2),(1,4),(2,6),(3,6)]:
             self.m.mem[0x710]=level
             self.poll(64)
             self.assertEqual(self.m.mem[48],min(level,2))
             self.assertEqual((self.m.mem[20],self.m.mem[52],self.m.mem[56]),(total,total,total-2))
+            self.assertEqual(self.m.mem[120],int(level>0))
             self.assertEqual(self.tile(0x82),int(level>0))
             self.assertEqual(self.tile(0x75),2 if level>1 else 0)
         self.m.mem[0x710]=0
         self.poll(16|256)
         self.assertEqual(self.m.mem[48],2)
+
+    def test_advanced_levels_start_with_three_simultaneous_enemies(self):
+        self.m.mem[0x710]=1;self.poll(64)
+        self.assertEqual([self.m.mem[p+8] for p in (80,96,112)],[1,1,1])
+        self.m.mem[0x710]=0;self.poll(64)
+        self.assertEqual(self.m.mem[120],0)
+
+    def test_third_enemy_slot_has_elite_health_and_drops(self):
+        self.m.mem[0x710]=1;self.poll(64);self.poll(16)
+        self.m.mem[88]=0;self.m.mem[104]=0
+        self.m.mem[112]=0x47;self.m.mem[120]=1;self.m.mem[20]=1
+        self.assertEqual((self.m.mem[0x914],self.m.mem[0x934]),(3,3))
+        for hit in range(3):
+            self.bullet(0x57,0);self.call('update_bullets')
+        self.assertEqual((self.m.mem[120],self.m.mem[20],self.m.mem[0x904]),(0,0,0x47))
 
     def test_ai_cadence_per_level(self):
         for level,period in [(0,4),(1,3),(2,2)]:
@@ -93,7 +120,8 @@ class TankTests(unittest.TestCase):
             for killed in range(total):
                 slot=80 if self.m.mem[88] else 96
                 self.m.mem[slot]=0x47
-                for _ in range(level+1):
+                slot_hp=self.m.mem[0x92c if slot==80 else 0x930]
+                for _ in range(slot_hp):
                     self.bullet(0x57,0)
                     self.call('update_bullets')
                 self.assertEqual(self.m.mem[20],total-killed-1)
@@ -112,23 +140,36 @@ class TankTests(unittest.TestCase):
             self.assertEqual(self.m.mem[0x80],0xd5)
             self.assertEqual(self.m.mem[12],period)
 
-    def test_armored_and_elite_require_multiple_hits(self):
-        for level,hp in [(0,1),(1,2),(2,3)]:
-            self.m.mem[0x710]=level;self.poll(64);self.poll(16)
+    def test_normal_and_elite_require_one_and_three_hits(self):
+        self.m.mem[0x710]=2;self.poll(64);self.poll(16)
+        for slot,hp,hp_address,max_address in [(80,3,0x90c,0x92c),(96,1,0x910,0x930)]:
+            if slot==96:
+                self.m.mem[0x904]=0xffffffff;self.m.mem[0x920]=0
+            other=80 if slot==96 else 96
+            self.m.mem[other+8]=0
+            self.m.mem[slot]=0x47
+            self.m.mem[slot+8]=1
+            self.m.mem[hp_address]=hp
+            self.m.mem[max_address]=hp
             for hit in range(1,hp+1):
-                self.bullet(0x47,0);self.call('update_bullets')
-                self.assertEqual(self.m.mem[0x90c],hp-hit)
-                self.assertEqual(self.m.mem[88],int(hit<hp))
-                self.assertEqual(self.m.mem[4],100 if hit==hp else 0)
-            self.assertEqual((self.m.mem[0x904],self.m.mem[0x920]),(0x37,1))
+                self.bullet(0x57,0);self.call('update_bullets')
+                self.assertEqual(self.m.mem[hp_address],hp-hit)
+                self.assertEqual(self.m.mem[slot+8],int(hit<hp))
+                expected_score=(100 if hit==hp else 0) if slot==80 else (200 if hit==hp else 100)
+                self.assertEqual(self.m.mem[4],expected_score)
+                self.assertEqual(self.m.mem[0x904],0x47 if slot==80 and hit==hp else 0xffffffff)
+            self.assertEqual(self.m.mem[max_address],hp)
+        self.assertEqual(self.m.mem[0x920],0)
 
     def test_pickup_requires_contact_and_use_requires_inventory(self):
         self.poll(16);self.poll(512)
         self.assertEqual(self.m.mem[0x900],0)
-        self.bullet(0x47,0);self.call('update_bullets')
+        self.m.mem[80]=0x47;self.m.mem[0x90c]=3;self.m.mem[0x92c]=3
+        for _ in range(3):
+            self.bullet(0x57,0);self.call('update_bullets')
         self.poll(1)
         self.assertEqual(self.m.mem[0x908],0)
-        self.m.mem[64]=0x47;self.poll(1)
+        self.m.mem[64]=0x47;self.call('collect_upgrade')
         self.assertEqual((self.m.mem[0x908],self.m.mem[0x904]),(1,0xffffffff))
         self.assertEqual(self.m.mem[0x900],0)
         self.poll(512)
@@ -144,6 +185,9 @@ class TankTests(unittest.TestCase):
         self.m.mem[0x710]=2;self.poll(64);self.poll(16)
         self.m.mem[0x908]=3;self.poll(512);self.poll(512)
         self.assertEqual(self.m.mem[0x900],2)
+        self.m.mem[80]=0x37
+        self.m.mem[0x90c]=3
+        self.m.mem[0x92c]=3
         self.bullet(0x47,0);self.call('update_bullets')
         self.assertEqual((self.m.mem[0x90c],self.m.mem[88]),(1,1))
         self.bullet(0x47,0);self.call('update_bullets')
@@ -163,7 +207,11 @@ class TankTests(unittest.TestCase):
     def test_drops_stack_without_overwriting_and_bag_is_capped(self):
         self.m.mem[0]=1
         for slot,pos in [(80,0x47),(96,0x4c)]:
-            self.m.mem[slot]=pos;self.bullet(pos+16,0);self.call('update_bullets')
+            self.m.mem[slot]=pos;self.m.mem[slot+8]=1
+            self.m.mem[0x90c if slot==80 else 0x910]=3
+            self.m.mem[0x92c if slot==80 else 0x930]=3
+            for _ in range(3):
+                self.bullet(pos+16,0);self.call('update_bullets')
         self.assertEqual((self.m.mem[0x904],self.m.mem[0x920]),(0x47,2))
         self.m.mem[64]=0x47
         self.call('collect_upgrade');self.call('collect_upgrade')
@@ -178,7 +226,7 @@ class TankTests(unittest.TestCase):
         self.m.mem[0x90c]=1;self.m.mem[0x100+0xe6*4]=0
         self.poll(64)
         self.assertEqual((self.m.mem[0x900],self.m.mem[0x908],self.m.mem[0x904],self.m.mem[0x920]),(0,0,0xffffffff,0))
-        self.assertEqual((self.tile(0xe6),self.m.mem[0x90c],self.m.mem[0x910]),(14,3,3))
+        self.assertEqual((self.tile(0xe6),self.m.mem[0x90c],self.m.mem[0x910]),(14,3,1))
 
     def test_respawn_avoids_enemy_camping_beside_base(self):
         self.m.mem[80]=0xe5;self.m.mem[96]=0xe9
@@ -197,18 +245,16 @@ class TankTests(unittest.TestCase):
         self.call('spawn_reserve',80,0x37)
         self.assertEqual(self.m.mem[0x924],0)
 
-    def test_complete_input_campaign_with_loot_upgrade_and_base_defeat(self):
-        from campaign import run_campaign
-        outer=self
-        hud=['STATUS','SCORE','LIVES','ALIVE','CAUSE','BASEHP','TICK','BEST','FRAME','UPGRADE','PICKUP','ITEMS','ARMOR1','ARMOR2','USES','POS1','POS2']
-        keys=['UP','RIGHT','DOWN','LEFT','START','PAUSE','RESTART','FIRE','STEP','USE']
-        class Game:
-            def click(self,*names,atomic=False):outer.poll(sum(1<<keys.index(n) for n in names))
-            def get(self,name):return outer.m.mem[0x740+4*hud.index(name)]
-            def tiles(self):return [outer.sprite(p) for p in range(256)]
-            def cycles(self,n):
-                for _ in range(n):outer.m.step()
-        run_campaign(Game())
+    def test_normal_then_elite_campaign_drop_rules(self):
+        self.m.mem[0]=1;self.m.mem[20]=2
+        self.m.mem[80]=0x47;self.m.mem[88]=1;self.m.mem[0x90c]=3;self.m.mem[0x92c]=3
+        self.m.mem[96]=0x4c;self.m.mem[104]=1;self.m.mem[0x910]=1;self.m.mem[0x930]=1
+        self.bullet(0x5c,0);self.call('update_bullets')
+        self.assertEqual((self.m.mem[20],self.m.mem[4],self.m.mem[0x904]),(1,100,0xffffffff))
+        self.m.mem[80]=0x47
+        for _ in range(3):
+            self.bullet(0x57,0);self.call('update_bullets')
+        self.assertEqual((self.m.mem[20],self.m.mem[4],self.m.mem[0x904],self.m.mem[0x920]),(0,200,0x47,1))
 
     def test_world_border(self):
         for p in range(256):
@@ -267,13 +313,13 @@ class TankTests(unittest.TestCase):
         self.assertEqual((self.tile(0x63),self.m.mem[4],self.m.mem[0x88]),(2,0,0))
 
     def test_player_kills_enemy(self):
-        self.m.mem[0]=1
+        self.m.mem[0]=1;self.m.mem[0x90c]=1;self.m.mem[0x92c]=1
         self.bullet(0x47,0)
         self.call('update_bullets')
         self.assertEqual((self.m.mem[88],self.m.mem[20],self.m.mem[4]),(0,1,100))
 
     def test_last_enemy_kill_wins(self):
-        self.m.mem[0]=1;self.m.mem[104]=0;self.m.mem[20]=1
+        self.m.mem[0]=1;self.m.mem[104]=0;self.m.mem[20]=1;self.m.mem[0x90c]=1;self.m.mem[0x92c]=1
         self.bullet(0x47,0)
         self.call('update_bullets')
         self.assertEqual((self.m.mem[0],self.m.mem[24],self.m.mem[20]),(4,3,0))

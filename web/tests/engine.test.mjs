@@ -50,7 +50,9 @@ test('level selection resets waves, cover, and AI cadence in the course ROM', ()
     assert.equal(game.state().total,2+level*2);
     assert.equal(game.state().enemies,2+level*2);
     assert.equal(game.state().reserves,level*2);
-    for(const p of [0xd6,0xd8,0xe6,0xe8]) assert.equal(game.tiles()[p],14);
+    for(const p of [0xd6,0xd7,0xd8,0xe6,0xe8]) assert.equal(game.tiles()[p],14);
+    assert.equal(game.memory[120>>>2],Number(level>0));
+    assert.deepEqual([game.memory[88>>>2],game.memory[104>>>2],game.memory[120>>>2]],[1,1,Number(level>0)]);
     assert.equal(game.tiles()[0xf7],2);
     game.dispatch(16);
     for(let tick=1;tick<4-level;tick++) game.dispatch(256);
@@ -59,6 +61,17 @@ test('level selection resets waves, cover, and AI cadence in the course ROM', ()
   }
 });
 
+
+test('roof guard needs two hits before opening the base lane', () => {
+  const game=new TankMachine();game.setBulletPeriod(1);game.dispatch(16);
+  assert.equal(game.tiles()[0xd7],14);
+  for(let hit=1;hit<=2;hit++){
+    game.memory[0x80>>>2]=0xc7;game.memory[0x84>>>2]=2;game.memory[0x88>>>2]=1;game.memory[0x8c>>>2]=1;
+    game.dispatch(256);
+    assert.equal(game.tiles()[0xd7],hit===1?1:0);
+    assert.equal(game.state().base,1);
+  }
+});
 
 test('slower projectile cadence is independent of the chosen enemy level', () => {
   for(const period of [1,2,3]) {
@@ -69,14 +82,17 @@ test('slower projectile cadence is independent of the chosen enemy level', () =>
   }
 });
 
-test('kill, loot contact, manual upgrade, armor damage and restart form a full loop', () => {
-  const game=new TankMachine();game.setLevel(2);game.dispatch(64);game.dispatch(16);
-  game.memory[80>>>2]=0xd5;game.memory[0x90c>>>2]=1;
-  game.dispatch(128|256);game.dispatch(256);
-  assert.equal(game.state().pickup,0xd5);assert.equal(game.state().score,100);
-  assert.equal(game.state().items,0);game.dispatch(1);
-  assert.equal(game.state().items,1);assert.equal(game.state().pickup,0xffffffff);
-  game.dispatch(512);assert.equal(game.state().upgrade,1);assert.equal(game.state().uses,1);
+test('only elite enemies drop upgrade items', () => {
+  const game=new TankMachine();game.dispatch(16);game.setBulletPeriod(1);
+  assert.deepEqual([game.memory[0x90c>>>2],game.memory[0x910>>>2]],[3,1]);
+  for(let hit=1;hit<=3;hit++){
+    game.memory[80>>>2]=0x47;game.memory[0x90c>>>2]=4-hit;game.memory[0x92c>>>2]=3;
+    game.memory[60>>>2]=0;game.memory[0x80>>>2]=0x57;
+    game.memory[0x84>>>2]=0;game.memory[0x88>>>2]=1;game.memory[0x8c>>>2]=0;
+    game.dispatch(256);
+    assert.equal(game.state().pickup,hit===3?0x47:0xffffffff);
+  }
+  assert.equal(game.memory[88>>>2],0);
+  assert.equal(game.state().pickup,0x47);
   assert.equal(game.state().items,0);
-  game.dispatch(64);assert.equal(game.state().upgrade,0);assert.equal(game.state().armor1,3);
 });
